@@ -61,7 +61,7 @@ export default function SearchModal() {
         startIcon={<SearchIcon />}
         style={styles.searchButton}
       >
-        <span>Search..{'    '}.</span>
+        <span>Search..{"    "}.</span>
 
         {/* &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; */}
       </Button>

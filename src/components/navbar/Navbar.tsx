@@ -6,7 +6,7 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 
 import ProfileMenu from "./ProfileMenu";
-import SearchModal from "./SearchModal";
+// import SearchModal from "./SearchModal";
 import SearchModalV2 from "./SearchModalV2";
 
 export default function Navbar() {
