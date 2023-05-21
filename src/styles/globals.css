@@ -1,0 +1,8 @@
+a {
+  text-decoration: none;
+}
+
+.searchButton{
+  border-radius: 5px;
+  background-color: rgb(151, 151, 151);
+}

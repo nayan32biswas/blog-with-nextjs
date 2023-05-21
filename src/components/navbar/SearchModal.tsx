@@ -1,8 +1,10 @@
 import * as React from "react";
 
+import SearchIcon from "@mui/icons-material/Search";
 import {
   Avatar,
   Divider,
+  InputAdornment,
   List,
   ListItem,
   ListItemAvatar,
@@ -26,6 +28,10 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 const styles = {
   textInput: {
     fontSize: "large"
+  },
+  searchButton: {
+    borderRadius: "10px",
+    backgroundColor: "rgb(243 245 245)"
   }
 };
 
@@ -49,21 +55,42 @@ export default function SearchModal() {
 
   return (
     <div>
-      <Button variant="contained" onClick={handleClickOpen}>
-        Search
+      <Button
+        onClick={handleClickOpen}
+        color="inherit"
+        startIcon={<SearchIcon />}
+        style={styles.searchButton}
+      >
+        <span>Search..{'    '}.</span>
+
+        {/* &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; */}
       </Button>
+
       <BootstrapDialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
         <TextField
           type="search"
           id="search"
           placeholder="Search..."
-          inputProps={styles.textInput}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <SearchIcon />
+              </InputAdornment>
+            ),
+            style: styles.textInput
+          }}
         />
+        {/* <TextField
+          type="search"
+          id="search"
+          placeholder="Search..."
+          inputProps={styles.textInput}
+        /> */}
         <List sx={{ width: "100%", bgcolor: "background.paper" }}>
           {numbers.map((val: number, idx: number) => {
             return (
-              <>
-                <ListItem alignItems="flex-start" key={idx}>
+              <React.Fragment key={idx}>
+                <ListItem alignItems="flex-start">
                   <ListItemAvatar>
                     <Avatar alt="Profile Avatar" />
                   </ListItemAvatar>
@@ -85,7 +112,7 @@ export default function SearchModal() {
                   />
                 </ListItem>
                 {idx + 1 !== numbers.length ? <Divider variant="inset" component="li" /> : null}
-              </>
+              </React.Fragment>
             );
           })}
         </List>
