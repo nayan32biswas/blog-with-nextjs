@@ -1,9 +1,7 @@
-import { useRouter } from "next/router";
-import * as React from "react";
+import { MouseEvent, useState } from "react";
 
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
-import MoreIcon from "@mui/icons-material/MoreVert";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import Badge from "@mui/material/Badge";
 import Box from "@mui/material/Box";
@@ -11,41 +9,64 @@ import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 
+const MyAccountItem = () => {
+  return (
+    <MenuItem>
+      <IconButton
+        size="large"
+        aria-label="account of current user"
+        aria-controls="primary-search-account-menu"
+        aria-haspopup="true"
+        color="inherit"
+      >
+        <AccountCircle />
+      </IconButton>
+      <p>My Account</p>
+    </MenuItem>
+  );
+};
+const LogOutItem = () => {
+  return (
+    <MenuItem>
+      <IconButton
+        size="large"
+        aria-label="account of current user"
+        aria-controls="primary-search-account-menu"
+        aria-haspopup="true"
+        color="inherit"
+      >
+        <LogoutIcon />
+      </IconButton>
+      <p>Logout</p>
+    </MenuItem>
+  );
+};
+
 export default function ProfileMenu() {
-  const router = useRouter();
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState<null | HTMLElement>(null);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-  const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+  const handleProfileMenuOpen = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
-
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
   };
-
   const handleMenuClose = () => {
     setAnchorEl(null);
     handleMobileMenuClose();
   };
-
-  const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+  const handleMobileMenuOpen = (event: MouseEvent<HTMLElement>) => {
     setMobileMoreAnchorEl(event.currentTarget);
-  };
-
-  const handleLogout = () => {
-    handleMobileMenuClose();
-    // @ts-ignore
-    router.reload(window.location.pathname);
   };
 
   const menuId = "primary-search-account-menu";
   const renderMenu = (
     <Menu
-      anchorEl={anchorEl}
+      anchorEl={mobileMoreAnchorEl}
       anchorOrigin={{
         vertical: "top",
         horizontal: "right"
@@ -59,18 +80,8 @@ export default function ProfileMenu() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>
-        <IconButton size="large" aria-label="show 17 new notifications" color="inherit">
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
-      <MenuItem onClick={handleLogout}>
-        <IconButton size="large" aria-label="show 17 new notifications" color="inherit">
-          <LogoutIcon />
-        </IconButton>
-        <p>Logout</p>
-      </MenuItem>
+      <MyAccountItem />
+      <LogOutItem />
     </Menu>
   );
 
@@ -92,33 +103,23 @@ export default function ProfileMenu() {
       onClose={handleMobileMenuClose}
     >
       <MenuItem>
-        <IconButton size="large" aria-label="show 17 new notifications" color="inherit">
-          <Badge badgeContent={17} color="error">
+        <IconButton size="large" aria-label="show 5 new notifications" color="inherit">
+          <Badge badgeContent={5} color="error">
             <NotificationsIcon />
           </Badge>
         </IconButton>
         <p>Notifications</p>
       </MenuItem>
-      <MenuItem onClick={handleMenuClose}>
-        <IconButton size="large" aria-label="show 17 new notifications" color="inherit">
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
-      <MenuItem onClick={handleLogout}>
-        <IconButton size="large" aria-label="show 17 new notifications" color="inherit">
-          <AccountCircle />
-        </IconButton>
-        <p>Logout</p>
-      </MenuItem>
+      <MyAccountItem />
+      <LogOutItem />
     </Menu>
   );
 
   return (
     <>
       <Box sx={{ display: { xs: "none", md: "flex" } }}>
-        <IconButton size="large" aria-label="show 17 new notifications" color="inherit">
-          <Badge badgeContent={1} color="error">
+        <IconButton size="large" aria-label="show 5 new notifications" color="inherit">
+          <Badge badgeContent={5} color="error">
             <NotificationsIcon />
           </Badge>
         </IconButton>
@@ -143,10 +144,9 @@ export default function ProfileMenu() {
           onClick={handleMobileMenuOpen}
           color="inherit"
         >
-          <MoreIcon />
+          <AccountCircle />
         </IconButton>
       </Box>
-
       {renderMobileMenu}
       {renderMenu}
     </>

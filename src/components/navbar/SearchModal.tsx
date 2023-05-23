@@ -1,6 +1,7 @@
-import * as React from "react";
+import React, { Fragment } from "react";
 
 import SearchIcon from "@mui/icons-material/Search";
+import { Typography } from "@mui/material";
 import {
   Avatar,
   Divider,
@@ -11,19 +12,9 @@ import {
   ListItemText,
   TextField
 } from "@mui/material";
-import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
-import Typography from "@mui/material/Typography";
-import { styled } from "@mui/material/styles";
-
-const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-  "& .MuiDialogContent-root": {
-    padding: theme.spacing(2)
-  },
-  "& .MuiDialogActions-root": {
-    padding: theme.spacing(2)
-  }
-}));
+import InputBase from "@mui/material/InputBase";
+import { alpha, styled } from "@mui/material/styles";
 
 const styles = {
   textInput: {
@@ -35,38 +26,79 @@ const styles = {
   }
 };
 
-export interface DialogTitleProps {
-  id: string;
-  children?: React.ReactNode;
-  onClose: () => void;
-}
+const Search = styled("div")(({ theme }) => ({
+  position: "relative",
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  "&:hover": {
+    backgroundColor: alpha(theme.palette.common.white, 0.25)
+  },
+  // marginRight: theme.spacing(2),
+  marginLeft: 0,
+  width: "100%",
+  [theme.breakpoints.up("sm")]: {
+    marginLeft: theme.spacing(3),
+    width: "auto"
+  }
+}));
 
-export default function SearchModal() {
-  const [open, setOpen] = React.useState(true);
+const SearchIconWrapper = styled("div")(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: "100%",
+  position: "absolute",
+  pointerEvents: "none",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center"
+}));
 
-  const handleClickOpen = () => {
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: "inherit",
+  "& .MuiInputBase-input": {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    caretColor: "transparent",
+    [theme.breakpoints.up("md")]: {
+      width: "20ch"
+    }
+  }
+}));
+const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+  "& .MuiDialogContent-root": {
+    padding: theme.spacing(2)
+  },
+  "& .MuiDialogActions-root": {
+    padding: theme.spacing(2)
+  }
+}));
+
+const SearchModal = () => {
+  const [open, setOpen] = React.useState(false);
+
+  const handleModalOpen = () => {
     setOpen(true);
   };
-  const handleClose = () => {
+  const handleModalClose = () => {
     setOpen(false);
   };
-  // const numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
   const numbers = [0, 1, 2, 3, 4, 5, 6];
 
   return (
-    <div>
-      <Button
-        onClick={handleClickOpen}
-        color="inherit"
-        startIcon={<SearchIcon />}
-        style={styles.searchButton}
+    <>
+      <Search onClick={handleModalOpen} sx={{ input: { cursor: "pointer" } }}>
+        <SearchIconWrapper>
+          <SearchIcon />
+        </SearchIconWrapper>
+        <StyledInputBase placeholder="Search…" inputProps={{ "aria-label": "search" }} />
+      </Search>
+      <BootstrapDialog
+        onClose={handleModalClose}
+        aria-labelledby="customized-dialog-title"
+        open={open}
       >
-        <span>Search..{"    "}.</span>
-
-        {/* &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; */}
-      </Button>
-
-      <BootstrapDialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
         <TextField
           type="search"
           id="search"
@@ -80,12 +112,6 @@ export default function SearchModal() {
             style: styles.textInput
           }}
         />
-        {/* <TextField
-          type="search"
-          id="search"
-          placeholder="Search..."
-          inputProps={styles.textInput}
-        /> */}
         <List sx={{ width: "100%", bgcolor: "background.paper" }}>
           {numbers.map((val: number, idx: number) => {
             return (
@@ -97,7 +123,7 @@ export default function SearchModal() {
                   <ListItemText
                     primary="Post Title"
                     secondary={
-                      <React.Fragment>
+                      <>
                         <Typography
                           sx={{ display: "inline" }}
                           component="span"
@@ -107,7 +133,7 @@ export default function SearchModal() {
                           Lorem ipsum dolor, sit amet consectetur adipisicing elit. Doloremque fuga
                           tenetur odio aspernatur mollitia, vitae voluptatibus maiores.
                         </Typography>
-                      </React.Fragment>
+                      </>
                     }
                   />
                 </ListItem>
@@ -117,6 +143,8 @@ export default function SearchModal() {
           })}
         </List>
       </BootstrapDialog>
-    </div>
+    </>
   );
-}
+};
+
+export default SearchModal;
