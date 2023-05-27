@@ -31,12 +31,12 @@ function getCookieObject(request: any): ObjectType {
   return Obj;
 }
 
-export function getCookie(key: string, request: any = null): string {
+export function getCookie(key: string, request: any): string {
   const cookies = getCookieObject(request);
   return cookies[key] || '';
 }
 
-export function setCookie(key: string, value: unknown, request: any = null) {
+export function setCookie(key: string, value: unknown, request: any) {
   const cookies = getCookieObject(request);
   cookies[key] = value;
 
@@ -46,7 +46,7 @@ export function setCookie(key: string, value: unknown, request: any = null) {
   }
   setCookieString(cookieStr, request);
 }
-export function removeCookie(key: string, request: any = null) {
+export function removeCookie(key: string, request: any) {
   const cookies = getCookieObject(request);
   if (cookies[key]) {
     delete cookies[key];

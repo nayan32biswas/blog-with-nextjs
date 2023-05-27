@@ -27,14 +27,14 @@ function parseJwt(token: string): ObjectType {
   );
   return JSON.parse(jsonPayload);
 }
-function setAccessToken(accessToken: string) {
+function setAccessToken(accessToken: string, request: any = null) {
   let tokenPayload = parseJwt(accessToken);
-  setCookie(ACCESS_TOKEN, accessToken);
-  setCookie(ACCESS_TOKEN_EXP, tokenPayload.exp);
+  setCookie(ACCESS_TOKEN, accessToken, request);
+  setCookie(ACCESS_TOKEN_EXP, tokenPayload.exp, request);
   return true;
 }
-function setRefreshToken(refreshToken: string) {
-  setCookie(REFRESH_TOKEN, refreshToken);
+function setRefreshToken(refreshToken: string, request: any = null) {
+  setCookie(REFRESH_TOKEN, refreshToken, request);
   return true;
 }
 export function setToken(access: string, refresh: string) {
@@ -42,11 +42,10 @@ export function setToken(access: string, refresh: string) {
   setRefreshToken(refresh);
   return true;
 }
-export function clearToken() {
-  console.log('call clearToken');
-  removeCookie(ACCESS_TOKEN);
-  removeCookie(ACCESS_TOKEN_EXP);
-  removeCookie(REFRESH_TOKEN);
+export function clearToken(request: any = null) {
+  removeCookie(ACCESS_TOKEN, request);
+  removeCookie(ACCESS_TOKEN_EXP, request);
+  removeCookie(REFRESH_TOKEN, request);
   return true;
 }
 function getTimestampSec() {
@@ -54,14 +53,14 @@ function getTimestampSec() {
 }
 
 const customLock = new AsyncLock();
-export async function getValidToken() {
+export async function getValidToken(request: any = null) {
   await customLock.promise;
   customLock.enable();
 
   try {
-    let accessToken = getCookie(ACCESS_TOKEN);
+    let accessToken = getCookie(ACCESS_TOKEN, request);
     if (accessToken === null) return null;
-    let accessTokenExp = getCookie(ACCESS_TOKEN_EXP);
+    let accessTokenExp = getCookie(ACCESS_TOKEN_EXP, request);
     // access token expire
     if (accessTokenExp === null) return null;
 
@@ -69,7 +68,7 @@ export async function getValidToken() {
     if (expTimestamp > getTimestampSec() + fiveMinutes) {
       return accessToken;
     } else {
-      let refreshToken = getCookie(REFRESH_TOKEN);
+      let refreshToken = getCookie(REFRESH_TOKEN, request);
       if (refreshToken === null) return null;
 
       let response = await axios.post(UPDATE_ACCESS_TOKEN_URL, {
@@ -82,7 +81,6 @@ export async function getValidToken() {
       } else {
         // display error message or redirect to other page.
         clearToken();
-        // return null;
       }
     }
   } finally {
