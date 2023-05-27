@@ -1,7 +1,7 @@
-import Head from "next/head";
-import Link from "next/link";
+import Head from 'next/head';
+import Link from 'next/link';
 
-import { Box, Container, Typography } from "@mui/material";
+import { Box, Container, Typography } from '@mui/material';
 
 // import styles from '@/styles/Home.module.css';
 
@@ -18,10 +18,10 @@ export default function Home() {
         <Box
           sx={{
             my: 4,
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center"
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center'
           }}
         >
           <Typography component="h1" variant="h4" gutterBottom>

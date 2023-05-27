@@ -1,13 +1,13 @@
-import { MouseEvent, useState } from "react";
+import { MouseEvent, useState } from 'react';
 
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import LogoutIcon from "@mui/icons-material/Logout";
-import NotificationsIcon from "@mui/icons-material/Notifications";
-import Badge from "@mui/material/Badge";
-import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import LogoutIcon from '@mui/icons-material/Logout';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import Badge from '@mui/material/Badge';
+import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 
 const MyAccountItem = () => {
   return (
@@ -63,19 +63,19 @@ export default function ProfileMenu() {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-  const menuId = "primary-search-account-menu";
+  const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
       anchorEl={mobileMoreAnchorEl}
       anchorOrigin={{
-        vertical: "top",
-        horizontal: "right"
+        vertical: 'top',
+        horizontal: 'right'
       }}
       id={menuId}
       keepMounted
       transformOrigin={{
-        vertical: "top",
-        horizontal: "right"
+        vertical: 'top',
+        horizontal: 'right'
       }}
       open={isMenuOpen}
       onClose={handleMenuClose}
@@ -85,19 +85,19 @@ export default function ProfileMenu() {
     </Menu>
   );
 
-  const mobileMenuId = "primary-search-account-menu-mobile";
+  const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
     <Menu
       anchorEl={mobileMoreAnchorEl}
       anchorOrigin={{
-        vertical: "top",
-        horizontal: "right"
+        vertical: 'top',
+        horizontal: 'right'
       }}
       id={mobileMenuId}
       keepMounted
       transformOrigin={{
-        vertical: "top",
-        horizontal: "right"
+        vertical: 'top',
+        horizontal: 'right'
       }}
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
@@ -117,7 +117,7 @@ export default function ProfileMenu() {
 
   return (
     <>
-      <Box sx={{ display: { xs: "none", md: "flex" } }}>
+      <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
         <IconButton size="large" aria-label="show 5 new notifications" color="inherit">
           <Badge badgeContent={5} color="error">
             <NotificationsIcon />
@@ -135,7 +135,7 @@ export default function ProfileMenu() {
           <AccountCircle />
         </IconButton>
       </Box>
-      <Box sx={{ display: { xs: "flex", md: "none" } }}>
+      <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
         <IconButton
           size="large"
           aria-label="show more"
