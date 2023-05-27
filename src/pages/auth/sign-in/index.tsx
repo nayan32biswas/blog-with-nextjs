@@ -9,7 +9,9 @@ import TextField from '@mui/material/TextField';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
+import { login } from '@/api/authApi';
 import AuthBase from '@/components/auth/AuthBase';
+import PasswordField from '@/components/auth/PasswordField';
 import { usernameRegex } from '@/utils/utils';
 
 const validationSchema = yup.object({
@@ -33,7 +35,7 @@ function SignIn() {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      console.log(values);
+      login(values);
     }
   });
 
@@ -52,18 +54,14 @@ function SignIn() {
           error={formik.touched.username && Boolean(formik.errors.username)}
           helperText={formik.touched.username && formik.errors.username}
         />
-        <TextField
-          margin="normal"
-          fullWidth
-          required
+        <PasswordField
           id="password"
           name="password"
           label="Password"
-          type="password"
           value={formik.values.password}
           onChange={formik.handleChange}
-          error={formik.touched.password && Boolean(formik.errors.password)}
-          helperText={formik.touched.password && formik.errors.password}
+          touched={formik.touched.password}
+          error={formik.errors.password}
         />
         <FormControlLabel
           control={

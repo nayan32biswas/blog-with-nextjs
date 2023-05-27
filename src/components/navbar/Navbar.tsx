@@ -31,7 +31,7 @@ export default function Navbar({ isAuthenticated }: NavbarProps) {
             <ProfileMenu />
           ) : (
             <Button color="inherit">
-              <Link href={'/auth/login'}>Login</Link>
+              <Link href={'/auth/sign-in'}>Login</Link>
             </Button>
           )}
         </Toolbar>

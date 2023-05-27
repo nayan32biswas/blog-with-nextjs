@@ -10,7 +10,9 @@ function getCookieString(request: any): string {
     return document.cookie;
   }
 }
-function setCookieString(str: string, request: any) {
+export function setCookie(key: string, value: string, request: any) {
+  const str = `${key}=${value}; path=/`;
+
   if (isServer() && request?.headers?.cookie) {
     request.headers.cookie = str;
   } else {
@@ -24,6 +26,8 @@ function getCookieObject(request: any): ObjectType {
     .split(';')
     .forEach(function (cookie) {
       let [name, ...rest] = cookie.split('=');
+      name = name.trim();
+      if (!name) return;
       const value = rest.join('=').trim();
       if (!value) return;
       Obj[name] = decodeURIComponent(value);
@@ -36,25 +40,13 @@ export function getCookie(key: string, request: any): string {
   return cookies[key] || '';
 }
 
-export function setCookie(key: string, value: unknown, request: any) {
-  const cookies = getCookieObject(request);
-  cookies[key] = value;
-
-  let cookieStr = '';
-  for (const [key, value] of Object.entries(cookies)) {
-    cookieStr += `${key}=${value};`;
-  }
-  setCookieString(cookieStr, request);
-}
 export function removeCookie(key: string, request: any) {
   const cookies = getCookieObject(request);
   if (cookies[key]) {
     delete cookies[key];
   }
 
-  let cookieStr = '';
-  for (const [key, value] of Object.entries(cookies)) {
-    cookieStr += `${key}=${value};`;
+  for (const key of Object.keys(cookies)) {
+    setCookie(key, '', request);
   }
-  setCookieString(cookieStr, request);
 }

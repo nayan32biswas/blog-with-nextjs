@@ -9,9 +9,8 @@ import { getCookie, removeCookie, setCookie } from './cookie';
 const ACCESS_TOKEN: string = 'A_T';
 const ACCESS_TOKEN_EXP: string = 'A_E';
 const REFRESH_TOKEN: string = 'R_T';
-// const REFRESH_TOKEN_EXP = 'REFRESH_TOKEN_EXP',
 
-const fiveMinutes = 1 * 60;
+const tokeSafeMarginMinutes = 1 * 60;
 
 function parseJwt(token: string): ObjectType {
   var base64Url = token.split('.')[1];
@@ -37,9 +36,9 @@ function setRefreshToken(refreshToken: string, request: any = null) {
   setCookie(REFRESH_TOKEN, refreshToken, request);
   return true;
 }
-export function setToken(access: string, refresh: string) {
-  setAccessToken(access);
-  setRefreshToken(refresh);
+export function setToken(access: string, refresh: string, request: any = null) {
+  setAccessToken(access, request);
+  setRefreshToken(refresh, request);
   return true;
 }
 export function clearToken(request: any = null) {
@@ -65,7 +64,7 @@ export async function getValidToken(request: any = null) {
     if (accessTokenExp === null) return null;
 
     let expTimestamp = parseInt(accessTokenExp);
-    if (expTimestamp > getTimestampSec() + fiveMinutes) {
+    if (expTimestamp > getTimestampSec() + tokeSafeMarginMinutes) {
       return accessToken;
     } else {
       let refreshToken = getCookie(REFRESH_TOKEN, request);

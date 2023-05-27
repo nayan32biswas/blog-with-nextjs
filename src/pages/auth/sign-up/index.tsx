@@ -7,7 +7,9 @@ import TextField from '@mui/material/TextField';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
+import { registration } from '@/api/authApi';
 import AuthBase from '@/components/auth/AuthBase';
+import PasswordField from '@/components/auth/PasswordField';
 import { usernameRegex } from '@/utils/utils';
 
 const validationSchema = yup.object({
@@ -41,7 +43,7 @@ function SignUp() {
     validationSchema: validationSchema,
     enableReinitialize: true,
     onSubmit: (values) => {
-      console.log(values);
+      registration(values);
     }
   });
 
@@ -49,7 +51,7 @@ function SignUp() {
     <AuthBase page={'SIGN_UP'}>
       <Box component="form" onSubmit={formik.handleSubmit} noValidate sx={{ mt: 1 }}>
         <TextField
-          focused
+          // focused
           fullWidth
           required
           margin="normal"
@@ -73,31 +75,23 @@ function SignUp() {
           error={formik.touched.username && Boolean(formik.errors.username)}
           helperText={formik.touched.username && formik.errors.username}
         />
-        <TextField
-          margin="normal"
-          fullWidth
-          required
+        <PasswordField
           id="password"
           name="password"
           label="Password"
-          type="password"
           value={formik.values.password}
           onChange={formik.handleChange}
-          error={formik.touched.password && Boolean(formik.errors.password)}
-          helperText={formik.touched.password && formik.errors.password}
+          touched={formik.touched.password}
+          error={formik.errors.password}
         />
-        <TextField
-          margin="normal"
-          fullWidth
-          required
+        <PasswordField
           id="confirm_password"
           name="confirm_password"
           label="Confirm Password"
-          type="confirm_password"
           value={formik.values.confirm_password}
           onChange={formik.handleChange}
-          error={formik.touched.confirm_password && Boolean(formik.errors.confirm_password)}
-          helperText={formik.touched.confirm_password && formik.errors.confirm_password}
+          touched={formik.touched.confirm_password}
+          error={formik.errors.confirm_password}
         />
         <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
           Sign In
