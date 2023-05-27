@@ -87,3 +87,10 @@ export async function getValidToken(request: any = null) {
   }
   return null;
 }
+
+export async function getAuthConfig(request: any = null) {
+  const token = await getValidToken(request);
+  const isAuth = token !== null;
+  const config = { headers: { Authorization: `Bearer ${token}` } };
+  return { config, isAuth };
+}

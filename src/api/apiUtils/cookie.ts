@@ -41,12 +41,5 @@ export function getCookie(key: string, request: any): string {
 }
 
 export function removeCookie(key: string, request: any) {
-  const cookies = getCookieObject(request);
-  if (cookies[key]) {
-    delete cookies[key];
-  }
-
-  for (const key of Object.keys(cookies)) {
-    setCookie(key, '', request);
-  }
+  setCookie(key, '; Max-Age=-99999999;', request);
 }
