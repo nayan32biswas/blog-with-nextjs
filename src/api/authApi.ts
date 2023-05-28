@@ -18,7 +18,6 @@ export async function login(payload: any) {
 export async function registration(payload: any) {
   try {
     const res = await Axios.post(REGISTRATION_URL, payload);
-    console.log(res);
     return res.data;
   } catch (error: any) {
     return Promise.reject(error);

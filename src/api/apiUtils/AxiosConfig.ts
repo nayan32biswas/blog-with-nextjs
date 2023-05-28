@@ -43,7 +43,6 @@ export function handleAxiosError(error: AxiosError) {
     let data = error.response.data as any;
 
     if (status >= 400 && status < 500) {
-      console.log(error);
       switch (status) {
         case 400:
           errorField = 'username';

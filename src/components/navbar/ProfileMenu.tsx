@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import { MouseEvent, useState } from 'react';
 
 import AccountCircle from '@mui/icons-material/AccountCircle';
@@ -8,6 +9,8 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+
+import { clearToken } from '@/api/apiUtils/auth';
 
 const MyAccountItem = () => {
   return (
@@ -26,8 +29,14 @@ const MyAccountItem = () => {
   );
 };
 const LogOutItem = () => {
+  const router = useRouter();
+
+  const handleLogout = () => {
+    clearToken();
+    router.push('/').then(() => router.reload());
+  };
   return (
-    <MenuItem>
+    <MenuItem onClick={handleLogout}>
       <IconButton
         size="large"
         aria-label="account of current user"

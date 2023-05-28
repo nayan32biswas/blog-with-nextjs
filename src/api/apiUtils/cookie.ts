@@ -1,30 +1,14 @@
 import { ObjectType } from '@/types/common.types';
 import { isServer } from '@/utils/utils';
 
-function getCookieString(request: any): string {
+function getCookieObject(SSContext: any): ObjectType {
   if (isServer()) {
-    const cookie = request.headers?.cookie;
-    if (!cookie) return '';
+    const cookie = SSContext.req?.cookies;
+    if (!cookie) return {};
     return cookie;
   } else {
-    return document.cookie;
-  }
-}
-export function setCookie(key: string, value: string, request: any) {
-  const str = `${key}=${value}; path=/`;
-
-  if (isServer() && request?.headers?.cookie) {
-    request.headers.cookie = str;
-  } else {
-    document.cookie = str;
-  }
-}
-
-function getCookieObject(request: any): ObjectType {
-  const Obj: ObjectType = {};
-  getCookieString(request)
-    .split(';')
-    .forEach(function (cookie) {
+    const Obj: ObjectType = {};
+    document.cookie.split(';').forEach(function (cookie) {
       let [name, ...rest] = cookie.split('=');
       name = name.trim();
       if (!name) return;
@@ -32,14 +16,28 @@ function getCookieObject(request: any): ObjectType {
       if (!value) return;
       Obj[name] = decodeURIComponent(value);
     });
-  return Obj;
+    return Obj;
+  }
+}
+export function setCookie(key: string, value: string, SSContext: any) {
+  const str = `${key}=${value}; path=/`;
+  if (isServer()) {
+    try {
+      SSContext.req.cookies[key] = value;
+    } catch (ex) {
+      console.log('ex', ex);
+    }
+    SSContext.res.setHeader('Set-Cookie', str);
+  } else {
+    document.cookie = str;
+  }
 }
 
-export function getCookie(key: string, request: any): string {
-  const cookies = getCookieObject(request);
+export function getCookie(key: string, SSContext: any): string {
+  const cookies = getCookieObject(SSContext);
   return cookies[key] || '';
 }
 
-export function removeCookie(key: string, request: any) {
-  setCookie(key, '; Max-Age=-99999999;', request);
+export function removeCookie(key: string, SSContext: any) {
+  setCookie(key, '; Max-Age=-99999999;', SSContext);
 }

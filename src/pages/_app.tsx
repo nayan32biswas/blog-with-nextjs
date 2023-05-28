@@ -5,6 +5,7 @@ import { CacheProvider, EmotionCache } from '@emotion/react';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
 
+import GlobalApiComponent from '@/components/utils/GlobalApiComponent';
 import { UserProvider } from '@/context/UserContext';
 import createEmotionCache from '@/createEmotionCache';
 import '@/styles/globals.css';
@@ -33,6 +34,7 @@ export default function App(props: MyAppProps) {
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
         <UserProvider>
+          <GlobalApiComponent />
           <Layout>
             <Component {...pageProps} />
           </Layout>

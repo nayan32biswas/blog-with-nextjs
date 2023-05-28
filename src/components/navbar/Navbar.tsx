@@ -8,9 +8,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
 import { isAuthenticated } from '@/api/apiUtils/auth';
-import { getMe } from '@/api/authApi';
 import { UserContext } from '@/context/UserContext';
-import { IMinimalUser } from '@/types/api.types';
 
 import ProfileMenu from './ProfileMenu';
 import MySearchInput from './SearchModal';
@@ -19,25 +17,15 @@ export default function Navbar() {
   const { userState, userDispatch } = useContext(UserContext);
 
   useEffect(() => {
-    (async () => {
-      if (isAuthenticated()) {
-        userDispatch({
-          type: 'SET_AUTH',
-          payload: {
-            isAuthenticated: true
-          }
-        });
-        console.log();
-        if (!userState.me) {
-          const me: IMinimalUser = await getMe();
-          userDispatch({
-            type: 'SET_USER',
-            payload: me
-          });
+    if (isAuthenticated()) {
+      userDispatch({
+        type: 'SET_AUTH',
+        payload: {
+          isAuthenticated: true
         }
-      }
-    })();
-  }, [userState.me, userDispatch]);
+      });
+    }
+  }, [userState.auth.isAuthenticated, userDispatch]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
