@@ -27,7 +27,7 @@ export default function Navbar() {
             isAuthenticated: true
           }
         });
-        console.log()
+        console.log();
         if (!userState.me) {
           const me: IMinimalUser = await getMe();
           userDispatch({
@@ -37,7 +37,7 @@ export default function Navbar() {
         }
       }
     })();
-  }, []);
+  }, [userState.me, userDispatch]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
