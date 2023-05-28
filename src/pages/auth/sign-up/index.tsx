@@ -1,12 +1,15 @@
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
 
+import LoadingButton from '@mui/lab/LoadingButton';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
+import { handleAxiosError } from '@/api/apiUtils/AxiosConfig';
 import { registration } from '@/api/authApi';
 import AuthBase from '@/components/auth/AuthBase';
 import PasswordField from '@/components/auth/PasswordField';
@@ -33,6 +36,9 @@ const validationSchema = yup.object({
 });
 
 function SignUp() {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+
   const formik = useFormik({
     initialValues: {
       full_name: '',
@@ -42,8 +48,19 @@ function SignUp() {
     },
     validationSchema: validationSchema,
     enableReinitialize: true,
-    onSubmit: (values) => {
-      registration(values);
+    onSubmit: (values, { setErrors }) => {
+      setIsLoading(true);
+      registration(values)
+        .then(() => {
+          router.push('/auth/sign-in');
+        })
+        .catch((error: any) => {
+          setIsLoading(false);
+          const { errorField, message } = handleAxiosError(error);
+          if (errorField) {
+            setErrors({ [errorField]: message });
+          }
+        });
     }
   });
 
@@ -93,9 +110,15 @@ function SignUp() {
           touched={formik.touched.confirm_password}
           error={formik.errors.confirm_password}
         />
-        <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+        <LoadingButton
+          loading={isLoading}
+          type="submit"
+          fullWidth
+          variant="contained"
+          sx={{ mt: 3, mb: 2 }}
+        >
           Sign In
-        </Button>
+        </LoadingButton>
       </Box>
     </AuthBase>
   );

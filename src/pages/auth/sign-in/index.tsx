@@ -1,14 +1,19 @@
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
 
+import { LoadingButton } from '@mui/lab';
+import { FormHelperText } from '@mui/material';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import TextField from '@mui/material/TextField';
 
+import { AxiosError } from 'axios';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
+import { handleAxiosError } from '@/api/apiUtils/AxiosConfig';
 import { login } from '@/api/authApi';
 import AuthBase from '@/components/auth/AuthBase';
 import PasswordField from '@/components/auth/PasswordField';
@@ -27,6 +32,10 @@ const validationSchema = yup.object({
 });
 
 function SignIn() {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const [formError, setFormError] = useState('');
+
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -35,7 +44,25 @@ function SignIn() {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      login(values);
+      login(values)
+        .then(() => {
+          // const currentPath = router.pathname;
+          // const { id } = router.query;
+          const { afterAuth } = router.query;
+
+          if (afterAuth && typeof afterAuth === 'string') {
+            router.push(afterAuth);
+          } else {
+            router.push('/');
+          }
+        })
+        .catch((error: AxiosError) => {
+          setIsLoading(false);
+          const { message } = handleAxiosError(error);
+          if (error) {
+            setFormError(message);
+          }
+        });
     }
   });
 
@@ -63,6 +90,11 @@ function SignIn() {
           touched={formik.touched.password}
           error={formik.errors.password}
         />
+        {formError && (
+          <FormHelperText error sx={{ fontSize: '16px', fontWeight: 'bold' }}>
+            {formError}
+          </FormHelperText>
+        )}
         <FormControlLabel
           control={
             <Checkbox
@@ -75,9 +107,15 @@ function SignIn() {
           name="remember_me"
           onChange={formik.handleChange}
         />
-        <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+        <LoadingButton
+          loading={isLoading}
+          type="submit"
+          fullWidth
+          variant="contained"
+          sx={{ mt: 3, mb: 2 }}
+        >
           Sign In
-        </Button>
+        </LoadingButton>
       </Box>
     </AuthBase>
   );

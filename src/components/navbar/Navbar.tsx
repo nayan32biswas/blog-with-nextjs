@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { useContext, useEffect } from 'react';
 
 import { Button } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
@@ -6,15 +7,38 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
+import { isAuthenticated } from '@/api/apiUtils/auth';
+import { getMe } from '@/api/authApi';
+import { UserContext } from '@/context/UserContext';
+import { IMinimalUser } from '@/types/api.types';
+
 import ProfileMenu from './ProfileMenu';
 import MySearchInput from './SearchModal';
 
-export interface NavbarProps {
-  isAuthenticated: boolean;
-  // children?: React.ReactNode;
-  // onClose: () => void;
-}
-export default function Navbar({ isAuthenticated }: NavbarProps) {
+export default function Navbar() {
+  const { userState, userDispatch } = useContext(UserContext);
+
+  useEffect(() => {
+    (async () => {
+      if (isAuthenticated()) {
+        userDispatch({
+          type: 'SET_AUTH',
+          payload: {
+            isAuthenticated: true
+          }
+        });
+        console.log()
+        if (!userState.me) {
+          const me: IMinimalUser = await getMe();
+          userDispatch({
+            type: 'SET_USER',
+            payload: me
+          });
+        }
+      }
+    })();
+  }, []);
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -27,7 +51,7 @@ export default function Navbar({ isAuthenticated }: NavbarProps) {
 
           <Box sx={{ flexGrow: 1 }} />
 
-          {isAuthenticated === true ? (
+          {userState.auth.isAuthenticated === true ? (
             <ProfileMenu />
           ) : (
             <Button color="inherit">

@@ -1,10 +1,11 @@
+import Link from 'next/link';
+
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { Grid } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
-import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
@@ -48,17 +49,17 @@ export default function AuthBase({ children, page }: any) {
           {children}
           <Grid container>
             <Grid item xs>
-              <Link href="#" variant="body2">
+              <Link href="/auth/forgot-password" className="a-tag">
                 Forgot password?
               </Link>
             </Grid>
             <Grid item>
               {page === 'SIGN_IN' ? (
-                <Link href="/auth/sign-up" variant="body2">
+                <Link className="a-tag" href="/auth/sign-up">
                   {"Don't have an account? Sign Up"}
                 </Link>
               ) : (
-                <Link href="/auth/sign-in" variant="body2">
+                <Link href="/auth/sign-in" className="a-tag">
                   {'Already have an account? Sign In'}
                 </Link>
               )}

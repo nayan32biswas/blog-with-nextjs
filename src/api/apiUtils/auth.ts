@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 import { ObjectType } from '@/types/common.types';
-import { AsyncLock } from '@/utils/asyncLock';
 
 import { UPDATE_ACCESS_TOKEN_URL } from '../endpoints';
 import { getCookie, removeCookie, setCookie } from './cookie';
@@ -51,24 +50,20 @@ function getTimestampSec() {
   return Math.floor(Date.now() / 1000);
 }
 
-const customLock = new AsyncLock();
-export async function getValidToken(request: any = null) {
-  await customLock.promise;
-  customLock.enable();
-
+async function _getValidToken(request: any = null) {
   try {
     let accessToken = getCookie(ACCESS_TOKEN, request);
-    if (accessToken === null) return null;
+    if (!accessToken) return null;
     let accessTokenExp = getCookie(ACCESS_TOKEN_EXP, request);
     // access token expire
-    if (accessTokenExp === null) return null;
+    if (!accessTokenExp) return null;
 
     let expTimestamp = parseInt(accessTokenExp);
     if (expTimestamp > getTimestampSec() + tokeSafeMarginMinutes) {
       return accessToken;
     } else {
       let refreshToken = getCookie(REFRESH_TOKEN, request);
-      if (refreshToken === null) return null;
+      if (!refreshToken) return null;
 
       let response = await axios.post(UPDATE_ACCESS_TOKEN_URL, {
         refresh_token: refreshToken
@@ -82,10 +77,31 @@ export async function getValidToken(request: any = null) {
         clearToken();
       }
     }
-  } finally {
-    customLock.disable();
+  } catch {
+    return null;
   }
-  return null;
+}
+
+export function isAuthenticated(request: any = null): boolean {
+  let refreshToken = getCookie(REFRESH_TOKEN, request);
+  if (refreshToken) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+export async function getValidToken(request: any = null) {
+  try {
+    const token = await navigator.locks.request('token', async () => {
+      // The lock is held here.
+      const token = await _getValidToken(request);
+      return token;
+    });
+    return token;
+  } catch (ex) {
+    return null;
+  }
 }
 
 export async function getAuthConfig(request: any = null) {
