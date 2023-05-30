@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useContext, useEffect } from 'react';
 
 import { Button } from '@mui/material';
@@ -14,6 +15,7 @@ import ProfileMenu from './ProfileMenu';
 import SearchModal from './SearchModal';
 
 export default function Navbar() {
+  const router = useRouter();
   const { userState, userDispatch } = useContext(UserContext);
 
   useEffect(() => {
@@ -26,6 +28,10 @@ export default function Navbar() {
       });
     }
   }, [userState.auth.isAuthenticated, userDispatch]);
+
+  const handleLoginRoute = () => {
+    router.push(`/auth/sign-in?next=${router.pathname}`);
+  };
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -42,8 +48,8 @@ export default function Navbar() {
           {userState.auth.isAuthenticated === true ? (
             <ProfileMenu />
           ) : (
-            <Button color="inherit">
-              <Link href={'/auth/sign-in'}>Login</Link>
+            <Button color="inherit" onClick={handleLoginRoute}>
+              Login
             </Button>
           )}
         </Toolbar>

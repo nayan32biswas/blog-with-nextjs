@@ -13,13 +13,13 @@ function GlobalApiComponent() {
     (async () => {
       if (isServer() === false) {
         if (isAuthenticated()) {
-          // if (!userState.me) {
-          //   const me: IMinimalUser = await getMe();
-          //   userDispatch({
-          //     type: 'SET_USER',
-          //     payload: me
-          //   });
-          // }
+          if (!userState.me) {
+            const me: IMinimalUser = await getMe();
+            userDispatch({
+              type: 'SET_USER',
+              payload: me
+            });
+          }
         } else {
           // call un authenticated api's
         }

@@ -51,12 +51,12 @@ function SignIn() {
         .then(() => {
           // const currentPath = router.pathname;
           // const { id } = router.query;
-          const { afterAuth } = router.query;
+          const { next } = router.query;
 
           let toPath = '/';
 
-          if (afterAuth && typeof afterAuth === 'string') {
-            toPath = afterAuth;
+          if (next && typeof next === 'string') {
+            toPath = next;
           }
           userDispatch({
             type: 'SET_AUTH',

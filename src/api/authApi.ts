@@ -25,7 +25,7 @@ export async function registration(payload: any) {
 }
 
 export async function getMe() {
-  const { config } = await getAuthConfig('user');
+  const config = await getAuthConfig('user');
   try {
     const res = await Axios.get(ME_URL, config);
     return res.data as IMinimalUser;

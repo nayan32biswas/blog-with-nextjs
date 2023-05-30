@@ -10,7 +10,7 @@ function Post({ postData }: any) {
   return (
     <>
       <Head>
-        <title>Blog Post App</title>
+        <title>Blog Posts App</title>
         <meta name="description" content="This is about page for blog app" />
       </Head>
       <Container maxWidth="lg">
@@ -24,7 +24,7 @@ function Post({ postData }: any) {
           }}
         >
           <Typography component="h1" variant="h4" gutterBottom>
-            Project Init: Post Page
+            Project Init: Total Post {postData.count}
           </Typography>
           <Link href="/" color="secondary">
             Go to the home page

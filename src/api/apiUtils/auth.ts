@@ -148,7 +148,10 @@ export function isAuthenticated(request: any = null): boolean {
 export async function getAuthConfig(SSContext: any = null) {
   const token = await getValidToken(SSContext);
 
-  const isAuth = token !== null;
-  const config = { headers: { Authorization: `Bearer ${token}` } };
-  return { config, isAuth };
+  let config = {};
+
+  if (token) {
+    config = { headers: { Authorization: `Bearer ${token}` } };
+  }
+  return config;
 }
