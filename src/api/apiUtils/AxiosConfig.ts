@@ -43,26 +43,17 @@ export function handleAxiosError(error: AxiosError) {
     let data = error.response.data as any;
 
     if (status >= 400 && status < 500) {
-      switch (status) {
-        case 400:
-          errorField = 'username';
-          message = data?.detail || 'Something Wrong';
-          break;
-        case 401:
-          message = data?.detail || 'Login required';
-          redirectUrl = '/auth/sign-in';
-          break;
-        case 403:
-          message = data?.detail || "You don't have permission to access this resource";
-          break;
-        case 404:
-          message = 'Object not found';
-          break;
-        case 422:
-          message = 'Developer Error. Please contact with us.';
-          break;
-        default:
-          alert(message);
+      if (status === 422) {
+        message = 'Developer Error. Please contact with us.';
+      } else {
+        if (data?.errors) {
+          const errorObj = data?.errors[0];
+          message = errorObj.detail;
+          errorCode = errorObj.code;
+          if (errorObj.field) {
+            errorField = errorObj.field;
+          }
+        }
       }
     } else if (status >= 500) {
       message = 'Something wrong. try letter';

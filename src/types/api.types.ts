@@ -1,3 +1,13 @@
+export interface ApiErrorObj {
+  code: string;
+  detail: string;
+  field: string | null;
+}
+
+export interface ApiError {
+  errors: ApiErrorObj[];
+}
+
 export interface IMinimalUser {
   username: string;
   full_name: string;

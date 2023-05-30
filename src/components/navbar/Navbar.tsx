@@ -11,7 +11,7 @@ import { isAuthenticated } from '@/api/apiUtils/auth';
 import { UserContext } from '@/context/UserContext';
 
 import ProfileMenu from './ProfileMenu';
-import MySearchInput from './SearchModal';
+import SearchModal from './SearchModal';
 
 export default function Navbar() {
   const { userState, userDispatch } = useContext(UserContext);
@@ -35,7 +35,7 @@ export default function Navbar() {
             <Link href={'/'}>Blog</Link>
           </Typography>
 
-          <MySearchInput />
+          <SearchModal />
 
           <Box sx={{ flexGrow: 1 }} />
 

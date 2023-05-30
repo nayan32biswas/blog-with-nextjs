@@ -1,4 +1,4 @@
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { MouseEvent, useState } from 'react';
 
 import AccountCircle from '@mui/icons-material/AccountCircle';
@@ -33,7 +33,10 @@ const LogOutItem = () => {
 
   const handleLogout = () => {
     clearToken();
-    router.push('/').then(() => router.reload());
+
+    router.refresh();
+    // router.push('/');
+    // router.push('/').then(() => router.reload());
   };
   return (
     <MenuItem onClick={handleLogout}>
@@ -75,7 +78,7 @@ export default function ProfileMenu() {
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
-      anchorEl={mobileMoreAnchorEl}
+      anchorEl={anchorEl}
       anchorOrigin={{
         vertical: 'top',
         horizontal: 'right'

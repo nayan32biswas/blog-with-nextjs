@@ -1,6 +1,6 @@
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 
 import { LoadingButton } from '@mui/lab';
 import { FormHelperText } from '@mui/material';
@@ -19,6 +19,8 @@ import AuthBase from '@/components/auth/AuthBase';
 import PasswordField from '@/components/auth/PasswordField';
 import { usernameRegex } from '@/utils/utils';
 
+import { UserContext } from '../../../context/UserContext';
+
 const validationSchema = yup.object({
   username: yup
     .string()
@@ -33,6 +35,7 @@ const validationSchema = yup.object({
 
 function SignIn() {
   const router = useRouter();
+  const { userDispatch } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
   const [formError, setFormError] = useState('');
 
@@ -50,11 +53,20 @@ function SignIn() {
           // const { id } = router.query;
           const { afterAuth } = router.query;
 
+          let toPath = '/';
+
           if (afterAuth && typeof afterAuth === 'string') {
-            router.push(afterAuth);
-          } else {
-            router.push('/');
+            toPath = afterAuth;
           }
+          userDispatch({
+            type: 'SET_AUTH',
+            payload: {
+              isAuthenticated: true
+            }
+          });
+          router.push(toPath);
+
+          // router.push(toPath).then(() => router.reload());
         })
         .catch((error: AxiosError) => {
           setIsLoading(false);
