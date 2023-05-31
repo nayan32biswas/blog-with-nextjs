@@ -1,4 +1,4 @@
-import React, { createContext, useReducer } from 'react';
+import { Dispatch, createContext, useReducer } from 'react';
 
 import { IMinimalUser } from '@/types/api.types';
 import { ComponentChildrenProps } from '@/types/common.types';
@@ -39,7 +39,7 @@ const userReducer = (state: UserContextType, action: UserAction): UserContextTyp
 // Define your user context
 export const UserContext = createContext<{
   userState: UserContextType;
-  userDispatch: React.Dispatch<UserAction>;
+  userDispatch: Dispatch<UserAction>;
 }>({
   userState: initialState,
   userDispatch: () => null

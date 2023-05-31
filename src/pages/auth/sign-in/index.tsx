@@ -2,11 +2,11 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useContext, useState } from 'react';
 
-import { LoadingButton } from '@mui/lab';
-import { FormHelperText } from '@mui/material';
+import LoadingButton from '@mui/lab/LoadingButton';
 import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import FormHelperText from '@mui/material/FormHelperText';
 import TextField from '@mui/material/TextField';
 
 import { AxiosError } from 'axios';

@@ -1,19 +1,17 @@
-import React, { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 
 import SearchIcon from '@mui/icons-material/Search';
-import { Typography } from '@mui/material';
-import {
-  Avatar,
-  Divider,
-  InputAdornment,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  TextField
-} from '@mui/material';
+import Avatar from '@mui/material/Avatar';
 import Dialog from '@mui/material/Dialog';
+import Divider from '@mui/material/Divider';
+import InputAdornment from '@mui/material/InputAdornment';
 import InputBase from '@mui/material/InputBase';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import ListItemText from '@mui/material/ListItemText';
 import { alpha, styled } from '@mui/material/styles';
 
 const styles = {
@@ -76,7 +74,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 }));
 
 const SearchModal = () => {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleModalOpen = () => {
     setOpen(true);
@@ -115,7 +113,7 @@ const SearchModal = () => {
         <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
           {numbers.map((val: number, idx: number) => {
             return (
-              <React.Fragment key={idx}>
+              <Fragment key={idx}>
                 <ListItem alignItems="flex-start">
                   <ListItemAvatar>
                     <Avatar alt="Profile Avatar" />
@@ -138,7 +136,7 @@ const SearchModal = () => {
                   />
                 </ListItem>
                 {idx + 1 !== numbers.length ? <Divider variant="inset" component="li" /> : null}
-              </React.Fragment>
+              </Fragment>
             );
           })}
         </List>

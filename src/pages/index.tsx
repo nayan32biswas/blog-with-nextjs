@@ -1,7 +1,9 @@
 import Head from 'next/head';
 import Link from 'next/link';
 
-import { Box, Container, Typography } from '@mui/material';
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
 
 // import styles from '@/styles/Home.module.css';
 

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
-import { Snackbar } from '@mui/material';
+import Snackbar from '@mui/material/Snackbar';
 
 interface SnackbarProps {
   message?: string | null;
