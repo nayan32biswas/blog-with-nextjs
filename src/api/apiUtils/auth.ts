@@ -10,7 +10,7 @@ const ACCESS_TOKEN: string = 'A_T';
 const ACCESS_TOKEN_EXP: string = 'A_E';
 const REFRESH_TOKEN: string = 'R_T';
 
-const tokeSafeMarginMinutes = 1 * 60;
+const tokeSafeMarginMinutes = 1 * 10;
 
 function parseJwt(token: string): ObjectType {
   var base64Url = token.split('.')[1];
@@ -113,6 +113,7 @@ async function getNewAccessToken(SSContext: any = null) {
 
     return token;
   } catch (ex) {
+    clearToken(SSContext);
     return null;
   }
 }
@@ -120,12 +121,10 @@ async function getNewAccessToken(SSContext: any = null) {
 export async function getValidToken(SSContext: any = null) {
   try {
     let accessToken = getCookie(ACCESS_TOKEN, SSContext);
-    if (!accessToken) return null;
     let accessTokenExp = getCookie(ACCESS_TOKEN_EXP, SSContext);
-    // access token expire
-    if (!accessTokenExp) return null;
     let expTimestamp = parseInt(accessTokenExp);
-    if (expTimestamp > getTimestampSec() + tokeSafeMarginMinutes) {
+
+    if (accessToken && expTimestamp > getTimestampSec() + tokeSafeMarginMinutes) {
       return accessToken;
     } else {
       let token = await getNewAccessToken(SSContext);
@@ -147,7 +146,6 @@ export function isAuthenticated(request: any = null): boolean {
 
 export async function getAuthConfig(SSContext: any = null) {
   const token = await getValidToken(SSContext);
-
   let config = {};
 
   if (token) {

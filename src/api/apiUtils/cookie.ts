@@ -19,15 +19,22 @@ function getCookieObject(SSContext: any): ObjectType {
     return Obj;
   }
 }
+function getServerCookieStrings(SSContext: any) {
+  const cookies = SSContext?.req?.cookies;
+  if (cookies) {
+    return Object.keys(cookies).map((key) => `${key}=${cookies[key]}; Path=/`);
+  }
+  return [];
+}
 export function setCookie(key: string, value: string, SSContext: any) {
   const str = `${key}=${value}; path=/`;
   if (isServer()) {
     try {
       SSContext.req.cookies[key] = value;
+      SSContext.res.setHeader('Set-Cookie', getServerCookieStrings(SSContext));
     } catch (ex) {
       console.log('ex', ex);
     }
-    SSContext.res.setHeader('Set-Cookie', str);
   } else {
     document.cookie = str;
   }
@@ -39,5 +46,5 @@ export function getCookie(key: string, SSContext: any): string {
 }
 
 export function removeCookie(key: string, SSContext: any) {
-  setCookie(key, '; Max-Age=-99999999;', SSContext);
+  setCookie(key, '; Max-Age=-99999999', SSContext);
 }
