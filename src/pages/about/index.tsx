@@ -28,6 +28,9 @@ function About() {
           <Link href="/" color="secondary">
             Go to the home page
           </Link>
+          <Link href="/posts" color="secondary">
+            Go to the post page
+          </Link>
         </Box>
       </Container>
     </>

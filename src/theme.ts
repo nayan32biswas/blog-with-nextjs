@@ -4,6 +4,8 @@ import { Roboto } from 'next/font/google';
 import { red } from '@mui/material/colors';
 import { createTheme } from '@mui/material/styles';
 
+import { isServer } from './utils/utils';
+
 export const roboto: NextFont = Roboto({
   weight: ['300', '400', '500', '700'],
   subsets: ['latin'],
@@ -54,4 +56,24 @@ export function getTheme(prefersDarkMode: boolean) {
     palette,
     typography
   });
+}
+
+export const MODE = {
+  DARK: 'DARK',
+  LIGHT: 'LIGHT'
+};
+
+export function setDarkMode() {
+  localStorage.setItem('mode', MODE.DARK);
+}
+
+export function setLightMode() {
+  localStorage.setItem('mode', MODE.LIGHT);
+}
+
+export function getPreferMode() {
+  if (isServer()) {
+    return null;
+  }
+  return localStorage.getItem('mode');
 }
