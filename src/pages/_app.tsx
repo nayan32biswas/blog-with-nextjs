@@ -1,7 +1,9 @@
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
+import { useMemo } from 'react';
 
 import { CacheProvider, EmotionCache } from '@emotion/react';
+import { useMediaQuery } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
 
@@ -9,7 +11,7 @@ import GlobalApiComponent from '@/components/utils/GlobalApiComponent';
 import { UserProvider } from '@/context/UserContext';
 import createEmotionCache from '@/createEmotionCache';
 import '@/styles/globals.css';
-import theme from '@/theme';
+import { getTheme } from '@/theme';
 
 import Layout from '../components/Layout';
 
@@ -21,7 +23,11 @@ export interface MyAppProps extends AppProps {
 }
 
 export default function App(props: MyAppProps) {
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  const theme = useMemo(() => getTheme(prefersDarkMode), [prefersDarkMode]);
+
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+
   return (
     <CacheProvider value={emotionCache}>
       <Head>
