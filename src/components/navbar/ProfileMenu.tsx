@@ -1,9 +1,12 @@
 import { useRouter } from 'next/navigation';
-import { MouseEvent, useState } from 'react';
+import React, { MouseEvent, useState } from 'react';
 
 import AccountCircle from '@mui/icons-material/AccountCircle';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 import LogoutIcon from '@mui/icons-material/Logout';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import { useTheme } from '@mui/material';
 import Badge from '@mui/material/Badge';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
@@ -11,6 +14,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 
 import { clearToken } from '@/api/apiUtils/auth';
+import { ColorModeContext } from '@/context/ColorModeContext';
 
 const MyAccountItem = () => {
   return (
@@ -97,6 +101,9 @@ export default function ProfileMenu() {
     </Menu>
   );
 
+  const theme = useTheme();
+  const colorMode = React.useContext(ColorModeContext);
+
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
     <Menu
@@ -122,6 +129,14 @@ export default function ProfileMenu() {
         </IconButton>
         <p>Notifications</p>
       </MenuItem>
+
+      <MenuItem onClick={colorMode.toggleColorMode}>
+        <IconButton sx={{ ml: 1 }} color="inherit">
+          {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+        </IconButton>
+        <p>{theme.palette.mode === 'dark' ? 'Dark' : 'Light'} Mode</p>
+      </MenuItem>
+
       <MyAccountItem />
       <LogOutItem />
     </Menu>
@@ -130,6 +145,9 @@ export default function ProfileMenu() {
   return (
     <>
       <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+        <IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode} color="inherit">
+          {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+        </IconButton>
         <IconButton size="large" aria-label="show 5 new notifications" color="inherit">
           <Badge badgeContent={5} color="error">
             <NotificationsIcon />

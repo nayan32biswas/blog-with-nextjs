@@ -19,12 +19,14 @@ const typography: any = {
   }
 };
 
+export type ColorModeType = 'light' | 'dark';
+
 const lightPalette = {
   primary: {
-    main: '#556cd6'
+    main: 'rgba(0, 0, 0, 0.87)'
   },
   secondary: {
-    main: '#19857b'
+    main: 'rgba(0, 0, 0, 0.6)'
   },
   error: {
     main: red.A400
@@ -33,10 +35,10 @@ const lightPalette = {
 };
 const darkPalette = {
   primary: {
-    main: '#556cd6'
+    main: '#fff'
   },
   secondary: {
-    main: '#19857b'
+    main: 'rgba(255, 255, 255, 0.7)'
   },
   error: {
     main: red.A400
@@ -44,9 +46,9 @@ const darkPalette = {
   mode: 'dark'
 };
 
-export function getTheme(prefersDarkMode: boolean) {
+export function getTheme(colorMode: ColorModeType = 'dark') {
   let palette: any = null;
-  if (prefersDarkMode === true) {
+  if (colorMode === 'dark') {
     palette = darkPalette;
   } else {
     palette = lightPalette;
@@ -58,20 +60,14 @@ export function getTheme(prefersDarkMode: boolean) {
   });
 }
 
-export const MODE = {
-  DARK: 'DARK',
-  LIGHT: 'LIGHT'
-};
-
-export function setDarkMode() {
-  localStorage.setItem('mode', MODE.DARK);
+export function setColorMode(colorMode: ColorModeType) {
+  if (isServer()) {
+    return null;
+  }
+  localStorage.setItem('mode', colorMode);
 }
 
-export function setLightMode() {
-  localStorage.setItem('mode', MODE.LIGHT);
-}
-
-export function getPreferMode() {
+export function getColorMode(): null | string {
   if (isServer()) {
     return null;
   }
