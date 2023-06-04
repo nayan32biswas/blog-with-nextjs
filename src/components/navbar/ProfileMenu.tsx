@@ -21,16 +21,18 @@ import { ColorModeContext } from '@/context/ColorModeContext';
 const MyAccountItem = () => {
   return (
     <MenuItem>
-      <IconButton
-        size="large"
-        aria-label="account of current user"
-        aria-controls="primary-search-account-menu"
-        aria-haspopup="true"
-        color="inherit"
-      >
-        <AccountCircle />
-      </IconButton>
-      <p>My Account</p>
+      <Link href={'/me'}>
+        <IconButton
+          size="large"
+          aria-label="account of current user"
+          aria-controls="primary-search-account-menu"
+          aria-haspopup="true"
+          color="inherit"
+        >
+          <AccountCircle />
+        </IconButton>
+        My Account
+      </Link>
     </MenuItem>
   );
 };
@@ -46,13 +48,7 @@ const LogOutItem = () => {
   };
   return (
     <MenuItem onClick={handleLogout}>
-      <IconButton
-        size="large"
-        aria-label="account of current user"
-        aria-controls="primary-search-account-menu"
-        aria-haspopup="true"
-        color="inherit"
-      >
+      <IconButton size="large" aria-label="logout button" aria-haspopup="true" color="inherit">
         <LogoutIcon />
       </IconButton>
       <p>Logout</p>
@@ -146,7 +142,7 @@ export default function ProfileMenu() {
       </MenuItem>
 
       <MenuItem>
-        <IconButton size="large" aria-label="show 5 new notifications" color="inherit">
+        <IconButton size="large" aria-label="show new notifications" color="inherit">
           <Badge badgeContent={5} color="error">
             <NotificationsIcon />
           </Badge>
@@ -165,7 +161,7 @@ export default function ProfileMenu() {
         <Button color="inherit">
           <Link href={'/about'}>About</Link>
         </Button>
-        <IconButton size="large" aria-label="show 5 new notifications" color="inherit">
+        <IconButton size="large" aria-label="show new notifications" color="inherit">
           <Badge badgeContent={5} color="error">
             <NotificationsIcon />
           </Badge>
@@ -173,7 +169,7 @@ export default function ProfileMenu() {
         <IconButton
           size="large"
           edge="end"
-          aria-label="account of current user"
+          aria-label="show menu"
           aria-controls={menuId}
           aria-haspopup="true"
           onClick={handleProfileMenuOpen}

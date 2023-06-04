@@ -153,3 +153,20 @@ export async function getAuthConfig(SSContext: any = null) {
   }
   return config;
 }
+
+export function mwExtractCookies(cookieList: ObjectType[]): ObjectType {
+  const cookies = cookieList.reduce((base: ObjectType, obj: ObjectType) => {
+    if (obj.name && obj.value) {
+      base[obj.name] = obj.value;
+    }
+    return base;
+  }, {});
+  return cookies;
+}
+
+export function mwIsAuthenticated(cookies: ObjectType): boolean {
+  if (cookies && cookies[REFRESH_TOKEN]) {
+    return true;
+  }
+  return false;
+}
