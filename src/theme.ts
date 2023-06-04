@@ -23,7 +23,7 @@ export type ColorModeType = 'light' | 'dark';
 
 const lightPalette = {
   primary: {
-    main: 'rgba(0, 0, 0, 0.87)'
+    main: 'rgba(0, 0, 0, 0.87)',
   },
   secondary: {
     main: 'rgba(0, 0, 0, 0.6)'

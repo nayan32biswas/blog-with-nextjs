@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+import React from 'react';
 
 import SearchIcon from '@mui/icons-material/Search';
 import Avatar from '@mui/material/Avatar';
@@ -27,9 +27,9 @@ const styles = {
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  backgroundColor: alpha(theme.palette.primary.light, 0.15),
   '&:hover': {
-    backgroundColor: alpha(theme.palette.common.white, 0.25)
+    backgroundColor: alpha(theme.palette.primary.light, 0.25)
   },
   // marginRight: theme.spacing(2),
   marginLeft: 0,
@@ -74,7 +74,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 }));
 
 const SearchModal = () => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = React.useState(false);
 
   const handleModalOpen = () => {
     setOpen(true);
@@ -113,7 +113,7 @@ const SearchModal = () => {
         <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
           {numbers.map((val: number, idx: number) => {
             return (
-              <Fragment key={idx}>
+              <React.Fragment key={idx}>
                 <ListItem alignItems="flex-start">
                   <ListItemAvatar>
                     <Avatar alt="Profile Avatar" />
@@ -136,7 +136,7 @@ const SearchModal = () => {
                   />
                 </ListItem>
                 {idx + 1 !== numbers.length ? <Divider variant="inset" component="li" /> : null}
-              </Fragment>
+              </React.Fragment>
             );
           })}
         </List>

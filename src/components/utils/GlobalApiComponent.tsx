@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import React from 'react';
 
 import { isAuthenticated } from '@/api/apiUtils/auth';
 import { getMe } from '@/api/authApi';
@@ -7,9 +7,9 @@ import { IMinimalUser } from '@/types/api.types';
 import { isServer } from '@/utils/utils';
 
 function GlobalApiComponent() {
-  const { userState, userDispatch } = useContext(UserContext);
+  const { userState, userDispatch } = React.useContext(UserContext);
 
-  useEffect(() => {
+  React.useEffect(() => {
     (async () => {
       if (isServer() === false) {
         if (isAuthenticated()) {

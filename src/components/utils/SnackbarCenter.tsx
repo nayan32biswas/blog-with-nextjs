@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React from 'react';
 
 import Snackbar from '@mui/material/Snackbar';
 
@@ -6,7 +6,7 @@ interface SnackbarProps {
   message?: string | null;
 }
 function SnackbarCenter({ message }: SnackbarProps) {
-  const [open, setClose] = useState(true);
+  const [open, setClose] = React.useState(true);
 
   if (!message) return null;
 

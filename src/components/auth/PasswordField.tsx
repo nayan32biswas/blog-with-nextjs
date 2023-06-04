@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React from 'react';
 
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
@@ -7,7 +7,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
 
 function PasswordField({ id, name, label, value, onChange, touched, error }: any) {
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = React.useState(false);
   const handleMouseDownPassword = (event: any) => {
     event.preventDefault();
   };

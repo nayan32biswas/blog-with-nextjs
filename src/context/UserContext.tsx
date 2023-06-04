@@ -1,4 +1,4 @@
-import { Dispatch, createContext, useReducer } from 'react';
+import React from 'react';
 
 import { IMinimalUser } from '@/types/api.types';
 import { ComponentChildrenProps } from '@/types/common.types';
@@ -37,9 +37,9 @@ const userReducer = (state: UserContextType, action: UserAction): UserContextTyp
 };
 
 // Define your user context
-export const UserContext = createContext<{
+export const UserContext = React.createContext<{
   userState: UserContextType;
-  userDispatch: Dispatch<UserAction>;
+  userDispatch: React.Dispatch<UserAction>;
 }>({
   userState: initialState,
   userDispatch: () => null
@@ -47,7 +47,7 @@ export const UserContext = createContext<{
 
 // Define your user provider
 export const UserProvider = ({ children }: ComponentChildrenProps) => {
-  const [userState, userDispatch] = useReducer(userReducer, initialState);
+  const [userState, userDispatch] = React.useReducer(userReducer, initialState);
   return (
     <UserContext.Provider value={{ userState, userDispatch }}>{children}</UserContext.Provider>
   );

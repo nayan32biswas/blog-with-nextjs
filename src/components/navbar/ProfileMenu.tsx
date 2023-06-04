@@ -1,12 +1,14 @@
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { MouseEvent, useState } from 'react';
+import React from 'react';
 
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
+import InfoIcon from '@mui/icons-material/Info';
 import LogoutIcon from '@mui/icons-material/Logout';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { useTheme } from '@mui/material';
+import { Button, useTheme } from '@mui/material';
 import Badge from '@mui/material/Badge';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
@@ -59,13 +61,13 @@ const LogOutItem = () => {
 };
 
 export default function ProfileMenu() {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-  const handleProfileMenuOpen = (event: MouseEvent<HTMLElement>) => {
+  const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleMobileMenuClose = () => {
@@ -75,9 +77,12 @@ export default function ProfileMenu() {
     setAnchorEl(null);
     handleMobileMenuClose();
   };
-  const handleMobileMenuOpen = (event: MouseEvent<HTMLElement>) => {
+  const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
+
+  const theme = useTheme();
+  const colorMode = React.useContext(ColorModeContext);
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
@@ -96,13 +101,16 @@ export default function ProfileMenu() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
+      <MenuItem onClick={colorMode.toggleColorMode}>
+        <IconButton sx={{ ml: 1 }} color="inherit">
+          {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+        </IconButton>
+        <p>{theme.palette.mode === 'dark' ? 'Dark' : 'Light'} Mode</p>
+      </MenuItem>
       <MyAccountItem />
       <LogOutItem />
     </Menu>
   );
-
-  const theme = useTheme();
-  const colorMode = React.useContext(ColorModeContext);
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
@@ -121,6 +129,22 @@ export default function ProfileMenu() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
+      <MenuItem onClick={colorMode.toggleColorMode}>
+        <IconButton sx={{ ml: 1 }} color="inherit">
+          {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+        </IconButton>
+        <p>{theme.palette.mode === 'dark' ? 'Dark' : 'Light'} Mode</p>
+      </MenuItem>
+
+      <MenuItem>
+        <Link href={'/about'}>
+          <IconButton size="large" aria-label="about icon" aria-haspopup="true" color="inherit">
+            <InfoIcon />
+          </IconButton>
+          About
+        </Link>
+      </MenuItem>
+
       <MenuItem>
         <IconButton size="large" aria-label="show 5 new notifications" color="inherit">
           <Badge badgeContent={5} color="error">
@@ -128,13 +152,6 @@ export default function ProfileMenu() {
           </Badge>
         </IconButton>
         <p>Notifications</p>
-      </MenuItem>
-
-      <MenuItem onClick={colorMode.toggleColorMode}>
-        <IconButton sx={{ ml: 1 }} color="inherit">
-          {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
-        </IconButton>
-        <p>{theme.palette.mode === 'dark' ? 'Dark' : 'Light'} Mode</p>
       </MenuItem>
 
       <MyAccountItem />
@@ -145,9 +162,9 @@ export default function ProfileMenu() {
   return (
     <>
       <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-        <IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode} color="inherit">
-          {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
-        </IconButton>
+        <Button color="inherit">
+          <Link href={'/about'}>About</Link>
+        </Button>
         <IconButton size="large" aria-label="show 5 new notifications" color="inherit">
           <Badge badgeContent={5} color="error">
             <NotificationsIcon />

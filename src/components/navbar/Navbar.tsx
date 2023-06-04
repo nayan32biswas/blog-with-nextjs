@@ -1,10 +1,8 @@
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useContext, useEffect } from 'react';
+import React from 'react';
 
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
@@ -13,12 +11,12 @@ import { UserContext } from '@/context/UserContext';
 
 import ProfileMenu from './ProfileMenu';
 import SearchModal from './SearchModal';
+import UnAuthMenu from './UnAuthMenu';
 
 export default function Navbar() {
-  const router = useRouter();
-  const { userState, userDispatch } = useContext(UserContext);
+  const { userState, userDispatch } = React.useContext(UserContext);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (isAuthenticated()) {
       userDispatch({
         type: 'SET_AUTH',
@@ -28,10 +26,6 @@ export default function Navbar() {
       });
     }
   }, [userState.auth.isAuthenticated, userDispatch]);
-
-  const handleLoginRoute = () => {
-    router.push(`/auth/sign-in?next=${router.pathname}`);
-  };
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -45,13 +39,7 @@ export default function Navbar() {
 
           <Box sx={{ flexGrow: 1 }} />
 
-          {userState.auth.isAuthenticated === true ? (
-            <ProfileMenu />
-          ) : (
-            <Button color="inherit" onClick={handleLoginRoute}>
-              Login
-            </Button>
-          )}
+          {userState.auth.isAuthenticated === true ? <ProfileMenu /> : <UnAuthMenu />}
         </Toolbar>
       </AppBar>
     </Box>

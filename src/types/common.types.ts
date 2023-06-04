@@ -1,9 +1,9 @@
-import { ReactNode } from 'react';
+import React from 'react';
 
 export interface ObjectType {
   [key: string]: any;
 }
 
 export type ComponentChildrenProps = {
-  children: ReactNode;
+  children: React.ReactNode;
 };
