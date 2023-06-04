@@ -1,0 +1,22 @@
+version: '3.8'
+
+x-volumes: &env-volume
+  NODE_ENV: 'development'
+  NEXT_PUBLIC_BASE_API_URL: 'http://localhost:8000'
+
+services:
+  frontend:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    container_name: next_blog_frontend_latest
+    image: nayanbiswas/next_blog_frontend:latest
+    command: ['yarn', 'dev']
+    environment:
+      <<: *env-volume
+    ports:
+      - 3000:3000
+    expose:
+      - 3000
+    volumes:
+      - ./:/app/

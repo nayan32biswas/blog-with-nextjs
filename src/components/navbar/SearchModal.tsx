@@ -1,76 +1,74 @@
-import React, { Fragment } from "react";
+import React from 'react';
 
-import SearchIcon from "@mui/icons-material/Search";
-import { Typography } from "@mui/material";
-import {
-  Avatar,
-  Divider,
-  InputAdornment,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  TextField
-} from "@mui/material";
-import Dialog from "@mui/material/Dialog";
-import InputBase from "@mui/material/InputBase";
-import { alpha, styled } from "@mui/material/styles";
+import SearchIcon from '@mui/icons-material/Search';
+import Avatar from '@mui/material/Avatar';
+import Dialog from '@mui/material/Dialog';
+import Divider from '@mui/material/Divider';
+import InputAdornment from '@mui/material/InputAdornment';
+import InputBase from '@mui/material/InputBase';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import ListItemText from '@mui/material/ListItemText';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import { alpha, styled } from '@mui/material/styles';
 
 const styles = {
   textInput: {
-    fontSize: "large"
+    fontSize: 'large'
   },
   searchButton: {
-    borderRadius: "10px",
-    backgroundColor: "rgb(243 245 245)"
+    borderRadius: '10px',
+    backgroundColor: 'rgb(243 245 245)'
   }
 };
 
-const Search = styled("div")(({ theme }) => ({
-  position: "relative",
+const Search = styled('div')(({ theme }) => ({
+  position: 'relative',
   borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  "&:hover": {
-    backgroundColor: alpha(theme.palette.common.white, 0.25)
+  backgroundColor: alpha(theme.palette.primary.light, 0.15),
+  '&:hover': {
+    backgroundColor: alpha(theme.palette.primary.light, 0.25)
   },
   // marginRight: theme.spacing(2),
   marginLeft: 0,
-  width: "100%",
-  [theme.breakpoints.up("sm")]: {
+  width: '100%',
+  [theme.breakpoints.up('sm')]: {
     marginLeft: theme.spacing(3),
-    width: "auto"
+    width: 'auto'
   }
 }));
 
-const SearchIconWrapper = styled("div")(({ theme }) => ({
+const SearchIconWrapper = styled('div')(({ theme }) => ({
   padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center"
+  height: '100%',
+  position: 'absolute',
+  pointerEvents: 'none',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center'
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: "inherit",
-  "& .MuiInputBase-input": {
+  color: 'inherit',
+  '& .MuiInputBase-input': {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    caretColor: "transparent",
-    [theme.breakpoints.up("md")]: {
-      width: "20ch"
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    caretColor: 'transparent',
+    [theme.breakpoints.up('md')]: {
+      width: '20ch'
     }
   }
 }));
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-  "& .MuiDialogContent-root": {
+  '& .MuiDialogContent-root': {
     padding: theme.spacing(2)
   },
-  "& .MuiDialogActions-root": {
+  '& .MuiDialogActions-root': {
     padding: theme.spacing(2)
   }
 }));
@@ -88,11 +86,11 @@ const SearchModal = () => {
 
   return (
     <>
-      <Search onClick={handleModalOpen} sx={{ input: { cursor: "pointer" } }}>
+      <Search onClick={handleModalOpen} sx={{ input: { cursor: 'pointer' } }}>
         <SearchIconWrapper>
           <SearchIcon />
         </SearchIconWrapper>
-        <StyledInputBase placeholder="Search…" inputProps={{ "aria-label": "search" }} />
+        <StyledInputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} />
       </Search>
       <BootstrapDialog
         onClose={handleModalClose}
@@ -112,7 +110,7 @@ const SearchModal = () => {
             style: styles.textInput
           }}
         />
-        <List sx={{ width: "100%", bgcolor: "background.paper" }}>
+        <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
           {numbers.map((val: number, idx: number) => {
             return (
               <React.Fragment key={idx}>
@@ -125,7 +123,7 @@ const SearchModal = () => {
                     secondary={
                       <>
                         <Typography
-                          sx={{ display: "inline" }}
+                          sx={{ display: 'inline' }}
                           component="span"
                           variant="body2"
                           color="text.primary"

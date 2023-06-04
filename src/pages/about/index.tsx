@@ -1,8 +1,9 @@
-import Head from "next/head";
-import Link from "next/link";
-import React from "react";
+import Head from 'next/head';
+import Link from 'next/link';
 
-import { Box, Container, Typography } from "@mui/material";
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
 
 function About() {
   return (
@@ -15,10 +16,10 @@ function About() {
         <Box
           sx={{
             my: 4,
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center"
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center'
           }}
         >
           <Typography component="h1" variant="h4" gutterBottom>
@@ -26,6 +27,9 @@ function About() {
           </Typography>
           <Link href="/" color="secondary">
             Go to the home page
+          </Link>
+          <Link href="/posts" color="secondary">
+            Go to the post page
           </Link>
         </Box>
       </Container>

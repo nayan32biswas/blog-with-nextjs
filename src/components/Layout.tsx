@@ -1,9 +1,9 @@
-import Navbar from "./navbar/Navbar";
+import Navbar from './navbar/Navbar';
 
 export default function Layout({ children }: any) {
   return (
     <>
-      <Navbar isAuthenticated={true} />
+      <Navbar />
       <main>{children}</main>
     </>
   );
