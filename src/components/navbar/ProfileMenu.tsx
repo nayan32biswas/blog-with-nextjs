@@ -98,7 +98,7 @@ export default function ProfileMenu() {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={colorMode.toggleColorMode}>
-        <IconButton sx={{ ml: 1 }} color="inherit">
+        <IconButton sx={{ ml: 1 }} color="inherit" aria-label="change color mode">
           {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
         </IconButton>
         <p>{theme.palette.mode === 'dark' ? 'Dark' : 'Light'} Mode</p>
@@ -126,7 +126,7 @@ export default function ProfileMenu() {
       onClose={handleMobileMenuClose}
     >
       <MenuItem onClick={colorMode.toggleColorMode}>
-        <IconButton sx={{ ml: 1 }} color="inherit">
+        <IconButton sx={{ ml: 1 }} color="inherit" aria-label="change color mode">
           {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
         </IconButton>
         <p>{theme.palette.mode === 'dark' ? 'Dark' : 'Light'} Mode</p>

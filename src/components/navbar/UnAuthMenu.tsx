@@ -54,7 +54,7 @@ export default function UnAuthMenu() {
       onClose={handleMobileMenuClose}
     >
       <MenuItem onClick={colorMode.toggleColorMode}>
-        <IconButton sx={{ ml: 1 }} color="inherit">
+        <IconButton sx={{ ml: 1 }} color="inherit" aria-label="change color mode">
           {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
         </IconButton>
         <p>{theme.palette.mode === 'dark' ? 'Dark' : 'Light'} Mode</p>
@@ -86,7 +86,12 @@ export default function UnAuthMenu() {
         <Button color="inherit" onClick={handleLoginRoute}>
           Login
         </Button>
-        <IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode} color="inherit">
+        <IconButton
+          sx={{ ml: 1 }}
+          onClick={colorMode.toggleColorMode}
+          color="inherit"
+          aria-label="change color mode"
+        >
           {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
         </IconButton>
       </Box>
