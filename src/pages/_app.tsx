@@ -3,9 +3,9 @@ import Head from 'next/head';
 import React from 'react';
 
 import { CacheProvider, EmotionCache } from '@emotion/react';
-import { useMediaQuery } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import GlobalApiComponent from '@/components/utils/GlobalApiComponent';
 import { ColorModeContext } from '@/context/ColorModeContext';

@@ -13,7 +13,7 @@ import ProfileMenu from './ProfileMenu';
 import SearchModal from './SearchModal';
 import UnAuthMenu from './UnAuthMenu';
 
-export default function Navbar() {
+function Navbar() {
   const { userState, userDispatch } = React.useContext(UserContext);
 
   React.useEffect(() => {
@@ -45,3 +45,5 @@ export default function Navbar() {
     </Box>
   );
 }
+
+export default Navbar;

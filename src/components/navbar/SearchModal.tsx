@@ -1,4 +1,3 @@
-import dynamic from 'next/dynamic';
 import React from 'react';
 
 import SearchIcon from '@mui/icons-material/Search';
@@ -146,4 +145,4 @@ const SearchModal = () => {
   );
 };
 
-export default dynamic(() => Promise.resolve(SearchModal), { ssr: false });
+export default SearchModal;
