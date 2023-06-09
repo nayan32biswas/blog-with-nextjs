@@ -17,9 +17,8 @@ import { handleAxiosError } from '@/api/apiUtils/AxiosConfig';
 import { login } from '@/api/authApi';
 import AuthBase from '@/components/auth/AuthBase';
 import PasswordField from '@/components/auth/PasswordField';
+import { UserContext } from '@/context/UserContext';
 import { usernameRegex } from '@/utils';
-
-import { UserContext } from '../../../context/UserContext';
 
 const validationSchema = yup.object({
   username: yup

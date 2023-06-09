@@ -7,14 +7,13 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
+import Layout from '@/components/Layout';
 import GlobalApiComponent from '@/components/utils/GlobalApiComponent';
 import { ColorModeContext } from '@/context/ColorModeContext';
 import { UserProvider } from '@/context/UserContext';
 import '@/styles/globals.css';
 import createEmotionCache from '@/utils/createEmotionCache';
 import { ColorModeType, getColorMode, getTheme, setColorMode } from '@/utils/theme';
-
-import Layout from '../components/Layout';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
