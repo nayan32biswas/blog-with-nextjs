@@ -10,9 +10,9 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import GlobalApiComponent from '@/components/utils/GlobalApiComponent';
 import { ColorModeContext } from '@/context/ColorModeContext';
 import { UserProvider } from '@/context/UserContext';
-import createEmotionCache from '@/createEmotionCache';
+import createEmotionCache from '@/utils/createEmotionCache';
 import '@/styles/globals.css';
-import { ColorModeType, getColorMode, getTheme, setColorMode } from '@/theme';
+import { ColorModeType, getColorMode, getTheme, setColorMode } from '@/utils/theme';
 
 import Layout from '../components/Layout';
 

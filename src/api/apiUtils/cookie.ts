@@ -1,5 +1,5 @@
 import { ObjectType } from '@/types/common.types';
-import { isServer } from '@/utils/utils';
+import { isServer } from '@/utils';
 
 function getCookieObject(SSContext: any): ObjectType {
   if (isServer()) {

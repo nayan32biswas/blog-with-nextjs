@@ -12,9 +12,9 @@ import React from 'react';
 import createEmotionServer from '@emotion/server/create-instance';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-import { ColorModeType, getTheme } from '@/theme';
+import { ColorModeType, getTheme } from '@/utils/theme';
 
-import createEmotionCache from '../createEmotionCache';
+import createEmotionCache from '../utils/createEmotionCache';
 import { MyAppProps } from './_app';
 
 interface MyDocumentProps extends DocumentProps {

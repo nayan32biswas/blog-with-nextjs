@@ -4,7 +4,7 @@ import { Roboto } from 'next/font/google';
 import { red } from '@mui/material/colors';
 import { createTheme } from '@mui/material/styles';
 
-import { isServer } from './utils/utils';
+import { isServer } from '.';
 
 export const roboto: NextFont = Roboto({
   weight: ['300', '400', '500', '700'],

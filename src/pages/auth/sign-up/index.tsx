@@ -13,7 +13,7 @@ import { handleAxiosError } from '@/api/apiUtils/AxiosConfig';
 import { registration } from '@/api/authApi';
 import AuthBase from '@/components/auth/AuthBase';
 import PasswordField from '@/components/auth/PasswordField';
-import { usernameRegex } from '@/utils/utils';
+import { usernameRegex } from '@/utils';
 
 const validationSchema = yup.object({
   full_name: yup

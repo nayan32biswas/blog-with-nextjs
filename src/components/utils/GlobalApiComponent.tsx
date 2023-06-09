@@ -4,7 +4,7 @@ import { isAuthenticated } from '@/api/apiUtils/auth';
 import { getMe } from '@/api/authApi';
 import { UserContext } from '@/context/UserContext';
 import { IMinimalUser } from '@/types/api.types';
-import { isServer } from '@/utils/utils';
+import { isServer } from '@/utils';
 
 function GlobalApiComponent() {
   const { userState, userDispatch } = React.useContext(UserContext);
