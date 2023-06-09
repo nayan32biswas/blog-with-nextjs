@@ -3,18 +3,17 @@ import Head from 'next/head';
 import React from 'react';
 
 import { CacheProvider, EmotionCache } from '@emotion/react';
-import { useMediaQuery } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
+import Layout from '@/components/Layout';
 import GlobalApiComponent from '@/components/utils/GlobalApiComponent';
 import { ColorModeContext } from '@/context/ColorModeContext';
 import { UserProvider } from '@/context/UserContext';
-import createEmotionCache from '@/createEmotionCache';
 import '@/styles/globals.css';
-import { ColorModeType, getColorMode, getTheme, setColorMode } from '@/theme';
-
-import Layout from '../components/Layout';
+import createEmotionCache from '@/utils/createEmotionCache';
+import { ColorModeType, getColorMode, getTheme, setColorMode } from '@/utils/theme';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();

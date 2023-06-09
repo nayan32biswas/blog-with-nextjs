@@ -7,12 +7,12 @@ import Brightness7Icon from '@mui/icons-material/Brightness7';
 import InfoIcon from '@mui/icons-material/Info';
 import LoginIcon from '@mui/icons-material/Login';
 import MoreIcon from '@mui/icons-material/MoreVert';
-import { useTheme } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import { useTheme } from '@mui/material/styles';
 
 import { ColorModeContext } from '@/context/ColorModeContext';
 
@@ -54,7 +54,7 @@ export default function UnAuthMenu() {
       onClose={handleMobileMenuClose}
     >
       <MenuItem onClick={colorMode.toggleColorMode}>
-        <IconButton sx={{ ml: 1 }} color="inherit">
+        <IconButton sx={{ ml: 1 }} color="inherit" aria-label="change color mode">
           {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
         </IconButton>
         <p>{theme.palette.mode === 'dark' ? 'Dark' : 'Light'} Mode</p>
@@ -86,7 +86,12 @@ export default function UnAuthMenu() {
         <Button color="inherit" onClick={handleLoginRoute}>
           Login
         </Button>
-        <IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode} color="inherit">
+        <IconButton
+          sx={{ ml: 1 }}
+          onClick={colorMode.toggleColorMode}
+          color="inherit"
+          aria-label="change color mode"
+        >
           {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
         </IconButton>
       </Box>

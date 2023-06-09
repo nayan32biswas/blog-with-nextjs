@@ -30,7 +30,11 @@ function PasswordField({ id, name, label, value, onChange, touched, error }: any
       InputProps={{
         endAdornment: (
           <InputAdornment position="end">
-            <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword}>
+            <IconButton
+              onClick={handleClickShowPassword}
+              onMouseDown={handleMouseDownPassword}
+              aria-label="Show password"
+            >
               {showPassword ? <Visibility /> : <VisibilityOff />}
             </IconButton>
           </InputAdornment>

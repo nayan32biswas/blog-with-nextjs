@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import { ObjectType } from '@/types/common.types';
-import { isServer } from '@/utils/utils';
+import { isServer } from '@/utils';
 
 import { UPDATE_ACCESS_TOKEN_URL } from '../endpoints';
 import { getCookie, removeCookie, setCookie } from './cookie';
