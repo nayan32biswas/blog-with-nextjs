@@ -1,3 +1,4 @@
+import { NextPageContext } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
 
@@ -5,6 +6,7 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
+import { handleAxiosError } from '@/api/apiUtils/AxiosConfig';
 import { fetchPosts } from '@/api/postApi';
 
 function Post({ postData }: any) {
@@ -24,9 +26,15 @@ function Post({ postData }: any) {
             alignItems: 'center'
           }}
         >
-          <Typography component="h1" variant="h4" gutterBottom>
-            Project Init: Total Post {postData.count}
-          </Typography>
+          {postData?.errorMessage ? (
+            <Typography component="h1" variant="h4">
+              {postData?.errorMessage}
+            </Typography>
+          ) : (
+            <Typography component="h1" variant="h4" gutterBottom>
+              Total Post {postData?.count}
+            </Typography>
+          )}
           <Link href="/" color="secondary">
             Go to the home page
           </Link>
@@ -38,9 +46,15 @@ function Post({ postData }: any) {
 
 export default Post;
 
-export async function getServerSideProps(SSContext: any) {
+export async function getServerSideProps(SSContext: NextPageContext) {
   // Fetch data from an API or any data source
-  const postData = await fetchPosts(SSContext);
+  let postData: any = null;
+  try {
+    postData = await fetchPosts(SSContext);
+  } catch (e: any) {
+    const { message } = handleAxiosError(e);
+    postData = { errorMessage: message };
+  }
 
   // Pass the fetched data as props
   return {

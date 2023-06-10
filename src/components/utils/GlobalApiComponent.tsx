@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { handleAxiosError } from '@/api/apiUtils/AxiosConfig';
 import { isAuthenticated } from '@/api/apiUtils/auth';
 import { getMe } from '@/api/authApi';
 import { UserContext } from '@/context/UserContext';
@@ -14,11 +15,16 @@ function GlobalApiComponent() {
       if (isServer() === false) {
         if (isAuthenticated()) {
           if (!userState.me) {
-            const me: IMinimalUser = await getMe();
-            userDispatch({
-              type: 'SET_USER',
-              payload: me
-            });
+            try {
+              const me: IMinimalUser = await getMe();
+              userDispatch({
+                type: 'SET_USER',
+                payload: me
+              });
+            } catch (e: any) {
+              const { message } = handleAxiosError(e);
+              alert(message);
+            }
           }
         } else {
           // call un authenticated api's
