@@ -10,3 +10,11 @@ export const isValidObj = (obj: any): boolean => {
 };
 
 export const usernameRegex = /^[a-zA-Z][\w.-]+$/;
+
+export const getListApiDefaultValue = () => {
+  return {
+    count: 0,
+    results: [],
+    errorMessage: null
+  };
+};

@@ -12,6 +12,7 @@ export interface IMinimalUser {
   username: string;
   full_name: string;
   image: string | null;
+  is_active: boolean;
 }
 
 export interface ITokenApi {
@@ -21,17 +22,18 @@ export interface ITokenApi {
 
 export interface IBaseListApi {
   count: number;
+  errorMessage?: string | null;
 }
 
 export interface IAuther extends IMinimalUser {}
 
 export interface ITopic {
-  id: string;
+  slug: string;
   name: string;
 }
 
 export interface IPost {
-  id: string;
+  slug: string;
   author: IAuther;
   title: string;
   short_description: null | string;
@@ -48,4 +50,8 @@ export interface IPostList extends IBaseListApi {
 export interface IPostDetails extends IPost {
   description: null | string;
   topics: ITopic[];
+}
+
+export interface ITopicList extends IBaseListApi {
+  results: ITopic[];
 }
