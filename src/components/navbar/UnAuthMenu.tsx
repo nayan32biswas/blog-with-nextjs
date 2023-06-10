@@ -25,6 +25,9 @@ export default function UnAuthMenu() {
   const handleLoginRoute = () => {
     router.push(`/auth/sign-in?next=${router.pathname}`);
   };
+  const handleRegistrationRoute = () => {
+    router.push(`/auth/sign-up?next=${router.pathname}`);
+  };
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
   };
@@ -67,7 +70,12 @@ export default function UnAuthMenu() {
           About
         </Link>
       </MenuItem>
-
+      <MenuItem onClick={handleRegistrationRoute}>
+        <IconButton size="large" aria-label="Sign Up button" aria-haspopup="true" color="inherit">
+          <LoginIcon />
+        </IconButton>
+        <p>Sign Up</p>
+      </MenuItem>
       <MenuItem onClick={handleLoginRoute}>
         <IconButton size="large" aria-label="login button" aria-haspopup="true" color="inherit">
           <LoginIcon />
@@ -82,6 +90,9 @@ export default function UnAuthMenu() {
       <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
         <Button color="inherit">
           <Link href={'/about'}>About</Link>
+        </Button>
+        <Button color="inherit" onClick={handleRegistrationRoute}>
+          Sign Up
         </Button>
         <Button color="inherit" onClick={handleLoginRoute}>
           Login

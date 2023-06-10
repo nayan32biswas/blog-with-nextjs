@@ -52,11 +52,17 @@ function SignUp() {
       setIsLoading(true);
       registration(values)
         .then(() => {
-          router.push('/auth/sign-in');
+          const { next } = router.query;
+          if (next && typeof next === 'string') {
+            router.push(`/auth/sign-in?next=${next}`);
+          } else {
+            router.push(`/auth/sign-in`);
+          }
         })
         .catch((error: any) => {
           setIsLoading(false);
           const { errorField, message } = handleAxiosError(error);
+          console.log(errorField, message);
           if (errorField) {
             setErrors({ [errorField]: message });
           }
@@ -117,7 +123,7 @@ function SignUp() {
           variant="contained"
           sx={{ mt: 3, mb: 2 }}
         >
-          Sign In
+          Sign Up
         </LoadingButton>
       </Box>
     </AuthBase>
