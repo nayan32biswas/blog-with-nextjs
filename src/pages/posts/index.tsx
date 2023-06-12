@@ -8,8 +8,28 @@ import Typography from '@mui/material/Typography';
 
 import { handleAxiosError } from '@/api/apiUtils/AxiosConfig';
 import { fetchPosts } from '@/api/postApi';
+import { IPostList } from '@/types/api.types';
+import { getListApiDefaultValue } from '@/utils';
 
-function Post({ postData }: any) {
+export async function getServerSideProps(SSContext: NextPageContext) {
+  // Get Post data on server side
+  let postData: IPostList = getListApiDefaultValue();
+  try {
+    postData = await fetchPosts({ SSContext, params: { page: 1, limit: 50 } });
+  } catch (e: any) {
+    const { message: errorMessage } = handleAxiosError(e);
+    postData.errorMessage = errorMessage;
+  }
+
+  // Pass the fetched data as props
+  return {
+    props: {
+      postData
+    }
+  };
+}
+
+function Post({ postData }: { postData: IPostList }) {
   return (
     <>
       <Head>
@@ -45,21 +65,3 @@ function Post({ postData }: any) {
 }
 
 export default Post;
-
-export async function getServerSideProps(SSContext: NextPageContext) {
-  // Fetch data from an API or any data source
-  let postData: any = null;
-  try {
-    postData = await fetchPosts(SSContext);
-  } catch (e: any) {
-    const { message } = handleAxiosError(e);
-    postData = { errorMessage: message };
-  }
-
-  // Pass the fetched data as props
-  return {
-    props: {
-      postData
-    }
-  };
-}

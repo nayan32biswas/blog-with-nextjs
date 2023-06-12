@@ -1,26 +1,21 @@
 import Head from 'next/head';
-import Link from 'next/link';
 
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-// import styles from '@/styles/Home.module.css';
 import { useTheme } from '@mui/material/styles';
 
 import { handleAxiosError } from '@/api/apiUtils/AxiosConfig';
 import { fetchPosts, fetchTopics } from '@/api/postApi';
 import PostCard from '@/components/posts/PostCard';
-import TopicCard from '@/components/posts/TopicCard';
+import Topic from '@/components/posts/Topic';
 import { IPostList, ITopicList } from '@/types/api.types';
 import { getListApiDefaultValue } from '@/utils';
 
-// This function gets called at build time
 export async function getStaticProps() {
-  // Fetch data from an API or any data source
   let postData: IPostList = getListApiDefaultValue();
   try {
-    postData = await fetchPosts();
+    postData = await fetchPosts({ params: { page: 1, limit: 50 } });
   } catch (e: any) {
     const { message: errorMessage } = handleAxiosError(e);
     postData.errorMessage = errorMessage;
@@ -28,13 +23,12 @@ export async function getStaticProps() {
 
   let topicData: ITopicList = getListApiDefaultValue();
   try {
-    topicData = await fetchTopics();
+    topicData = await fetchTopics({ params: { page: 1, limit: 50 } });
   } catch (e: any) {
     const { message: errorMessage } = handleAxiosError(e);
     topicData.errorMessage = errorMessage;
   }
 
-  // Pass the fetched data as props
   return {
     props: {
       postData,
@@ -43,6 +37,16 @@ export async function getStaticProps() {
     revalidate: 60
   };
 }
+
+const classNames = {
+  coverBlock: {
+    position: 'absolute',
+    color: 'white',
+    top: 10,
+    left: '30%',
+    transform: 'translateX(-30%)'
+  }
+};
 
 interface HomeProps {
   postData: IPostList;
@@ -68,16 +72,7 @@ export default function Home({ postData, topicData }: HomeProps) {
             backgroundColor: theme.palette.mode === 'dark' ? 'rgb(39 46 48)' : '#a7cddf'
           }}
         />
-        <Typography
-          component="div"
-          style={{
-            position: 'absolute',
-            color: 'white',
-            top: 10,
-            left: '30%',
-            transform: 'translateX(-30%)'
-          }}
-        >
+        <Typography component="div" sx={classNames.coverBlock}>
           <Typography
             component="h1"
             variant="h2"
@@ -96,6 +91,7 @@ export default function Home({ postData, topicData }: HomeProps) {
           </Typography>
         </Typography>
       </Typography>
+
       <Container maxWidth="lg">
         <Box
           sx={{
@@ -104,30 +100,32 @@ export default function Home({ postData, topicData }: HomeProps) {
             flexDirection: 'column'
           }}
         >
-          <Grid container spacing={2} sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <Grid item xs={8} style={{ backgroundColor: '#ffa' }}>
-              {[1, 2, 3, 4, 5].map((val, idx) => {
-                return <PostCard key={idx} val={val} />;
-              })}
-            </Grid>
-            <Grid item xs={4} style={{ backgroundColor: '#bff' }}>
-              {[1, 2].map((val, idx) => {
-                return <TopicCard key={idx} val={val} />;
-              })}
-            </Grid>
-          </Grid>
-          <Grid container spacing={2} sx={{ display: { xs: 'flex', md: 'none' } }}>
-            <Grid item xs={8} style={{ backgroundColor: '#0fb' }}>
-              {[1, 2, 3, 4, 5].map((val, idx) => {
-                return <PostCard key={idx} val={val} />;
-              })}
-            </Grid>
-            <Grid item xs={4} style={{ backgroundColor: '#aaa' }}>
-              {[1, 2].map((val, idx) => {
-                return <TopicCard key={idx} val={val} />;
-              })}
-            </Grid>
-          </Grid>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+          >
+            <Topic topicData={topicData} />
+          </Box>
+          <Typography component="br" />
+          <Box
+            sx={{
+              display: 'grid',
+              gap: 2,
+              gridTemplateColumns: {
+                xs: '1fr',
+                lg: '1fr 1fr'
+              }
+            }}
+          >
+            {postData.results.map((post, idx) => {
+              return <PostCard key={`post-${idx}`} post={post} />;
+            })}
+          </Box>
+
+          <Typography component="br" />
         </Box>
       </Container>
     </>
