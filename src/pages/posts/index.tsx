@@ -1,4 +1,4 @@
-import {  GetServerSidePropsContext } from 'next';
+import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
 
