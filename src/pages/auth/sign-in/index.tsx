@@ -54,7 +54,12 @@ function SignIn() {
 
           let toPath = '/';
 
-          if (next && typeof next === 'string') {
+          if (
+            next &&
+            typeof next === 'string' &&
+            !next.includes('sign-in') &&
+            !next.includes('sign-up')
+          ) {
             toPath = next;
           }
           userDispatch({

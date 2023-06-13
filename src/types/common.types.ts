@@ -1,4 +1,4 @@
-import { NextPageContext } from 'next';
+import { GetServerSidePropsContext } from 'next';
 import React from 'react';
 
 export interface ObjectType {
@@ -10,7 +10,7 @@ export type ComponentChildrenProps = {
 };
 
 export interface BaseApiFuncArgs {
-  SSContext?: NextPageContext | null;
+  SSContext?: GetServerSidePropsContext | null;
 }
 
 export interface ApiFuncArgs extends BaseApiFuncArgs {

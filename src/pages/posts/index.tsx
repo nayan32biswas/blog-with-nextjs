@@ -1,4 +1,4 @@
-import { NextPageContext } from 'next';
+import {  GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
 
@@ -11,13 +11,13 @@ import { fetchPosts } from '@/api/postApi';
 import { IPostList } from '@/types/api.types';
 import { getListApiDefaultValue } from '@/utils';
 
-export async function getServerSideProps(SSContext: NextPageContext) {
+export async function getServerSideProps(SSContext: GetServerSidePropsContext) {
   // Get Post data on server side
   let postData: IPostList = getListApiDefaultValue();
   try {
     postData = await fetchPosts({ SSContext, params: { page: 1, limit: 50 } });
   } catch (e: any) {
-    const { message: errorMessage } = handleAxiosError(e);
+    const { message: errorMessage } = handleAxiosError(e, SSContext);
     postData.errorMessage = errorMessage;
   }
 

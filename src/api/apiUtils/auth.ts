@@ -1,3 +1,5 @@
+import { GetServerSidePropsContext } from 'next';
+
 import axios from 'axios';
 
 import { ObjectType } from '@/types/common.types';
@@ -50,7 +52,7 @@ function decodeJWT(token: string) {
   return JSON.parse(decodedPayload);
 }
 
-function setAccessToken(accessToken: string, SSContext: any = null) {
+function setAccessToken(accessToken: string, SSContext: GetServerSidePropsContext | null = null) {
   let tokenPayload: any = null;
   if (isServer()) {
     tokenPayload = decodeJWT(accessToken);
@@ -61,16 +63,20 @@ function setAccessToken(accessToken: string, SSContext: any = null) {
   setCookie(ACCESS_TOKEN_EXP, tokenPayload.exp, SSContext);
   return true;
 }
-function setRefreshToken(refreshToken: string, SSContext: any = null) {
+function setRefreshToken(refreshToken: string, SSContext: GetServerSidePropsContext | null = null) {
   setCookie(REFRESH_TOKEN, refreshToken, SSContext);
   return true;
 }
-export function setToken(access: string, refresh: string, SSContext: any = null) {
+export function setToken(
+  access: string,
+  refresh: string,
+  SSContext: GetServerSidePropsContext | null = null
+) {
   setAccessToken(access, SSContext);
   setRefreshToken(refresh, SSContext);
   return true;
 }
-export function clearToken(SSContext: any = null) {
+export function clearToken(SSContext: GetServerSidePropsContext | null = null) {
   removeCookie(ACCESS_TOKEN, SSContext);
   removeCookie(ACCESS_TOKEN_EXP, SSContext);
   removeCookie(REFRESH_TOKEN, SSContext);
@@ -93,7 +99,7 @@ async function updateAccessToken(refreshToken: string) {
   }
 }
 
-async function getNewAccessToken(SSContext: any = null) {
+async function getNewAccessToken(SSContext: GetServerSidePropsContext | null = null) {
   let refreshToken = getCookie(REFRESH_TOKEN, SSContext);
   if (!refreshToken) return null;
 
@@ -118,7 +124,7 @@ async function getNewAccessToken(SSContext: any = null) {
   }
 }
 
-export async function getValidToken(SSContext: any = null) {
+export async function getValidToken(SSContext: GetServerSidePropsContext | null = null) {
   try {
     let accessToken = getCookie(ACCESS_TOKEN, SSContext);
     let accessTokenExp = getCookie(ACCESS_TOKEN_EXP, SSContext);
@@ -144,7 +150,7 @@ export function isAuthenticated(request: any = null): boolean {
   }
 }
 
-export async function getAuthConfig(SSContext: any = null) {
+export async function getAuthConfig(SSContext: GetServerSidePropsContext | null = null) {
   const token = await getValidToken(SSContext);
   let config = {};
 
