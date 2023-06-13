@@ -1,4 +1,4 @@
-import { IPostList, ITopicList } from '@/types/api.types';
+import { IPostDetails, IPostList, ITopicList } from '@/types/api.types';
 import { ApiFuncArgs } from '@/types/common.types';
 import { objectToQueryParams } from '@/utils';
 
@@ -15,6 +15,16 @@ export async function fetchPosts({ params, SSContext }: ApiFuncArgs) {
     }
     const res = await Axios.get(url, config);
     return res.data as IPostList;
+  } catch (error: any) {
+    return Promise.reject(error);
+  }
+}
+
+export async function fetchPostsDetails({ post_slug, SSContext }: ApiFuncArgs) {
+  const config = await getAuthConfig(SSContext);
+  try {
+    const res = await Axios.get(`${POSTS_URL}/${post_slug}`, config);
+    return res.data as IPostDetails;
   } catch (error: any) {
     return Promise.reject(error);
   }

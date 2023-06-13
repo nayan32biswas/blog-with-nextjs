@@ -1,5 +1,6 @@
 import { ObjectType } from '@/types/common.types';
 
+export const usernameRegex = /^[a-zA-Z][\w.-]+$/;
 const dateTimeFormatOptions: Intl.DateTimeFormatOptions = {
   year: 'numeric',
   month: 'long',
@@ -17,12 +18,17 @@ export const isValidObj = (obj: any): boolean => {
   return true;
 };
 
-export const usernameRegex = /^[a-zA-Z][\w.-]+$/;
-
 export function getListApiDefaultValue() {
   return {
     count: 0,
     results: [],
+    errorMessage: null
+  };
+}
+
+export function getDetailsApiDefaultValue() {
+  return {
+    data: null,
     errorMessage: null
   };
 }
@@ -45,8 +51,11 @@ export function objectToQueryParams(obj: ObjectType): string {
   return queryParams.toString();
 }
 
-export function toLocaleDateString(dateString: string | null, locales: string = 'en-US'): string {
-  if (!dateString) return '';
+export function toLocaleDateString(
+  dateString: string | unknown,
+  locales: string = 'en-US'
+): string {
+  if (!dateString || typeof dateString !== 'string') return '';
   const date = new Date(dateString);
   return date.toLocaleDateString(locales, dateTimeFormatOptions);
 }
