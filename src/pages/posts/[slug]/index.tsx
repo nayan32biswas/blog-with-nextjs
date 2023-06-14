@@ -4,10 +4,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
-import { Avatar, CardHeader, Typography } from '@mui/material';
+import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
+import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
 import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
 
 import { handleAxiosError } from '@/api/apiUtils/AxiosConfig';

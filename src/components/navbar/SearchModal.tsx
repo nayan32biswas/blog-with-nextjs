@@ -14,6 +14,8 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { alpha, styled } from '@mui/material/styles';
 
+import debounce from 'lodash/debounce';
+
 const styles = {
   textInput: {
     fontSize: 'large'
@@ -64,14 +66,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     }
   }
 }));
-const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-  '& .MuiDialogContent-root': {
-    padding: theme.spacing(2)
-  },
-  '& .MuiDialogActions-root': {
-    padding: theme.spacing(2)
-  }
-}));
 
 const SearchModal = () => {
   const [open, setOpen] = React.useState(false);
@@ -84,6 +78,20 @@ const SearchModal = () => {
   };
   const numbers = [0, 1, 2, 3, 4, 5, 6];
 
+  const [query, setQuery] = React.useState('');
+  React.useEffect(() => {
+    console.log('useEffect call database', query);
+  }, [query]);
+  const onChange = (e: any) => {
+    // send data from input field to the backend here
+    // will be triggered 500 ms after the user stopped typing
+    console.log('onChange', e.target.value);
+    setQuery(e.target.value);
+  };
+  const debouncedOnChange = debounce(onChange, 300);
+
+  console.log('query:', query);
+
   return (
     <>
       <Search onClick={handleModalOpen} sx={{ input: { cursor: 'pointer' } }}>
@@ -92,15 +100,12 @@ const SearchModal = () => {
         </SearchIconWrapper>
         <StyledInputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} />
       </Search>
-      <BootstrapDialog
-        onClose={handleModalClose}
-        aria-labelledby="customized-dialog-title"
-        open={open}
-      >
+      <Dialog onClose={handleModalClose} aria-labelledby="customized-dialog-title" open={open}>
         <TextField
           type="search"
           id="search"
           placeholder="Search..."
+          onChange={debouncedOnChange}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -140,7 +145,7 @@ const SearchModal = () => {
             );
           })}
         </List>
-      </BootstrapDialog>
+      </Dialog>
     </>
   );
 };

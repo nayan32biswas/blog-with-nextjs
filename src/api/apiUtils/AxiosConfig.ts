@@ -44,7 +44,7 @@ export function handleAxiosError(
   let redirectUrl = null;
 
   if (!error.response) {
-    alert('Network error. Please check your internet.');
+    message = 'Network error. Please check your internet.';
   } else {
     status = error.response.status;
     let data = error.response.data as any;
