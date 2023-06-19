@@ -6,32 +6,37 @@ import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
-import debounce from 'lodash/debounce';
-
 import { fetchPosts } from '@/api/postApi';
+import useDebounce from '@/hooks/debounceHook';
 import { IPost, IPostList } from '@/types/api.types';
 
-const SearchModal = () => {
+const classNames = {
+  inputBox: {
+    marginRight: '10px'
+  }
+};
+
+const SearchBox = () => {
   const [query, setQuery] = React.useState('');
   const [posts, setPosts] = React.useState<IPost[]>([]);
-  React.useEffect(() => {
+
+  const debouncedRequest = useDebounce(300, () => {
     (async () => {
-      if (query.length > 2) {
+      if (query.length >= 2) {
         const postData: IPostList = await fetchPosts({ params: { page: 1, limit: 50, q: query } });
-        console.log('postData.results', postData.results.length);
         setPosts(postData.results);
+      } else if (query.length === 0) {
+        setPosts([]);
       }
     })();
-  }, [query]);
+  });
 
   const onChange = (e: any) => {
-    // send data from input field to the backend here
-    // will be triggered 500 ms after the user stopped typing
-    setQuery(e.target.value);
-  };
-  const debouncedOnChange = debounce(onChange, 300);
+    const value = e.target.value;
+    setQuery(value);
 
-  console.log('post', posts.length);
+    debouncedRequest();
+  };
 
   return (
     <Autocomplete
@@ -44,22 +49,24 @@ const SearchModal = () => {
       sx={{ width: 400, marginTop: '1px', marginBottom: '1px' }}
       renderOption={(props: unknown, option: IPost) => {
         return (
-          <Typography component={'li'} key={option.slug} sx={{ marginBottom: '10px' }}>
-            <a href={`/posts/${option.slug}`}>{option.title}</a>
+          <Typography component={'li'} key={option.slug} sx={classNames.inputBox}>
+            <a style={{ marginRight: '20px' }} href={`/posts/${option.slug}`}>
+              {option.title}
+            </a>
           </Typography>
         );
       }}
       renderInput={(params) => (
         <TextField
           {...params}
-          onChange={debouncedOnChange}
+          onChange={onChange}
           label="Search"
-          placeholder="Search..."
+          placeholder="Search"
           InputProps={{
             ...params.InputProps,
             endAdornment: (
               <InputAdornment position="end">
-                <SearchIcon />
+                <SearchIcon aria-label="Search" />
               </InputAdornment>
             )
           }}
@@ -69,4 +76,4 @@ const SearchModal = () => {
   );
 };
 
-export default SearchModal;
+export default SearchBox;

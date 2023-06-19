@@ -10,7 +10,7 @@ import { isAuthenticated } from '@/api/apiUtils/auth';
 import { UserContext } from '@/context/UserContext';
 
 import ProfileMenu from './ProfileMenu';
-import SearchModal from './SearchModal';
+import SearchModal from './SearchBox';
 import UnAuthMenu from './UnAuthMenu';
 
 function Navbar() {
