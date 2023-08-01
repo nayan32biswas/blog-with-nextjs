@@ -14,6 +14,7 @@ import { red } from '@mui/material/colors';
 
 import { handleAxiosError } from '@/api/apiUtils/AxiosConfig';
 import { fetchPostsDetails } from '@/api/postApi';
+import PostComments from '@/components/comments/PostComments';
 import Common404 from '@/components/utils/Common404';
 import { IPostDetails } from '@/types/api.types';
 import { toLocaleDateString } from '@/utils';
@@ -117,6 +118,22 @@ function PostDetails({ postDetails }: Props) {
           <Container maxWidth="md">
             <Typography component="p">{postDetails.description}</Typography>
           </Container>
+        </Box>
+
+        <Box
+          sx={{
+            my: 4,
+            display: 'flex',
+            flexDirection: 'column'
+          }}
+        >
+          <Typography component={'hr'} />
+          <Typography component={'h1'} variant="h3">
+            Comments
+          </Typography>
+          <Typography component={'hr'} />
+          <Typography component={'br'} />
+          <PostComments post_slug={postDetails.slug} />
         </Box>
       </Container>
     </>

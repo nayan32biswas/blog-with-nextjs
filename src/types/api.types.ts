@@ -55,3 +55,24 @@ export interface IPostDetails extends IPost {
 export interface ITopicList extends IBaseListApi {
   results: ITopic[];
 }
+
+export interface IReply {
+  id: string;
+  user: IAuther | null;
+  description: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface IComment {
+  id: string;
+  user: IAuther | null;
+  description: string;
+  created_at: string;
+  updated_at: string;
+  replies: [IReply];
+}
+
+export interface ICommentList extends IBaseListApi {
+  results: IComment[];
+}

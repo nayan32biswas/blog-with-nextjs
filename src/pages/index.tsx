@@ -34,7 +34,7 @@ export async function getStaticProps() {
       postData,
       topicData
     },
-    revalidate: 60
+    revalidate: 60 // this page will expire withing 1 minute.
   };
 }
 

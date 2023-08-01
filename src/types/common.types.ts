@@ -15,6 +15,5 @@ export interface BaseApiFuncArgs {
 
 export interface ApiFuncArgs extends BaseApiFuncArgs {
   params?: ObjectType;
-  post_slug?: string;
   [key: string]: any;
 }
