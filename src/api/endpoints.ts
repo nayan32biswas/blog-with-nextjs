@@ -17,3 +17,5 @@ export const TOPICS_URL = `${V1_API_ROOT}/topics`;
 export const POST_COMMENTS_URL = (slug: string) => `${POST_DETAILS_URL(slug)}/comments`;
 export const POST_COMMENT_DETAILS_URL = (slug: string, id: string) =>
   `${POST_COMMENTS_URL(slug)}/${id}`;
+
+export const UPLOAD_IMAGE_URL = `${V1_API_ROOT}/upload-image`;
