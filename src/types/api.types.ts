@@ -70,7 +70,7 @@ export interface IComment {
   description: string;
   created_at: string;
   updated_at: string;
-  replies: [IReply];
+  replies: IReply[];
 }
 
 export interface ICommentList extends IBaseListApi {

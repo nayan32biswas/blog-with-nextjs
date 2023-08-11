@@ -23,10 +23,10 @@ export default function UnAuthMenu() {
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const handleLoginRoute = () => {
-    router.push(`/auth/sign-in?next=${router.pathname}`);
+    router.push(`/auth/sign-in?next=${router.asPath}`);
   };
   const handleRegistrationRoute = () => {
-    router.push(`/auth/sign-up?next=${router.pathname}`);
+    router.push(`/auth/sign-up?next=${router.asPath}`);
   };
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);

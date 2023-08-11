@@ -37,6 +37,24 @@ const MyAccountItem = () => {
     </MenuItem>
   );
 };
+const ProfileItem = ({ username }: { username: string }) => {
+  return (
+    <MenuItem>
+      <Link href={`/@${username}`}>
+        <IconButton
+          size="large"
+          aria-label="User Profile"
+          aria-controls="primary-search-account-menu"
+          aria-haspopup="true"
+          color="inherit"
+        >
+          <AccountCircle />
+        </IconButton>
+        Profile
+      </Link>
+    </MenuItem>
+  );
+};
 const LogOutItem = () => {
   const router = useRouter();
 
@@ -57,7 +75,7 @@ const LogOutItem = () => {
   );
 };
 
-export default function ProfileMenu() {
+export default function ProfileMenu({ username }: { username: string }) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -105,6 +123,7 @@ export default function ProfileMenu() {
         <p>{theme.palette.mode === 'dark' ? 'Dark' : 'Light'} Mode</p>
       </MenuItem>
       <MyAccountItem />
+      <ProfileItem username={username} />
       <LogOutItem />
     </Menu>
   );
@@ -134,6 +153,15 @@ export default function ProfileMenu() {
       </MenuItem>
 
       <MenuItem>
+        <Link href={'/new-post'}>
+          <IconButton size="large" aria-label="about icon" aria-haspopup="true" color="inherit">
+            <InfoIcon />
+          </IconButton>
+          Write
+        </Link>
+      </MenuItem>
+
+      <MenuItem>
         <Link href={'/about'}>
           <IconButton size="large" aria-label="about icon" aria-haspopup="true" color="inherit">
             <InfoIcon />
@@ -152,6 +180,7 @@ export default function ProfileMenu() {
       </MenuItem>
 
       <MyAccountItem />
+      <ProfileItem username={username} />
       <LogOutItem />
     </Menu>
   );
@@ -159,6 +188,9 @@ export default function ProfileMenu() {
   return (
     <>
       <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+        <Button color="inherit">
+          <Link href={'/new-post'}>Write</Link>
+        </Button>
         <Button color="inherit">
           <Link href={'/about'}>About</Link>
         </Button>

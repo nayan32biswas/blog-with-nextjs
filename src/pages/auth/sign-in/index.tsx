@@ -68,6 +68,7 @@ function SignIn() {
               isAuthenticated: true
             }
           });
+          console.log(toPath);
           router.push(toPath);
 
           // router.push(toPath).then(() => router.reload());

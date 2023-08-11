@@ -39,7 +39,11 @@ function Navbar() {
 
           <Box sx={{ flexGrow: 1 }} />
 
-          {userState.auth.isAuthenticated === true ? <ProfileMenu /> : <UnAuthMenu />}
+          {userState.auth.isAuthenticated === true && userState.me?.username ? (
+            <ProfileMenu username={userState.me?.username} />
+          ) : (
+            <UnAuthMenu />
+          )}
         </Toolbar>
       </AppBar>
     </Box>
