@@ -1,12 +1,36 @@
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 import Container from '@mui/material/Container';
 
+import { AxiosError } from 'axios';
+
+import { handleAxiosError } from '@/api/apiUtils/AxiosConfig';
+import { createPost } from '@/api/postApi';
 import PostForm from '@/components/posts/PostForm';
+import { IPost } from '@/types/api.types';
+import { ObjectType } from '@/types/common.types';
 
 function NewPosts() {
+  const router = useRouter();
+
+  const handleCreatePost = (payload: ObjectType, setIsLoading: any, setFormError: any) => {
+    console.log(payload);
+    createPost({ payload })
+      .then((postData: IPost) => {
+        setIsLoading(false);
+        router.push(`/posts/${postData.slug}`);
+      })
+      .catch((error: AxiosError) => {
+        setIsLoading(false);
+        const { message } = handleAxiosError(error);
+        if (error) {
+          setFormError(message);
+        }
+      });
+  };
   return (
     <>
       <Head>
@@ -14,7 +38,7 @@ function NewPosts() {
         <meta name="description" content="List of blog page" />
       </Head>
       <Container maxWidth="lg">
-        <PostForm />
+        <PostForm handleCreatePost={handleCreatePost} />
       </Container>
     </>
   );

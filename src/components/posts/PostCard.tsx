@@ -12,7 +12,7 @@ import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
 
 import { IPost } from '@/types/api.types';
-import { toLocaleDateString } from '@/utils';
+import { getFileUrl, toLocaleDateString } from '@/utils';
 
 function PostCard({ post }: { post: IPost }) {
   const userUrl = `/@${post.author.username}`;
@@ -54,7 +54,7 @@ function PostCard({ post }: { post: IPost }) {
             <CardMedia
               component="img"
               width="200px"
-              image={post.cover_image || ''}
+              image={getFileUrl(post.cover_image) || ''}
               alt="Post Cover Image"
             />
           </Link>

@@ -46,6 +46,7 @@ function SignIn() {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
+      setIsLoading(true);
       login(values)
         .then(() => {
           // const currentPath = router.pathname;

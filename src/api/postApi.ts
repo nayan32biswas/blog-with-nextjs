@@ -1,10 +1,20 @@
-import { ICommentList, IPostDetails, IPostList, ITopicList } from '@/types/api.types';
+import { ICommentList, IPost, IPostDetails, IPostList, ITopicList } from '@/types/api.types';
 import { ApiFuncArgs } from '@/types/common.types';
 import { objectToQueryParams } from '@/utils';
 
 import Axios from './apiUtils/AxiosConfig';
 import { getAuthConfig } from './apiUtils/auth';
 import { POSTS_URL, POST_COMMENTS_URL, POST_DETAILS_URL, TOPICS_URL } from './endpoints';
+
+export async function createPost({ payload }: any) {
+  const config = await getAuthConfig();
+  try {
+    const res = await Axios.post(POSTS_URL, payload, config);
+    return res.data as IPost;
+  } catch (error: any) {
+    return Promise.reject(error);
+  }
+}
 
 export async function fetchPosts({ params, SSContext }: ApiFuncArgs) {
   const config = await getAuthConfig(SSContext);

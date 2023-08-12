@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
 
 import { IReply } from '@/types/api.types';
-import { toLocaleDateString } from '@/utils';
+import { getFileUrl, toLocaleDateString } from '@/utils';
 
 interface CommentRepliesProps {
   replies: IReply[];
@@ -50,7 +50,7 @@ function CommentReplies({ replies, reply_box_open }: CommentRepliesProps) {
                           <Image
                             height={30}
                             width={30}
-                            src={reply.user.image}
+                            src={getFileUrl(reply.user.image)}
                             alt="Author Avatar"
                           />
                         ) : (

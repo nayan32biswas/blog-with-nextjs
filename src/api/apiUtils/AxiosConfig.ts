@@ -55,7 +55,7 @@ export function handleAxiosError(
         message = 'Authentication Error';
         redirectUrl = '/auth/sign-in';
       } else if (status === 422) {
-        message = 'Developer Error. Please contact with us.';
+        message = 'Invalid data formatting. Please contact with us.';
       } else {
         if (data?.errors) {
           const errorObj = data?.errors[0];

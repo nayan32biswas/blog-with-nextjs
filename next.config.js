@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-const CONTENT_URL = process.env.NEXT_PUBLIC_CONTENT_URL || 'http://localhost:8000';
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const CONTENT_URL = process.env.NEXT_PUBLIC_CONTENT_URL;
 
 const CONTENT_DOMAINS = [];
 

@@ -13,7 +13,7 @@ import { red } from '@mui/material/colors';
 import { handleAxiosError } from '@/api/apiUtils/AxiosConfig';
 import { fetchComments } from '@/api/postApi';
 import { IComment, ICommentList } from '@/types/api.types';
-import { getListApiDefaultValue, toLocaleDateString } from '@/utils';
+import { getFileUrl, getListApiDefaultValue, toLocaleDateString } from '@/utils';
 
 import CommentReplies from './CommentReplies';
 
@@ -90,7 +90,7 @@ function PostComments({ post_slug }: PostCommentsProps) {
                         <Image
                           height={30}
                           width={30}
-                          src={comment.user.image}
+                          src={getFileUrl(comment.user.image)}
                           alt="Author Avatar"
                         />
                       ) : (

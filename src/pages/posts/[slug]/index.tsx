@@ -17,7 +17,7 @@ import { fetchPostsDetails } from '@/api/postApi';
 import PostComments from '@/components/comments/PostComments';
 import Common404 from '@/components/utils/Common404';
 import { IPostDetails } from '@/types/api.types';
-import { toLocaleDateString } from '@/utils';
+import { getFileUrl, toLocaleDateString } from '@/utils';
 
 export async function getServerSideProps(SSContext: GetServerSidePropsContext) {
   const { slug } = SSContext.query;
@@ -81,7 +81,7 @@ function PostDetails({ postDetails }: Props) {
                       <Image
                         height={30}
                         width={30}
-                        src={postDetails.author.image}
+                        src={getFileUrl(postDetails.author.image)}
                         alt="Author Avatar"
                       />
                     ) : (
@@ -102,7 +102,6 @@ function PostDetails({ postDetails }: Props) {
                 </Typography>
               }
             />
-            <Typography component={'hr'} />
           </Container>
           <CardMedia
             sx={{
@@ -112,9 +111,11 @@ function PostDetails({ postDetails }: Props) {
               }
             }}
             component="img"
-            image={postDetails.cover_image || ''}
+            image={getFileUrl(postDetails.cover_image) || ''}
             alt="Post Cover Image"
           />
+          <Typography component={'br'} />
+          <Typography component={'hr'} />
           <Container maxWidth="md">
             <Typography component="p">{postDetails.description}</Typography>
           </Container>

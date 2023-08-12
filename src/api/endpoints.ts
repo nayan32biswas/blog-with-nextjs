@@ -1,4 +1,6 @@
-export const HOST = process.env.API_URL;
+import { API_URL } from '@/utils/constKey';
+
+export const HOST = API_URL;
 
 export const API_ROOT = `${HOST}/api`;
 export const V1_API_ROOT = `${API_ROOT}/v1`;
