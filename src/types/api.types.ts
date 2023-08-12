@@ -32,6 +32,15 @@ export interface ITopic {
   name: string;
 }
 
+export interface IPostForm {
+  title: string;
+  short_description?: string;
+  cover_image?: string;
+  publish_at?: string;
+  description: string;
+  topics: [];
+}
+
 export interface IPost {
   slug: string;
   author: IAuther;

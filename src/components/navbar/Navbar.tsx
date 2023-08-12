@@ -10,6 +10,7 @@ import { isAuthenticated } from '@/api/apiUtils/auth';
 import { UserContext } from '@/context/UserContext';
 
 import ProfileMenu from './ProfileMenu';
+// TODO: implement dynamic import for SearchModal
 import SearchModal from './SearchBox';
 import UnAuthMenu from './UnAuthMenu';
 

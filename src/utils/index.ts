@@ -1,5 +1,7 @@
 import { ObjectType } from '@/types/common.types';
 
+import { CONTENT_URL } from './constKey';
+
 export const usernameRegex = /^[a-zA-Z][\w.-]+$/;
 const dateTimeFormatOptions: Intl.DateTimeFormatOptions = {
   year: 'numeric',
@@ -58,4 +60,9 @@ export function toLocaleDateString(
   if (!dateString || typeof dateString !== 'string') return '';
   const date = new Date(dateString);
   return date.toLocaleDateString(locales, dateTimeFormatOptions);
+}
+
+export function getFileUrl(url: string | null): string {
+  if (!url) return '';
+  return CONTENT_URL + url;
 }
