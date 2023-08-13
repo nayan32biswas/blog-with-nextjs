@@ -4,10 +4,10 @@ import React from 'react';
 
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
 
 import { handleAxiosError } from '@/api/apiUtils/AxiosConfig';
 import { getPublicUserProfile } from '@/api/userApi';
+import Loading from '@/components/utils/Loading';
 import { IMinimalUser } from '@/types/api.types';
 
 function UserProfile() {
@@ -43,11 +43,7 @@ function UserProfile() {
   }, [router]);
 
   if (!userProfile) {
-    return (
-      <Typography component="h1" variant="h4">
-        Loading...
-      </Typography>
-    );
+    return <Loading />;
   }
 
   return (

@@ -40,6 +40,16 @@ export async function fetchPostsDetails({ post_slug, SSContext }: ApiFuncArgs) {
   }
 }
 
+export async function updatePost({ payload, post_slug }: any) {
+  const config = await getAuthConfig();
+  try {
+    const res = await Axios.patch(POST_DETAILS_URL(post_slug), payload, config);
+    return res.data as any;
+  } catch (error: any) {
+    return Promise.reject(error);
+  }
+}
+
 export async function fetchTopics({ params, SSContext }: ApiFuncArgs) {
   const config = await getAuthConfig(SSContext);
   try {

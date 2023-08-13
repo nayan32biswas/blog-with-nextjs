@@ -15,6 +15,7 @@ import { fetchComments } from '@/api/postApi';
 import { IComment, ICommentList } from '@/types/api.types';
 import { getFileUrl, getListApiDefaultValue, toLocaleDateString } from '@/utils';
 
+import Loading from '../utils/Loading';
 import CommentReplies from './CommentReplies';
 
 interface PostCommentsProps {
@@ -67,11 +68,7 @@ function PostComments({ post_slug }: PostCommentsProps) {
   }, [post_slug, currentPage]);
 
   if (!comments) {
-    return (
-      <Typography component="h1" variant="h4">
-        Loading...
-      </Typography>
-    );
+    return <Loading />;
   }
 
   return (

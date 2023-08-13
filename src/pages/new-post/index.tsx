@@ -16,7 +16,7 @@ import { ObjectType } from '@/types/common.types';
 function NewPosts() {
   const router = useRouter();
 
-  const handleCreatePost = (payload: ObjectType, setIsLoading: any, setFormError: any) => {
+  const handleSubmitPost = (payload: ObjectType, setIsLoading: any, setFormError: any) => {
     console.log(payload);
     createPost({ payload })
       .then((postData: IPost) => {
@@ -38,7 +38,7 @@ function NewPosts() {
         <meta name="description" content="List of blog page" />
       </Head>
       <Container maxWidth="lg">
-        <PostForm handleCreatePost={handleCreatePost} />
+        <PostForm handleSubmitPost={handleSubmitPost} />
       </Container>
     </>
   );

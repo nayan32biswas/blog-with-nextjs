@@ -12,6 +12,7 @@ import { red } from '@mui/material/colors';
 
 import { IReply } from '@/types/api.types';
 import { getFileUrl, toLocaleDateString } from '@/utils';
+import Loading from '../utils/Loading';
 
 interface CommentRepliesProps {
   replies: IReply[];
@@ -20,11 +21,7 @@ interface CommentRepliesProps {
 
 function CommentReplies({ replies, reply_box_open }: CommentRepliesProps) {
   if (!replies) {
-    return (
-      <Typography component="h1" variant="h4">
-        Loading...
-      </Typography>
-    );
+    return <Loading />;
   }
 
   return (

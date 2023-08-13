@@ -16,6 +16,8 @@ import { handleAxiosError } from '@/api/apiUtils/AxiosConfig';
 import { fetchPostsDetails } from '@/api/postApi';
 import PostComments from '@/components/comments/PostComments';
 import Common404 from '@/components/utils/Common404';
+import CommonErrorPage from '@/components/utils/CommonErrorPage';
+import { UserContext } from '@/context/UserContext';
 import { IPostDetails } from '@/types/api.types';
 import { getFileUrl, toLocaleDateString } from '@/utils';
 
@@ -49,10 +51,16 @@ interface Props {
   errorMessage?: string;
 }
 
-function PostDetails({ postDetails }: Props) {
+function PostDetails({ postDetails, errorMessage }: Props) {
+  const { userState } = React.useContext(UserContext);
+
+  if (errorMessage) {
+    return <CommonErrorPage message={errorMessage} />;
+  }
   if (!postDetails) {
     return <Common404 message="Post not found" />;
   }
+
   const userUrl = `/@${postDetails.author.username}`;
   return (
     <>
@@ -73,35 +81,42 @@ function PostDetails({ postDetails }: Props) {
               {postDetails.title}
             </Typography>
             <Typography component={'hr'} />
-            <CardHeader
-              avatar={
-                <Link href={userUrl}>
-                  <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                    {postDetails.author.image ? (
-                      <Image
-                        height={30}
-                        width={30}
-                        src={getFileUrl(postDetails.author.image)}
-                        alt="Author Avatar"
-                      />
-                    ) : (
-                      postDetails.author.full_name[0]
-                    )}
-                  </Avatar>
-                </Link>
-              }
-              title={<Link href={userUrl}>{postDetails.author.full_name}</Link>}
-              subheader={
-                <Typography>
-                  <Typography component={'span'} sx={{ color: 'gray' }}>
-                    Published At:
-                  </Typography>{' '}
-                  <Typography component={'span'}>
-                    {toLocaleDateString(postDetails.publish_at)}
+            <Box display="flex" justifyContent="space-between">
+              <CardHeader
+                avatar={
+                  <Link href={userUrl}>
+                    <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+                      {postDetails.author.image ? (
+                        <Image
+                          height={30}
+                          width={30}
+                          src={getFileUrl(postDetails.author.image)}
+                          alt="Author Avatar"
+                        />
+                      ) : (
+                        postDetails.author.full_name[0]
+                      )}
+                    </Avatar>
+                  </Link>
+                }
+                title={<Link href={userUrl}>{postDetails.author.full_name}</Link>}
+                subheader={
+                  <Typography>
+                    <Typography component={'span'} sx={{ color: 'gray' }}>
+                      Published At:
+                    </Typography>{' '}
+                    <Typography component={'span'}>
+                      {toLocaleDateString(postDetails.publish_at)}
+                    </Typography>
                   </Typography>
+                }
+              />
+              {userState.me?.username == postDetails.author.username && (
+                <Typography component="div" display="flex" alignItems="center">
+                  <Link href={`/posts/${postDetails.slug}/edit`}>Edit</Link>
                 </Typography>
-              }
-            />
+              )}
+            </Box>
           </Container>
           <CardMedia
             sx={{
