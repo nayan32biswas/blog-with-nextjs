@@ -15,6 +15,13 @@ export interface IMinimalUser {
   is_active: boolean;
 }
 
+export interface IUserDetails {
+  username: string;
+  full_name: string;
+  image: string | null;
+  is_active: boolean;
+}
+
 export interface ITokenApi {
   access_token: string;
   refresh_token: string;

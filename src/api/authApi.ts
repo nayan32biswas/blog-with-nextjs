@@ -1,4 +1,4 @@
-import { IMinimalUser, ITokenApi } from '@/types/api.types';
+import { IMinimalUser, ITokenApi, IUserDetails } from '@/types/api.types';
 
 import Axios from './apiUtils/AxiosConfig';
 import { getAuthConfig, setToken } from './apiUtils/auth';
@@ -28,7 +28,7 @@ export async function getMe() {
   const config = await getAuthConfig();
   try {
     const res = await Axios.get(ME_URL, config);
-    return res.data as IMinimalUser;
+    return res.data as IUserDetails;
   } catch (error: any) {
     return Promise.reject(error);
   }

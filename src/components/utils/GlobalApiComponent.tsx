@@ -4,7 +4,7 @@ import { handleAxiosError } from '@/api/apiUtils/AxiosConfig';
 import { isAuthenticated } from '@/api/apiUtils/auth';
 import { getMe } from '@/api/authApi';
 import { UserContext } from '@/context/UserContext';
-import { IMinimalUser } from '@/types/api.types';
+import { IUserDetails } from '@/types/api.types';
 import { isServer } from '@/utils';
 
 function GlobalApiComponent() {
@@ -16,7 +16,7 @@ function GlobalApiComponent() {
         if (isAuthenticated()) {
           if (!userState.me) {
             try {
-              const me: IMinimalUser = await getMe();
+              const me: IUserDetails = await getMe();
               userDispatch({
                 type: 'SET_USER',
                 payload: me
