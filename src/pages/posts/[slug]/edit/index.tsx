@@ -9,12 +9,15 @@ import { AxiosError } from 'axios';
 
 import { handleAxiosError } from '@/api/apiUtils/AxiosConfig';
 import { fetchPostsDetails, updatePost } from '@/api/postApi';
-import PostForm from '@/components/posts/PostForm';
 import CommonErrorPage from '@/components/utils/CommonErrorPage';
 import Loading from '@/components/utils/Loading';
 import { UserContext } from '@/context/UserContext';
 import { IPostDetails } from '@/types/api.types';
 import { ObjectType } from '@/types/common.types';
+
+const PostForm = dynamic(() => import('@/components/posts/PostForm'), {
+  loading: () => <Loading />
+});
 
 function EditPost() {
   const router = useRouter();

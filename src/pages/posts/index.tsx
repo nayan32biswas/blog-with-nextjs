@@ -15,11 +15,9 @@ import { getListApiDefaultValue } from '@/utils';
 export async function getServerSideProps(SSContext: GetServerSidePropsContext) {
   const { topic } = SSContext.query;
 
-  console.log(topic);
-
   let postData: IPostList = getListApiDefaultValue();
   try {
-    postData = await fetchPosts({ SSContext, params: { page: 1, limit: 50 } });
+    postData = await fetchPosts({ SSContext, params: { page: 1, limit: 50, topics: topic } });
   } catch (e: any) {
     const { message: errorMessage } = handleAxiosError(e, SSContext);
     postData.errorMessage = errorMessage;

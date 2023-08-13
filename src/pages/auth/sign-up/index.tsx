@@ -62,7 +62,6 @@ function SignUp() {
         .catch((error: any) => {
           setIsLoading(false);
           const { errorField, message } = handleAxiosError(error);
-          console.log(errorField, message);
           if (errorField) {
             setErrors({ [errorField]: message });
           }

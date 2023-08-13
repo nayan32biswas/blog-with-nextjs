@@ -9,15 +9,18 @@ import { AxiosError } from 'axios';
 
 import { handleAxiosError } from '@/api/apiUtils/AxiosConfig';
 import { createPost } from '@/api/postApi';
-import PostForm from '@/components/posts/PostForm';
+import Loading from '@/components/utils/Loading';
 import { IPost } from '@/types/api.types';
 import { ObjectType } from '@/types/common.types';
+
+const PostForm = dynamic(() => import('@/components/posts/PostForm'), {
+  loading: () => <Loading />
+});
 
 function NewPosts() {
   const router = useRouter();
 
   const handleSubmitPost = (payload: ObjectType, setIsLoading: any, setFormError: any) => {
-    console.log(payload);
     createPost({ payload })
       .then((postData: IPost) => {
         setIsLoading(false);
