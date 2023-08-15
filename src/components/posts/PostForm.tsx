@@ -18,6 +18,7 @@ import { IPostForm } from '@/types/form.types';
 import { getFileUrl } from '@/utils';
 
 import FileInput, { LinearProgressWithLabel } from '../utils/FileInput';
+import InputTags from './InputTags';
 
 const getInitialValues = (postDetails?: IPostDetails): IPostForm => {
   let initialValues: IPostForm = {
@@ -78,6 +79,7 @@ function PostForm({ postDetails, handleSubmitPost }: Props) {
     <>
       <Typography component="div">
         <Box component="form" onSubmit={formik.handleSubmit} noValidate sx={{ mt: 1 }}>
+          <InputTags />
           <TextField
             margin="normal"
             fullWidth
