@@ -23,7 +23,7 @@ const TagInput: React.FC = () => {
     setTags(updatedTags);
   };
 
-  console.log(tags)
+  console.log(tags);
 
   return (
     <div>
