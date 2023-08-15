@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 
+import { Tooltip } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 
-const TagInput: React.FC = () => {
-  const [tags, setTags] = useState<string[]>([]);
+// eslint-disable-next-line no-unused-vars
+function TagInput({ tags, setTags }: { tags: string[]; setTags: (tags: string[]) => void }) {
   const [value, setValue] = useState('');
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
   };
-
   const handleTagAdd = () => {
     if (value.trim() && !tags.includes(value)) {
       setTags([...tags, value]);
@@ -18,15 +18,8 @@ const TagInput: React.FC = () => {
     }
   };
 
-  const handleTagDelete = (tag: string) => {
-    const updatedTags = tags.filter((t) => t !== tag);
-    setTags(updatedTags);
-  };
-
-  console.log(tags);
-
   return (
-    <div>
+    <Tooltip title="Press Enter to add TAG">
       <Autocomplete
         multiple
         freeSolo
@@ -41,7 +34,7 @@ const TagInput: React.FC = () => {
             value={value}
             onChange={handleInputChange}
             onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === 'Tab') {
+              if (e.key === 'Enter') {
                 e.preventDefault();
                 handleTagAdd();
               }
@@ -56,8 +49,8 @@ const TagInput: React.FC = () => {
           </span>
         ))}
       </div> */}
-    </div>
+    </Tooltip>
   );
-};
+}
 
 export default TagInput;

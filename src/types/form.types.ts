@@ -4,6 +4,7 @@ export interface IPostForm {
   cover_image: string | null;
   description: string | null;
   publish_now: boolean;
+  topics: string[];
 }
 
 export interface IUserProfileForm {

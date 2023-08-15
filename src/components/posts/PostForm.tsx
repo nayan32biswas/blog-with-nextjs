@@ -26,7 +26,8 @@ const getInitialValues = (postDetails?: IPostDetails): IPostForm => {
     short_description: '',
     cover_image: '',
     description: '',
-    publish_now: false
+    publish_now: false,
+    topics: []
   };
   if (postDetails) {
     initialValues = {
@@ -34,7 +35,8 @@ const getInitialValues = (postDetails?: IPostDetails): IPostForm => {
       short_description: postDetails.short_description,
       cover_image: postDetails.cover_image,
       description: postDetails.description,
-      publish_now: !postDetails.publish_at === false
+      publish_now: !postDetails.publish_at === false,
+      topics: postDetails.topics.map((topic) => topic.name)
     };
   }
   // console.log('initialValues:', initialValues);
@@ -65,12 +67,13 @@ function PostForm({ postDetails, handleSubmitPost }: Props) {
   const formik = useFormik({
     initialValues: getInitialValues(postDetails),
     validationSchema: validationSchema,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       const payload: ObjectType = { ...values };
       if (payload.publish_now === true) {
         payload.publish_at = null;
       }
       setIsLoading(true);
+
       handleSubmitPost(payload, setIsLoading, setFormError);
     }
   });
@@ -79,7 +82,6 @@ function PostForm({ postDetails, handleSubmitPost }: Props) {
     <>
       <Typography component="div">
         <Box component="form" onSubmit={formik.handleSubmit} noValidate sx={{ mt: 1 }}>
-          <InputTags />
           <TextField
             margin="normal"
             fullWidth
@@ -130,6 +132,12 @@ function PostForm({ postDetails, handleSubmitPost }: Props) {
             </label>
             {uploadProgress > 0 && <LinearProgressWithLabel value={uploadProgress} />}
           </Box>
+          <Typography component={'div'} my={2}>
+            <InputTags
+              tags={formik.values.topics}
+              setTags={(tags) => formik.setFieldValue('topics', tags, true)}
+            />
+          </Typography>
           <TextField
             margin="normal"
             fullWidth

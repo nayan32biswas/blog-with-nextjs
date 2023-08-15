@@ -1,4 +1,11 @@
-import { ICommentList, IPost, IPostDetails, IPostList, ITopicList } from '@/types/api.types';
+import {
+  ICommentList,
+  IPost,
+  IPostDetails,
+  IPostList,
+  ITopic,
+  ITopicList
+} from '@/types/api.types';
 import { ApiFuncArgs } from '@/types/common.types';
 import { objectToQueryParams } from '@/utils';
 
@@ -59,6 +66,16 @@ export async function fetchTopics({ params, SSContext }: ApiFuncArgs) {
     }
     const res = await Axios.get(url, config);
     return res.data as ITopicList;
+  } catch (error: any) {
+    return Promise.reject(error);
+  }
+}
+
+export async function createTopic({ payload }: ApiFuncArgs) {
+  const config = await getAuthConfig();
+  try {
+    const res = await Axios.post(TOPICS_URL, payload, config);
+    return res.data as ITopic;
   } catch (error: any) {
     return Promise.reject(error);
   }
