@@ -14,10 +14,10 @@ import * as yup from 'yup';
 
 import { IPostDetails } from '@/types/api.types';
 import { ObjectType } from '@/types/common.types';
+import { IPostForm } from '@/types/form.types';
 import { getFileUrl } from '@/utils';
 
 import FileInput, { LinearProgressWithLabel } from '../utils/FileInput';
-import { IPostForm } from '@/types/form.types';
 
 const getInitialValues = (postDetails?: IPostDetails): IPostForm => {
   let initialValues: IPostForm = {
