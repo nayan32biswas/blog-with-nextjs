@@ -77,7 +77,7 @@ function EditPost() {
         <title>Write your post here</title>
         <meta name="description" content="List of blog page" />
       </Head>
-      <Container maxWidth="lg">
+      <Container maxWidth="md">
         <PostForm postDetails={postData} handleSubmitPost={handleCreatePost} />
       </Container>
     </>

@@ -40,7 +40,7 @@ function NewPosts() {
         <title>Write your post here</title>
         <meta name="description" content="List of blog page" />
       </Head>
-      <Container maxWidth="lg">
+      <Container maxWidth="md">
         <PostForm handleSubmitPost={handleSubmitPost} />
       </Container>
     </>

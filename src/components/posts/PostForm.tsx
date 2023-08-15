@@ -3,22 +3,21 @@ import React from 'react';
 
 import LoadingButton from '@mui/lab/LoadingButton';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormHelperText from '@mui/material/FormHelperText';
-import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import { uploadImage } from '@/api/utilsApi';
 import { IPostDetails } from '@/types/api.types';
 import { ObjectType } from '@/types/common.types';
-import { IPostForm } from '@/types/form.types';
 import { getFileUrl } from '@/utils';
+
+import FileInput, { LinearProgressWithLabel } from '../utils/FileInput';
+import { IPostForm } from '@/types/form.types';
 
 const getInitialValues = (postDetails?: IPostDetails): IPostForm => {
   let initialValues: IPostForm = {
@@ -60,15 +59,7 @@ interface Props {
 function PostForm({ postDetails, handleSubmitPost }: Props) {
   const [isLoading, setIsLoading] = React.useState(false);
   const [formError, setFormError] = React.useState('');
-
-  const handleUploadImage = (event: React.ChangeEvent<HTMLInputElement>, formik: any) => {
-    const file = event.target.files && event.target.files[0];
-    if (file) {
-      uploadImage({ image: file }).then((imagePath: string) => {
-        formik.setFieldValue('cover_image', imagePath, true);
-      });
-    }
-  };
+  const [uploadProgress, setUploadProgress] = React.useState(0);
 
   const formik = useFormik({
     initialValues: getInitialValues(postDetails),
@@ -99,30 +90,44 @@ function PostForm({ postDetails, handleSubmitPost }: Props) {
             helperText={formik.touched.title && formik.errors.title}
           />
 
-          <Stack direction="row" alignItems="center" spacing={2}>
-            <label htmlFor="upload-image">
-              <Button variant="contained" component="span">
-                Cover Image
-              </Button>
-              <input
-                hidden
-                accept="image/*"
-                type="file"
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                  handleUploadImage(event, formik)
-                }
-              />
+          <Box sx={{ mt: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <FileInput
+              accept="image/*"
+              style={{ display: 'none' }}
+              id="icon-button-file"
+              onSubmit={(imagePath) => formik.setFieldValue('cover_image', imagePath, true)}
+              onChangeProgress={(progress) => setUploadProgress(progress)}
+            />
+            <label htmlFor="icon-button-file">
+              {formik.values.cover_image ? (
+                <Image
+                  alt="Cover Image"
+                  width={400}
+                  height={200}
+                  src={getFileUrl(formik.values.cover_image)}
+                />
+              ) : (
+                <Box
+                  sx={{
+                    width: 400,
+                    height: 200,
+                    backgroundColor: 'primary.dark',
+                    '&:hover': {
+                      backgroundColor: 'primary.main',
+                      opacity: [0.9, 0.8, 0.7]
+                    },
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}
+                  borderRadius={1}
+                >
+                  Cover Image
+                </Box>
+              )}
             </label>
-            {formik.values.cover_image && (
-              <Image
-                src={getFileUrl(formik.values.cover_image)}
-                alt="Uploaded Image"
-                height={300}
-                width={300}
-                // priority={true}
-              />
-            )}
-          </Stack>
+            {uploadProgress > 0 && <LinearProgressWithLabel value={uploadProgress} />}
+          </Box>
           <TextField
             margin="normal"
             fullWidth

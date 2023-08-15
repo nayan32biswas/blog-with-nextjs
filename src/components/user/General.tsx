@@ -2,8 +2,8 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import { LoadingButton } from '@mui/lab';
-import { Box } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
 import FormHelperText from '@mui/material/FormHelperText';
 import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
@@ -16,11 +16,11 @@ import * as yup from 'yup';
 
 import { handleAxiosError } from '@/api/apiUtils/AxiosConfig';
 import { updateMe } from '@/api/userApi';
-import { uploadImage } from '@/api/utilsApi';
 import { IUserDetails } from '@/types/api.types';
 import { ObjectType } from '@/types/common.types';
 import { getFileUrl } from '@/utils';
 
+import FileInput, { LinearProgressWithLabel } from '../utils/FileInput';
 import Loading from '../utils/Loading';
 
 interface IProps {
@@ -34,9 +34,11 @@ const validationSchema = yup.object({
 
 function General({ user }: IProps) {
   const router = useRouter();
+  const theme = useTheme();
 
   const [isLoading, setIsLoading] = React.useState(false);
   const [formError, setFormError] = React.useState('');
+  const [uploadProgress, setUploadProgress] = React.useState(0);
 
   const formik = useFormik({
     initialValues: user,
@@ -61,16 +63,6 @@ function General({ user }: IProps) {
         });
     }
   });
-  const handleUploadImage = (event: React.ChangeEvent<HTMLInputElement>, formik: any) => {
-    const file = event.target.files && event.target.files[0];
-    if (file) {
-      uploadImage({ image: file }).then((imagePath: string) => {
-        formik.setFieldValue('image', imagePath, true);
-      });
-    }
-  };
-
-  const theme = useTheme();
 
   if (!user) return <Loading />;
   return (
@@ -80,13 +72,14 @@ function General({ user }: IProps) {
       noValidate
       sx={{ mt: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}
     >
-      <input
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleUploadImage(event, formik)}
+      <FileInput
         accept="image/*"
         style={{ display: 'none' }}
-        type="file"
+        id="profile-image-upload-button"
+        onSubmit={(imagePath) => formik.setFieldValue('image', imagePath, true)}
+        onChangeProgress={(progress) => setUploadProgress(progress)}
       />
-      <label htmlFor="icon-button-file">
+      <label htmlFor="profile-image-upload-button">
         <IconButton color="primary" aria-label="upload picture" component="span">
           <Avatar
             sx={{
@@ -100,6 +93,7 @@ function General({ user }: IProps) {
           </Avatar>
         </IconButton>
       </label>
+      {uploadProgress > 0 && <LinearProgressWithLabel value={uploadProgress} />}
 
       <TextField
         margin="normal"
