@@ -151,6 +151,17 @@ export default function ProfileMenu({ username }: { username: string }) {
         </IconButton>
         <p>{theme.palette.mode === 'dark' ? 'Dark' : 'Light'} Mode</p>
       </MenuItem>
+      <MyAccountItem />
+      <ProfileItem username={username} />
+
+      <MenuItem>
+        <IconButton size="large" aria-label="show new notifications" color="inherit">
+          <Badge badgeContent={5} color="error">
+            <NotificationsIcon />
+          </Badge>
+        </IconButton>
+        <p>Notifications</p>
+      </MenuItem>
 
       <MenuItem>
         <Link href={'/new-post'}>
@@ -170,17 +181,6 @@ export default function ProfileMenu({ username }: { username: string }) {
         </Link>
       </MenuItem>
 
-      <MenuItem>
-        <IconButton size="large" aria-label="show new notifications" color="inherit">
-          <Badge badgeContent={5} color="error">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
-
-      <MyAccountItem />
-      <ProfileItem username={username} />
       <LogOutItem />
     </Menu>
   );

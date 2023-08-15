@@ -60,7 +60,7 @@ function Me() {
     return <Loading />;
   }
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="sm">
       <Box
         sx={{
           display: 'flex',

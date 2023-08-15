@@ -41,7 +41,6 @@ const SearchBox = () => {
   return (
     <Autocomplete
       disablePortal
-      id="combo-box-demo"
       clearOnEscape
       options={posts}
       getOptionLabel={(option: IPost) => option.title}

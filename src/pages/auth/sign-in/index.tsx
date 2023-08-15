@@ -14,7 +14,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { handleAxiosError } from '@/api/apiUtils/AxiosConfig';
-import { login } from '@/api/authApi';
+import { login } from '@/api/userApi';
 import AuthBase from '@/components/auth/AuthBase';
 import PasswordField from '@/components/auth/PasswordField';
 import { UserContext } from '@/context/UserContext';
@@ -90,7 +90,6 @@ function SignIn() {
           margin="normal"
           fullWidth
           required
-          id="username"
           name="username"
           label="Username"
           value={formik.values.username}
@@ -99,7 +98,6 @@ function SignIn() {
           helperText={formik.touched.username && formik.errors.username}
         />
         <PasswordField
-          id="password"
           name="password"
           label="Password"
           value={formik.values.password}

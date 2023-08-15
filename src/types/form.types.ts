@@ -5,3 +5,8 @@ export interface IPostForm {
   description: string | null;
   publish_now: boolean;
 }
+
+export interface IUserProfileForm {
+  full_name: string | null;
+  image: string | null;
+}

@@ -91,9 +91,8 @@ function PostForm({ postDetails, handleSubmitPost }: Props) {
             margin="normal"
             fullWidth
             required
-            id="title"
             name="title"
-            label="title"
+            label="Title"
             value={formik.values.title}
             onChange={formik.handleChange}
             error={formik.touched.title && Boolean(formik.errors.title)}
@@ -106,7 +105,6 @@ function PostForm({ postDetails, handleSubmitPost }: Props) {
                 Cover Image
               </Button>
               <input
-                id="upload-image"
                 hidden
                 accept="image/*"
                 type="file"
@@ -129,9 +127,8 @@ function PostForm({ postDetails, handleSubmitPost }: Props) {
             margin="normal"
             fullWidth
             required
-            id="short_description"
             name="short_description"
-            label="short_description"
+            label="Short Description"
             value={formik.values.short_description}
             onChange={formik.handleChange}
             error={formik.touched.short_description && Boolean(formik.errors.short_description)}
@@ -141,9 +138,8 @@ function PostForm({ postDetails, handleSubmitPost }: Props) {
             margin="normal"
             fullWidth
             required
-            id="description"
             name="description"
-            label="description"
+            label="Description"
             value={formik.values.description}
             onChange={formik.handleChange}
             error={formik.touched.description && Boolean(formik.errors.description)}

@@ -2,10 +2,10 @@ import React from 'react';
 
 import { handleAxiosError } from '@/api/apiUtils/AxiosConfig';
 import { isAuthenticated } from '@/api/apiUtils/auth';
-import { getMe } from '@/api/authApi';
 import { UserContext } from '@/context/UserContext';
 import { IUserDetails } from '@/types/api.types';
 import { isServer } from '@/utils';
+import { getMe } from '@/api/userApi';
 
 function GlobalApiComponent() {
   const { userState, userDispatch } = React.useContext(UserContext);
