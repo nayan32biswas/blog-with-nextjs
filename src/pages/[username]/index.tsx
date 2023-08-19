@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { useRouter } from 'next/router';
+import { NextRouter, useRouter } from 'next/router';
 import React from 'react';
 
 import Container from '@mui/material/Container';
@@ -7,21 +7,38 @@ import Grid from '@mui/material/Grid';
 
 import { handleAxiosError } from '@/api/apiUtils/AxiosConfig';
 import { getPublicUserProfile } from '@/api/userApi';
+import CommonErrorPage from '@/components/utils/CommonErrorPage';
 import Loading from '@/components/utils/Loading';
 import { IMinimalUser } from '@/types/api.types';
+
+function getUsername(router: NextRouter): string {
+  let username = router.query.username;
+  if (username && typeof username === 'string') {
+    username = username.split('@').at(-1);
+  }
+  if (!username || typeof username !== 'string') {
+    return '';
+  }
+  return username;
+}
+interface IPageInfo {
+  hasMorePost: boolean;
+  errorMessage: string;
+  notFound: string;
+}
 
 function UserProfile() {
   const router = useRouter();
   const [userProfile, setUserProfile] = React.useState<IMinimalUser | null>(null);
+  const [pageInfo, setPageInfo] = React.useState<IPageInfo>({
+    hasMorePost: false,
+    errorMessage: '',
+    notFound: ''
+  });
+  const username = getUsername(router);
 
   React.useEffect(() => {
-    let username = router.query.username;
-    if (username && typeof username === 'string') {
-      username = username.split('@').at(-1);
-    }
-    if (!username || typeof username !== 'string') {
-      return;
-    }
+    if (!username) return;
 
     const fetchData = async (username: string) => {
       try {
@@ -31,17 +48,17 @@ function UserProfile() {
         const { message: errorMessage, status } = handleAxiosError(e);
         console.log(errorMessage, status);
         if (status === 404) {
-          router.push('/404');
+          setPageInfo((prevState) => ({ ...prevState, errorMessage }));
         }
-        console.log(errorMessage);
+        setPageInfo((prevState) => ({ ...prevState, errorMessage }));
       }
     };
-    fetchData(username).catch((e) => {
-      // handle the error as needed
-      console.error('An error occurred while fetching the data: ', e);
-    });
-  }, [router]);
+    fetchData(username);
+  }, [username]);
 
+  if (pageInfo.errorMessage) {
+    return <CommonErrorPage message={pageInfo.errorMessage} />;
+  }
   if (!userProfile) {
     return <Loading />;
   }
