@@ -66,3 +66,18 @@ export function getFileUrl(url: string | null): string {
   if (!url) return '';
   return CONTENT_URL + url;
 }
+
+export function margeList(baseList: any[], otherList: any[], key = 'id') {
+  const uniqueKeys: Set<string> = new Set();
+  const newList = [...baseList];
+  newList.forEach((obj) => {
+    uniqueKeys.add(obj[key]);
+  });
+
+  otherList.forEach((obj: any) => {
+    if (uniqueKeys.has(obj[key]) === false) {
+      newList.push(obj);
+    }
+  });
+  return newList;
+}
