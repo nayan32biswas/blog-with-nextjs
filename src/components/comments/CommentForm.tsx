@@ -18,6 +18,7 @@ function CommentForm({
   commentId,
   buttonName = 'Comment'
 }: {
+  /* eslint-disable */
   handleSubmit: (
     description: string,
     setIsLoading: any,
@@ -25,6 +26,7 @@ function CommentForm({
     resetForm: any,
     commentId?: string
   ) => void;
+  /* eslint-enable */
   commentId?: string;
   buttonName?: string;
 }) {
