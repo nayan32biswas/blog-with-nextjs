@@ -13,7 +13,7 @@ import { AxiosError } from 'axios';
 
 import { handleAxiosError } from '@/api/apiUtils/AxiosConfig';
 import { createComment, fetchComments } from '@/api/postApi';
-import { IComment, ICommentList } from '@/types/api.types';
+import { IComment, ICommentList, IReply } from '@/types/api.types';
 import { getFileUrl, getListApiDefaultValue, toLocaleDateString } from '@/utils';
 
 import Loading from '../utils/Loading';
@@ -95,9 +95,21 @@ function PostComments({ post_slug }: PostCommentsProps) {
     return <Loading />;
   }
 
+  const setReplies = (commentId: string, reply: IReply) => {
+    setComments((prevComment: IComment[]) => {
+      for (let i = 0; i < prevComment.length; i++) {
+        if (prevComment[i].id === commentId) {
+          prevComment[i].replies = [...prevComment[i].replies, reply];
+          break;
+        }
+      }
+      return [...prevComment];
+    });
+  };
+
   return (
     <React.Fragment>
-      <CommentForm handleSubmit={handleCommentSubmit} />
+      <CommentForm handleSubmit={handleCommentSubmit} buttonName={'Comment'} />
       {comments.map((comment: IComment, idx: number) => {
         return (
           <Container key={comment.id} maxWidth="sm">
@@ -138,7 +150,13 @@ function PostComments({ post_slug }: PostCommentsProps) {
                 <Typography component="p">{comment.description}</Typography>
               </Typography>
             </Container>
-            <CommentReplies replies={comment.replies} reply_box_open={false} />
+            <CommentReplies
+              setReplies={setReplies}
+              replies={comment.replies}
+              post_slug={post_slug}
+              commentId={comment.id}
+              reply_box_open={true}
+            />
           </Container>
         );
       })}

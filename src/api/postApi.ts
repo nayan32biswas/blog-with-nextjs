@@ -4,6 +4,7 @@ import {
   IPost,
   IPostDetails,
   IPostList,
+  IReply,
   ITopic,
   ITopicList
 } from '@/types/api.types';
@@ -12,7 +13,13 @@ import { objectToQueryParams } from '@/utils';
 
 import Axios from './apiUtils/AxiosConfig';
 import { getAuthConfig } from './apiUtils/auth';
-import { POSTS_URL, POST_COMMENTS_URL, POST_DETAILS_URL, TOPICS_URL } from './endpoints';
+import {
+  POSTS_URL,
+  POST_COMMENTS_URL,
+  POST_COMMENT_REPLIES_URL,
+  POST_DETAILS_URL,
+  TOPICS_URL
+} from './endpoints';
 
 export async function createPost({ payload }: any) {
   const config = await getAuthConfig();
@@ -101,6 +108,24 @@ export async function createComment({ payload, post_slug }: { payload: any; post
   try {
     const res = await Axios.post(POST_COMMENTS_URL(post_slug), payload, config);
     return res.data as IComment;
+  } catch (error: any) {
+    return Promise.reject(error);
+  }
+}
+
+export async function createCommentReply({
+  payload,
+  post_slug,
+  commentId
+}: {
+  payload: any;
+  post_slug: string;
+  commentId: string;
+}) {
+  const config = await getAuthConfig();
+  try {
+    const res = await Axios.post(POST_COMMENT_REPLIES_URL(post_slug, commentId), payload, config);
+    return res.data as IReply;
   } catch (error: any) {
     return Promise.reject(error);
   }

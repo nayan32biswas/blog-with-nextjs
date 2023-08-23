@@ -14,10 +14,19 @@ const validationSchema = yup.object({
 });
 
 function CommentForm({
-  handleSubmit
+  handleSubmit,
+  commentId,
+  buttonName = 'Comment'
 }: {
-  // eslint-disable-next-line no-unused-vars
-  handleSubmit: (description: string, setIsLoading: any, setFormError: any, resetForm: any) => void;
+  handleSubmit: (
+    description: string,
+    setIsLoading: any,
+    setFormError: any,
+    resetForm: any,
+    commentId?: string
+  ) => void;
+  commentId?: string;
+  buttonName?: string;
 }) {
   const [isLoading, setIsLoading] = React.useState(false);
   const [formError, setFormError] = React.useState('');
@@ -29,7 +38,7 @@ function CommentForm({
     validationSchema: validationSchema,
     onSubmit: async (values, { resetForm }) => {
       setIsLoading(true);
-      handleSubmit(values.description, setIsLoading, setFormError, resetForm);
+      handleSubmit(values.description, setIsLoading, setFormError, resetForm, commentId);
     }
   });
   return (
@@ -63,7 +72,7 @@ function CommentForm({
           variant="contained"
           sx={{ mb: 2 }}
         >
-          Submit
+          {buttonName}
         </LoadingButton>
       </Box>
     </>
