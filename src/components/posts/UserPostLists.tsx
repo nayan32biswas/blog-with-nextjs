@@ -43,9 +43,20 @@ function PostLists({ username = '' }: { username: string }) {
   if (!postData.results) return <Loading />;
   return (
     <>
-      {postData.results.map((post, idx) => {
-        return <PostCard key={`user-post-${idx}`} post={post} />;
-      })}
+      <Box
+        sx={{
+          display: 'grid',
+          gap: 2,
+          gridTemplateColumns: {
+            xs: '1fr',
+            lg: '1fr 1fr'
+          }
+        }}
+      >
+        {postData.results.map((post, idx) => {
+          return <PostCard key={`post-${idx}`} post={post} />;
+        })}
+      </Box>
       <Box
         sx={{
           marginTop: 4,
