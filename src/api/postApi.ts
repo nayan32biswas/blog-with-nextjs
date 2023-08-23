@@ -1,4 +1,5 @@
 import {
+  IComment,
   ICommentList,
   IPost,
   IPostDetails,
@@ -90,6 +91,16 @@ export async function fetchComments({ post_slug, params, SSContext }: ApiFuncArg
     }
     const res = await Axios.get(url, config);
     return res.data as ICommentList;
+  } catch (error: any) {
+    return Promise.reject(error);
+  }
+}
+
+export async function createComment({ payload, post_slug }: { payload: any; post_slug: string }) {
+  const config = await getAuthConfig();
+  try {
+    const res = await Axios.post(POST_COMMENTS_URL(post_slug), payload, config);
+    return res.data as IComment;
   } catch (error: any) {
     return Promise.reject(error);
   }

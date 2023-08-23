@@ -18,6 +18,7 @@ import { IPostForm } from '@/types/form.types';
 import { getFileUrl } from '@/utils';
 
 import FileInput, { LinearProgressWithLabel } from '../utils/FileInput';
+import StyledTextArea from '../utils/StyledTextArea';
 import InputTags from './InputTags';
 
 const getInitialValues = (postDetails?: IPostDetails): IPostForm => {
@@ -149,7 +150,10 @@ function PostForm({ postDetails, handleSubmitPost }: Props) {
             error={formik.touched.short_description && Boolean(formik.errors.short_description)}
             helperText={formik.touched.short_description && formik.errors.short_description}
           />
-          <TextField
+          <StyledTextArea
+            aria-label="Post description"
+            minRows={3}
+            placeholder="Write post description"
             margin="normal"
             fullWidth
             required

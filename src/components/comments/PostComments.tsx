@@ -6,16 +6,18 @@ import Avatar from '@mui/material/Avatar';
 import CardHeader from '@mui/material/CardHeader';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
-import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
 
+import { AxiosError } from 'axios';
+
 import { handleAxiosError } from '@/api/apiUtils/AxiosConfig';
-import { fetchComments } from '@/api/postApi';
+import { createComment, fetchComments } from '@/api/postApi';
 import { IComment, ICommentList } from '@/types/api.types';
 import { getFileUrl, getListApiDefaultValue, toLocaleDateString } from '@/utils';
 
 import Loading from '../utils/Loading';
+import CommentForm from './CommentForm';
 import CommentReplies from './CommentReplies';
 
 interface PostCommentsProps {
@@ -67,13 +69,35 @@ function PostComments({ post_slug }: PostCommentsProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [post_slug, currentPage]);
 
+  const handleCommentSubmit = (
+    description: string,
+    setIsLoading: any,
+    setFormError: any,
+    resetForm: any
+  ) => {
+    const payload = { description };
+    createComment({ payload, post_slug })
+      .then((commentData: IComment) => {
+        setComments((prevState: IComment[]) => [commentData, ...prevState]);
+        resetForm();
+        setIsLoading(false);
+      })
+      .catch((error: AxiosError) => {
+        setIsLoading(false);
+        const { message } = handleAxiosError(error);
+        if (error) {
+          setFormError(message);
+        }
+      });
+  };
+
   if (!comments) {
     return <Loading />;
   }
 
   return (
     <React.Fragment>
-      <TextField />
+      <CommentForm handleSubmit={handleCommentSubmit} />
       {comments.map((comment: IComment, idx: number) => {
         return (
           <Container key={comment.id} maxWidth="sm">
