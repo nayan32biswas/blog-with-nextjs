@@ -35,8 +35,8 @@ export interface IBaseListApi {
 export interface IAuther extends IMinimalUser {}
 
 export interface ITopic {
-  slug: string;
   name: string;
+  description: string | null;
 }
 
 export interface IPostForm {

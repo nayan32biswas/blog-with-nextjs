@@ -2,10 +2,12 @@ import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
 import Container from '@mui/material/Container';
@@ -13,10 +15,12 @@ import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
 
 import { handleAxiosError } from '@/api/apiUtils/AxiosConfig';
-import { fetchPostsDetails } from '@/api/postApi';
+import { deletePost, fetchPostsDetails } from '@/api/postApi';
 import PostComments from '@/components/comments/PostComments';
+import PostDeleteDialog from '@/components/posts/PostDeleteDioalog';
 import Common404 from '@/components/utils/Common404';
 import CommonErrorPage from '@/components/utils/CommonErrorPage';
+import FullPageLoader from '@/components/utils/FullPageLoader';
 import { UserContext } from '@/context/UserContext';
 import { IPostDetails } from '@/types/api.types';
 import { getFileUrl, toLocaleDateString } from '@/utils';
@@ -52,7 +56,11 @@ interface Props {
 }
 
 function PostDetails({ postDetails, errorMessage }: Props) {
+  const router = useRouter();
   const { userState } = React.useContext(UserContext);
+
+  const [loading, setLoading] = React.useState(false);
+  const [deleteOpen, setDeleteOpen] = React.useState(false);
 
   if (errorMessage) {
     return <CommonErrorPage message={errorMessage} />;
@@ -60,6 +68,27 @@ function PostDetails({ postDetails, errorMessage }: Props) {
   if (!postDetails) {
     return <Common404 message="Post not found" />;
   }
+
+  const handlePostDelete = async (isDelete: boolean) => {
+    if (!userState.me) {
+      alert('Invalid request');
+      return;
+    }
+    if (isDelete) {
+      setLoading(true);
+      deletePost({ post_slug: postDetails.slug })
+        .then(() => {
+          router.push(`/@${userState.me?.username}`);
+        })
+        .catch(() => {
+          console.log('something wrong');
+          setLoading(false);
+          setDeleteOpen(false);
+        });
+    } else {
+      setDeleteOpen(false);
+    }
+  };
 
   const userUrl = `/@${postDetails.author.username}`;
   return (
@@ -76,6 +105,7 @@ function PostDetails({ postDetails, errorMessage }: Props) {
             flexDirection: 'column'
           }}
         >
+          <FullPageLoader loading={loading} />
           <Container maxWidth="md">
             <Typography component="h1" variant="h2" fontWeight={400}>
               {postDetails.title}
@@ -113,7 +143,21 @@ function PostDetails({ postDetails, errorMessage }: Props) {
               />
               {userState.me?.username == postDetails.author.username && (
                 <Typography component="div" display="flex" alignItems="center">
-                  <Link href={`/posts/${postDetails.slug}/edit`}>Edit</Link>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'column'
+                    }}
+                  >
+                    <Button>
+                      <Link href={`/posts/${postDetails.slug}/edit`}>Edit</Link>
+                    </Button>
+
+                    <Button onClick={() => setDeleteOpen(true)} color="warning">
+                      Delete
+                    </Button>
+                    <PostDeleteDialog open={deleteOpen} handleDelete={handlePostDelete} />
+                  </Box>
                 </Typography>
               )}
             </Box>

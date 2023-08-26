@@ -35,14 +35,14 @@ function Topic({ topicData }: { topicData: ITopicList }) {
         scrollButtons="auto"
         aria-label="scrollable auto tabs example"
       >
-        {topicData.results.map((data, idx) => {
+        {topicData.results.map((topic, idx) => {
           return (
             <Tab
               key={idx}
               sx={classNames.tab}
               label={
-                <Link href={{ pathname: '/posts', query: { topic: data.slug } }}>
-                  <Chip label={data.name} sx={classNames.chip} />
+                <Link href={{ pathname: '/posts', query: { topic: topic.name } }}>
+                  <Chip label={topic.name} sx={classNames.chip} />
                 </Link>
               }
             />

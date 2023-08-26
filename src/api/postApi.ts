@@ -65,6 +65,15 @@ export async function updatePost({ payload, post_slug }: any) {
   }
 }
 
+export async function deletePost({ post_slug }: any) {
+  const config = await getAuthConfig();
+  try {
+    const res = await Axios.delete(POST_DETAILS_URL(post_slug), config);
+    return res.data as any;
+  } catch (error: any) {
+    return Promise.reject(error);
+  }
+}
 export async function fetchTopics({ params, SSContext }: ApiFuncArgs) {
   const config = await getAuthConfig(SSContext);
   try {
