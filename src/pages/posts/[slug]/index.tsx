@@ -17,7 +17,7 @@ import { red } from '@mui/material/colors';
 import { handleAxiosError } from '@/api/apiUtils/AxiosConfig';
 import { deletePost, fetchPostsDetails } from '@/api/postApi';
 import PostComments from '@/components/comments/PostComments';
-import PostDeleteDialog from '@/components/posts/PostDeleteDioalog';
+import ConfirmDialog from '@/components/posts/ConfirmDialog';
 import Common404 from '@/components/utils/Common404';
 import CommonErrorPage from '@/components/utils/CommonErrorPage';
 import FullPageLoader from '@/components/utils/FullPageLoader';
@@ -69,25 +69,19 @@ function PostDetails({ postDetails, errorMessage }: Props) {
     return <Common404 message="Post not found" />;
   }
 
-  const handlePostDelete = async (isDelete: boolean) => {
+  const handlePostDelete = async () => {
     if (!userState.me) {
       alert('Invalid request');
       return;
     }
-    if (isDelete) {
-      setLoading(true);
-      deletePost({ post_slug: postDetails.slug })
-        .then(() => {
-          router.push(`/@${userState.me?.username}`);
-        })
-        .catch(() => {
-          console.log('something wrong');
-          setLoading(false);
-          setDeleteOpen(false);
-        });
-    } else {
-      setDeleteOpen(false);
-    }
+    setLoading(true);
+    deletePost({ post_slug: postDetails.slug })
+      .then(() => {
+        router.push(`/@${userState.me?.username}`);
+      })
+      .catch(() => {
+        setLoading(false);
+      });
   };
 
   const userUrl = `/@${postDetails.author.username}`;
@@ -105,7 +99,6 @@ function PostDetails({ postDetails, errorMessage }: Props) {
             flexDirection: 'column'
           }}
         >
-          <FullPageLoader loading={loading} />
           <Container maxWidth="md">
             <Typography component="h1" variant="h2" fontWeight={400}>
               {postDetails.title}
@@ -156,7 +149,15 @@ function PostDetails({ postDetails, errorMessage }: Props) {
                     <Button onClick={() => setDeleteOpen(true)} color="warning">
                       Delete
                     </Button>
-                    <PostDeleteDialog open={deleteOpen} handleDelete={handlePostDelete} />
+                    <ConfirmDialog
+                      title="Do you want to delete this post?"
+                      open={deleteOpen}
+                      setOpen={() => setDeleteOpen(false)}
+                      onConfirm={handlePostDelete}
+                    >
+                      This is not reversible action.
+                    </ConfirmDialog>
+                    <FullPageLoader loading={loading} />
                   </Box>
                 </Typography>
               )}

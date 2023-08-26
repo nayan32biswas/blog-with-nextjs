@@ -16,6 +16,7 @@ import { getAuthConfig } from './apiUtils/auth';
 import {
   POSTS_URL,
   POST_COMMENTS_URL,
+  POST_COMMENT_DETAILS_URL,
   POST_COMMENT_REPLIES_URL,
   POST_DETAILS_URL,
   TOPICS_URL
@@ -117,6 +118,22 @@ export async function createComment({ payload, post_slug }: { payload: any; post
   try {
     const res = await Axios.post(POST_COMMENTS_URL(post_slug), payload, config);
     return res.data as IComment;
+  } catch (error: any) {
+    return Promise.reject(error);
+  }
+}
+
+export async function deleteComment({
+  post_slug,
+  commentId
+}: {
+  post_slug: string;
+  commentId: string;
+}) {
+  const config = await getAuthConfig();
+  try {
+    const res = await Axios.delete(POST_COMMENT_DETAILS_URL(post_slug, commentId), config);
+    return res.data as any;
   } catch (error: any) {
     return Promise.reject(error);
   }

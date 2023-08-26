@@ -14,11 +14,10 @@ import { useTheme } from '@mui/material/styles';
 import { IPost } from '@/types/api.types';
 import { getFileUrl, toLocaleDateString } from '@/utils';
 
-function PostCard({ post, isOwner = false }: { post: IPost; isOwner?: boolean }) {
+function PostCard({ post }: { post: IPost; isOwner?: boolean }) {
   const theme = useTheme();
   const userUrl = `/@${post.author.username}`;
   const postDetailsUrl = `/posts/${post.slug}`;
-  console.log(isOwner, post.publish_at);
   return (
     <Card>
       <Grid container spacing={2}>

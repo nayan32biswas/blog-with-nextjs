@@ -52,7 +52,6 @@ export async function getMe() {
   }
 }
 export async function updateMe({ payload }: any) {
-  console.log(payload);
   const config = await getAuthConfig();
   try {
     const res = await Axios.patch(UPDATE_ME_URL, payload, config);

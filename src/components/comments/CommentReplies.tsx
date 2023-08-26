@@ -47,12 +47,11 @@ function CommentReplies({
     commentId?: string
   ) => {
     const payload = { description };
-    console.log({ payload }, { commentId });
+
     if (!commentId) throw 'Invalid CommentID';
 
     createCommentReply({ payload, post_slug, commentId: commentId })
       .then((replyData: IReply) => {
-        console.log('Reply created', { replyData });
         setReplies(commentId, replyData);
         resetForm();
         setIsLoading(false);
