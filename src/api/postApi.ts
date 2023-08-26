@@ -18,6 +18,7 @@ import {
   POST_COMMENTS_URL,
   POST_COMMENT_DETAILS_URL,
   POST_COMMENT_REPLIES_URL,
+  POST_COMMENT_REPLY_DETAILS_URL,
   POST_DETAILS_URL,
   TOPICS_URL
 } from './endpoints';
@@ -152,6 +153,27 @@ export async function createCommentReply({
   try {
     const res = await Axios.post(POST_COMMENT_REPLIES_URL(post_slug, commentId), payload, config);
     return res.data as IReply;
+  } catch (error: any) {
+    return Promise.reject(error);
+  }
+}
+
+export async function deleteReply({
+  post_slug,
+  commentId,
+  replyId
+}: {
+  post_slug: string;
+  commentId: string;
+  replyId: string;
+}) {
+  const config = await getAuthConfig();
+  try {
+    const res = await Axios.delete(
+      POST_COMMENT_REPLY_DETAILS_URL(post_slug, commentId, replyId),
+      config
+    );
+    return res.data as any;
   } catch (error: any) {
     return Promise.reject(error);
   }

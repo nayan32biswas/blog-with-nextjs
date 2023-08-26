@@ -104,11 +104,24 @@ function PostComments({ post_slug }: PostCommentsProps) {
     return <Loading />;
   }
 
-  const setReplies = (commentId: string, reply: IReply) => {
+  const addReplies = (commentId: string, reply: IReply) => {
     setComments((prevComment: IComment[]) => {
       for (let i = 0; i < prevComment.length; i++) {
         if (prevComment[i].id === commentId) {
           prevComment[i].replies = [...prevComment[i].replies, reply];
+          break;
+        }
+      }
+      return [...prevComment];
+    });
+  };
+  const removeReplies = (commentId: string, replyId: string) => {
+    setComments((prevComment: IComment[]) => {
+      for (let i = 0; i < prevComment.length; i++) {
+        if (prevComment[i].id === commentId) {
+          prevComment[i].replies = [
+            ...prevComment[i].replies.filter((reply) => reply.id != replyId)
+          ];
           break;
         }
       }
@@ -210,7 +223,8 @@ function PostComments({ post_slug }: PostCommentsProps) {
               </Typography>
             </Container>
             <CommentReplies
-              setReplies={setReplies}
+              addReplies={addReplies}
+              removeReplies={removeReplies}
               replies={comment.replies}
               post_slug={post_slug}
               commentId={comment.id}
