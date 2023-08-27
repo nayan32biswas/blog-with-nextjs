@@ -10,7 +10,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { handleAxiosError } from '@/api/apiUtils/AxiosConfig';
-import { registration } from '@/api/authApi';
+import { registration } from '@/api/userApi';
 import AuthBase from '@/components/auth/AuthBase';
 import PasswordField from '@/components/auth/PasswordField';
 import { usernameRegex } from '@/utils';
@@ -62,7 +62,6 @@ function SignUp() {
         .catch((error: any) => {
           setIsLoading(false);
           const { errorField, message } = handleAxiosError(error);
-          console.log(errorField, message);
           if (errorField) {
             setErrors({ [errorField]: message });
           }
@@ -78,7 +77,6 @@ function SignUp() {
           fullWidth
           required
           margin="normal"
-          id="full_name"
           name="full_name"
           label="Full Name"
           value={formik.values.full_name}
@@ -90,7 +88,6 @@ function SignUp() {
           margin="normal"
           fullWidth
           required
-          id="username"
           name="username"
           label="Username"
           value={formik.values.username}
@@ -99,7 +96,6 @@ function SignUp() {
           helperText={formik.touched.username && formik.errors.username}
         />
         <PasswordField
-          id="password"
           name="password"
           label="Password"
           value={formik.values.password}
@@ -108,7 +104,6 @@ function SignUp() {
           error={formik.errors.password}
         />
         <PasswordField
-          id="confirm_password"
           name="confirm_password"
           label="Confirm Password"
           value={formik.values.confirm_password}

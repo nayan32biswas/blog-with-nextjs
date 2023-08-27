@@ -1,65 +1,92 @@
-import { NextPageContext } from 'next';
+import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
-import Link from 'next/link';
 
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
 import { handleAxiosError } from '@/api/apiUtils/AxiosConfig';
-import { fetchPosts } from '@/api/postApi';
+import { fetchPosts, fetchTopics } from '@/api/postApi';
+import PostCard from '@/components/posts/PostCard';
+import Topic from '@/components/posts/Topic';
+import { IPostList, ITopicList } from '@/types/api.types';
+import { getListApiDefaultValue } from '@/utils';
 
-function Post({ postData }: any) {
+export async function getServerSideProps(SSContext: GetServerSidePropsContext) {
+  const { topic } = SSContext.query;
+
+  let postData: IPostList = getListApiDefaultValue();
+  try {
+    postData = await fetchPosts({ SSContext, params: { page: 1, limit: 50, topics: topic } });
+  } catch (e: any) {
+    const { message: errorMessage } = handleAxiosError(e, SSContext);
+    postData.errorMessage = errorMessage;
+  }
+
+  let topicData: ITopicList = getListApiDefaultValue();
+  try {
+    topicData = await fetchTopics({ params: { page: 1, limit: 20 } });
+  } catch (e: any) {
+    const { message: errorMessage } = handleAxiosError(e);
+    topicData.errorMessage = errorMessage;
+  }
+
+  // Pass the fetched data as props
+  return {
+    props: {
+      postData,
+      topicData
+    }
+  };
+}
+
+interface PostsProps {
+  postData: IPostList;
+  topicData: ITopicList;
+}
+
+export default function Posts({ postData, topicData }: PostsProps) {
   return (
     <>
       <Head>
-        <title>Blog Posts App</title>
-        <meta name="description" content="This is about page for blog app" />
+        <title>Blog Post List</title>
+        <meta name="description" content="List of blog page" />
       </Head>
       <Container maxWidth="lg">
         <Box
           sx={{
             my: 4,
             display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center'
+            flexDirection: 'column'
           }}
         >
-          {postData?.errorMessage ? (
-            <Typography component="h1" variant="h4">
-              {postData?.errorMessage}
-            </Typography>
-          ) : (
-            <Typography component="h1" variant="h4" gutterBottom>
-              Total Post {postData?.count}
-            </Typography>
-          )}
-          <Link href="/" color="secondary">
-            Go to the home page
-          </Link>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+          >
+            <Topic topicData={topicData} />
+          </Box>
+          <Typography component="br" />
+          <Box
+            sx={{
+              display: 'grid',
+              gap: 2,
+              gridTemplateColumns: {
+                xs: '1fr'
+              }
+            }}
+          >
+            {postData.results.map((post, idx) => {
+              return <PostCard key={`post-${idx}`} post={post} />;
+            })}
+          </Box>
+
+          <Typography component="br" />
         </Box>
       </Container>
     </>
   );
-}
-
-export default Post;
-
-export async function getServerSideProps(SSContext: NextPageContext) {
-  // Fetch data from an API or any data source
-  let postData: any = null;
-  try {
-    postData = await fetchPosts(SSContext);
-  } catch (e: any) {
-    const { message } = handleAxiosError(e);
-    postData = { errorMessage: message };
-  }
-
-  // Pass the fetched data as props
-  return {
-    props: {
-      postData
-    }
-  };
 }

@@ -1,4 +1,8 @@
+import { GetServerSidePropsContext } from 'next';
+
 import axios, { AxiosError, AxiosResponse } from 'axios';
+
+import { clearToken } from './auth';
 
 const api = axios.create({
   timeout: 20000
@@ -29,7 +33,10 @@ api.interceptors.response.use(
   }
 );
 
-export function handleAxiosError(error: AxiosError) {
+export function handleAxiosError(
+  error: AxiosError,
+  SSContext: GetServerSidePropsContext | null = null
+) {
   let status = 0;
   let message = 'Something Wrong. try letter';
   let errorCode = 'UNKNOWN';
@@ -37,14 +44,18 @@ export function handleAxiosError(error: AxiosError) {
   let redirectUrl = null;
 
   if (!error.response) {
-    alert('Network error. Please check your internet.');
+    message = 'Network error. Please check your internet.';
   } else {
     status = error.response.status;
     let data = error.response.data as any;
 
     if (status >= 400 && status < 500) {
-      if (status === 422) {
-        message = 'Developer Error. Please contact with us.';
+      if (status === 401) {
+        clearToken(SSContext);
+        message = 'Authentication Error';
+        redirectUrl = '/auth/sign-in';
+      } else if (status === 422) {
+        message = 'Invalid data formatting. Please contact with us.';
       } else {
         if (data?.errors) {
           const errorObj = data?.errors[0];

@@ -1,8 +1,11 @@
+import { GetServerSidePropsContext } from 'next';
+
 import { ObjectType } from '@/types/common.types';
 import { isServer } from '@/utils';
 
-function getCookieObject(SSContext: any): ObjectType {
+function getCookieObject(SSContext: GetServerSidePropsContext | null): ObjectType {
   if (isServer()) {
+    if (!SSContext) return {};
     const cookie = SSContext.req?.cookies;
     if (!cookie) return {};
     return cookie;
@@ -19,16 +22,17 @@ function getCookieObject(SSContext: any): ObjectType {
     return Obj;
   }
 }
-function getServerCookieStrings(SSContext: any) {
+function getServerCookieStrings(SSContext: GetServerSidePropsContext | null) {
   const cookies = SSContext?.req?.cookies;
   if (cookies) {
     return Object.keys(cookies).map((key) => `${key}=${cookies[key]}; Path=/`);
   }
   return [];
 }
-export function setCookie(key: string, value: string, SSContext: any) {
+export function setCookie(key: string, value: string, SSContext: GetServerSidePropsContext | null) {
   const str = `${key}=${value}; path=/`;
   if (isServer()) {
+    if (!SSContext) return;
     try {
       SSContext.req.cookies[key] = value;
       SSContext.res.setHeader('Set-Cookie', getServerCookieStrings(SSContext));
@@ -40,11 +44,11 @@ export function setCookie(key: string, value: string, SSContext: any) {
   }
 }
 
-export function getCookie(key: string, SSContext: any): string {
+export function getCookie(key: string, SSContext: GetServerSidePropsContext | null): string {
   const cookies = getCookieObject(SSContext);
   return cookies[key] || '';
 }
 
-export function removeCookie(key: string, SSContext: any) {
+export function removeCookie(key: string, SSContext: GetServerSidePropsContext | null) {
   setCookie(key, '; Max-Age=-99999999', SSContext);
 }

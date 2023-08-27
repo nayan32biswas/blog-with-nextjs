@@ -1,3 +1,4 @@
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import React from 'react';
 
@@ -9,9 +10,9 @@ import Typography from '@mui/material/Typography';
 import { isAuthenticated } from '@/api/apiUtils/auth';
 import { UserContext } from '@/context/UserContext';
 
-import ProfileMenu from './ProfileMenu';
-import SearchModal from './SearchModal';
-import UnAuthMenu from './UnAuthMenu';
+const ProfileMenu = dynamic(() => import('./ProfileMenu'));
+const SearchBox = dynamic(() => import('./SearchBox'));
+const UnAuthMenu = dynamic(() => import('./UnAuthMenu'));
 
 function Navbar() {
   const { userState, userDispatch } = React.useContext(UserContext);
@@ -35,11 +36,15 @@ function Navbar() {
             <Link href={'/'}>Blog</Link>
           </Typography>
 
-          <SearchModal />
+          <SearchBox />
 
           <Box sx={{ flexGrow: 1 }} />
 
-          {userState.auth.isAuthenticated === true ? <ProfileMenu /> : <UnAuthMenu />}
+          {userState.auth.isAuthenticated === true && userState.me?.username ? (
+            <ProfileMenu username={userState.me?.username} />
+          ) : (
+            <UnAuthMenu />
+          )}
         </Toolbar>
       </AppBar>
     </Box>

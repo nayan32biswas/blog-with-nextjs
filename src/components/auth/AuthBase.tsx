@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -27,6 +28,12 @@ function Copyright(props: any) {
 }
 
 export default function AuthBase({ children, page }: AuthBaseProps) {
+  const router = useRouter();
+  const { next } = router.query;
+  function margeWithNext(url: string) {
+    if (next) return `${url}?next=${next}`;
+    return url;
+  }
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -53,11 +60,11 @@ export default function AuthBase({ children, page }: AuthBaseProps) {
           </Grid>
           <Grid item>
             {page === 'SIGN_IN' ? (
-              <Link className="a-tag" href="/auth/sign-up">
+              <Link className="a-tag" href={margeWithNext('/auth/sign-up')}>
                 {"Don't have an account? Sign Up"}
               </Link>
             ) : (
-              <Link href="/auth/sign-in" className="a-tag">
+              <Link href={margeWithNext('/auth/sign-in')} className="a-tag">
                 {'Already have an account? Sign In'}
               </Link>
             )}

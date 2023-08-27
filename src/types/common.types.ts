@@ -1,3 +1,4 @@
+import { GetServerSidePropsContext } from 'next';
 import React from 'react';
 
 export interface ObjectType {
@@ -7,3 +8,12 @@ export interface ObjectType {
 export type ComponentChildrenProps = {
   children: React.ReactNode;
 };
+
+export interface BaseApiFuncArgs {
+  SSContext?: GetServerSidePropsContext | null;
+}
+
+export interface ApiFuncArgs extends BaseApiFuncArgs {
+  params?: ObjectType;
+  [key: string]: any;
+}

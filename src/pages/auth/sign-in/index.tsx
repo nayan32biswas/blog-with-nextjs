@@ -14,7 +14,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { handleAxiosError } from '@/api/apiUtils/AxiosConfig';
-import { login } from '@/api/authApi';
+import { login } from '@/api/userApi';
 import AuthBase from '@/components/auth/AuthBase';
 import PasswordField from '@/components/auth/PasswordField';
 import { UserContext } from '@/context/UserContext';
@@ -46,6 +46,7 @@ function SignIn() {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
+      setIsLoading(true);
       login(values)
         .then(() => {
           // const currentPath = router.pathname;
@@ -54,7 +55,12 @@ function SignIn() {
 
           let toPath = '/';
 
-          if (next && typeof next === 'string') {
+          if (
+            next &&
+            typeof next === 'string' &&
+            !next.includes('sign-in') &&
+            !next.includes('sign-up')
+          ) {
             toPath = next;
           }
           userDispatch({
@@ -63,9 +69,9 @@ function SignIn() {
               isAuthenticated: true
             }
           });
-          router.push(toPath);
+          // router.push(toPath);
 
-          // router.push(toPath).then(() => router.reload());
+          router.push(toPath).then(() => router.reload());
         })
         .catch((error: AxiosError) => {
           setIsLoading(false);
@@ -84,7 +90,6 @@ function SignIn() {
           margin="normal"
           fullWidth
           required
-          id="username"
           name="username"
           label="Username"
           value={formik.values.username}
@@ -93,7 +98,6 @@ function SignIn() {
           helperText={formik.touched.username && formik.errors.username}
         />
         <PasswordField
-          id="password"
           name="password"
           label="Password"
           value={formik.values.password}
