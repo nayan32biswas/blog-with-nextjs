@@ -124,6 +124,24 @@ export async function createComment({ payload, post_slug }: { payload: any; post
   }
 }
 
+export async function updateComment({
+  payload,
+  post_slug,
+  commentId
+}: {
+  payload: any;
+  post_slug: string;
+  commentId: string;
+}) {
+  const config = await getAuthConfig();
+  try {
+    const res = await Axios.put(POST_COMMENT_DETAILS_URL(post_slug, commentId), payload, config);
+    return res.data as any;
+  } catch (error: any) {
+    return Promise.reject(error);
+  }
+}
+
 export async function deleteComment({
   post_slug,
   commentId
@@ -153,6 +171,30 @@ export async function createCommentReply({
   try {
     const res = await Axios.post(POST_COMMENT_REPLIES_URL(post_slug, commentId), payload, config);
     return res.data as IReply;
+  } catch (error: any) {
+    return Promise.reject(error);
+  }
+}
+
+export async function updateReply({
+  post_slug,
+  commentId,
+  replyId,
+  payload
+}: {
+  post_slug: string;
+  commentId: string;
+  replyId: string;
+  payload: any;
+}) {
+  const config = await getAuthConfig();
+  try {
+    const res = await Axios.put(
+      POST_COMMENT_REPLY_DETAILS_URL(post_slug, commentId, replyId),
+      payload,
+      config
+    );
+    return res.data as any;
   } catch (error: any) {
     return Promise.reject(error);
   }

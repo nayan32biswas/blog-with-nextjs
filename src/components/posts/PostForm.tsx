@@ -21,7 +21,7 @@ import FileInput, { LinearProgressWithLabel } from '../utils/FileInput';
 import StyledTextArea from '../utils/StyledTextArea';
 import InputTags from './InputTags';
 
-const getInitialValues = (postDetails?: IPostDetails): IPostForm => {
+const getInitialValues = (postDetails?: IPostDetails) => {
   let initialValues: IPostForm = {
     title: '',
     short_description: '',
@@ -35,7 +35,7 @@ const getInitialValues = (postDetails?: IPostDetails): IPostForm => {
       title: postDetails.title,
       short_description: postDetails.short_description,
       cover_image: postDetails.cover_image,
-      description: postDetails.description,
+      description: postDetails.description || '',
       publish_now: !postDetails.publish_at === false,
       topics: postDetails.topics.map((topic) => topic.name)
     };
@@ -50,7 +50,7 @@ const validationSchema = yup.object({
     .min(3, 'Title should be of minimum 3 characters length')
     .required('Post should have a title'),
   short_description: yup.string(),
-  cover_image: yup.string(),
+  cover_image: yup.string().notRequired(),
   description: yup.string().required('Post should have a description')
 });
 
@@ -154,15 +154,12 @@ function PostForm({ postDetails, handleSubmitPost }: Props) {
             aria-label="Post description"
             minRows={3}
             placeholder="Write post description"
-            margin="normal"
-            fullWidth
             required
             name="description"
-            label="Description"
             value={formik.values.description}
             onChange={formik.handleChange}
-            error={formik.touched.description && Boolean(formik.errors.description)}
-            helperText={formik.touched.description && formik.errors.description}
+            // error={formik.touched.description && Boolean(formik.errors.description)}
+            // helperText={formik.touched.description && formik.errors.description}
           />
 
           <FormControlLabel

@@ -69,9 +69,9 @@ function SignIn() {
               isAuthenticated: true
             }
           });
-          router.push(toPath);
+          // router.push(toPath);
 
-          // router.push(toPath).then(() => router.reload());
+          router.push(toPath).then(() => router.reload());
         })
         .catch((error: AxiosError) => {
           setIsLoading(false);

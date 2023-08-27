@@ -14,15 +14,16 @@ import { red } from '@mui/material/colors';
 import { AxiosError } from 'axios';
 
 import { handleAxiosError } from '@/api/apiUtils/AxiosConfig';
-import { createComment, deleteComment, fetchComments } from '@/api/postApi';
+import { createComment, deleteComment, fetchComments, updateComment } from '@/api/postApi';
 import { UserContext } from '@/context/UserContext';
-import { IComment, ICommentList, IReply } from '@/types/api.types';
+import { IComment, ICommentList } from '@/types/api.types';
 import { getFileUrl, getListApiDefaultValue, toLocaleDateString } from '@/utils';
 
 import ConfirmDialog from '../posts/ConfirmDialog';
 import FullPageLoader from '../utils/FullPageLoader';
 import Loading from '../utils/Loading';
-import CommentForm from './CommentForm';
+import CommentEditModal from './CommentEditModal';
+import CommentForm, { IHandleCommentSubmit } from './CommentForm';
 import CommentReplies from './CommentReplies';
 
 interface PostCommentsProps {
@@ -39,6 +40,8 @@ function PostComments({ post_slug }: PostCommentsProps) {
 
   const [loading, setLoading] = React.useState(false);
   const [openDeleteCommentId, setOpenDeleteCommentId] = React.useState<string | null>(null);
+
+  const [updateCommentData, setUpdateCommentData] = React.useState<any>(null);
 
   React.useEffect(() => {
     function margeComments(newComments: IComment[]) {
@@ -78,24 +81,45 @@ function PostComments({ post_slug }: PostCommentsProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [post_slug, currentPage]);
 
-  const handleCommentSubmit = (
-    description: string,
-    setIsLoading: any,
-    setFormError: any,
-    resetForm: any
-  ) => {
-    const payload = { description };
+  const handleCommentSubmit = (data: IHandleCommentSubmit) => {
+    const payload = { description: data.description };
     createComment({ payload, post_slug })
       .then((commentData: IComment) => {
         setComments((prevState: IComment[]) => [commentData, ...prevState]);
-        resetForm();
-        setIsLoading(false);
+        data.resetForm();
+        data.setIsLoading(false);
       })
       .catch((error: AxiosError) => {
-        setIsLoading(false);
+        data.setIsLoading(false);
         const { message } = handleAxiosError(error);
         if (error) {
-          setFormError(message);
+          data.setFormError(message);
+        }
+      });
+  };
+
+  const handleCommentUpdate = (data: IHandleCommentSubmit) => {
+    const payload = { description: data.description };
+    if (!data.commentId) throw 'Invalid comment id';
+
+    updateComment({ payload, post_slug, commentId: data.commentId })
+      .then(() => {
+        setComments((prevState: IComment[]) => [
+          ...prevState.map((comment: IComment) => {
+            if (comment.id == data.commentId) {
+              comment.description = data.description;
+            }
+            return comment;
+          })
+        ]);
+        data.resetForm();
+        data.setIsLoading(false);
+      })
+      .catch((error: AxiosError) => {
+        data.setIsLoading(false);
+        const { message } = handleAxiosError(error);
+        if (error) {
+          data.setFormError(message);
         }
       });
   };
@@ -103,31 +127,6 @@ function PostComments({ post_slug }: PostCommentsProps) {
   if (!comments) {
     return <Loading />;
   }
-
-  const addReplies = (commentId: string, reply: IReply) => {
-    setComments((prevComment: IComment[]) => {
-      for (let i = 0; i < prevComment.length; i++) {
-        if (prevComment[i].id === commentId) {
-          prevComment[i].replies = [...prevComment[i].replies, reply];
-          break;
-        }
-      }
-      return [...prevComment];
-    });
-  };
-  const removeReplies = (commentId: string, replyId: string) => {
-    setComments((prevComment: IComment[]) => {
-      for (let i = 0; i < prevComment.length; i++) {
-        if (prevComment[i].id === commentId) {
-          prevComment[i].replies = [
-            ...prevComment[i].replies.filter((reply) => reply.id != replyId)
-          ];
-          break;
-        }
-      }
-      return [...prevComment];
-    });
-  };
 
   const handleCommentDelete = async (commentId: string) => {
     console.log({ commentId });
@@ -198,7 +197,16 @@ function PostComments({ post_slug }: PostCommentsProps) {
                       flexDirection: 'column'
                     }}
                   >
-                    <Button>Edit</Button>
+                    <Button
+                      onClick={() => {
+                        setUpdateCommentData({
+                          commentId: comment.id,
+                          description: comment.description
+                        });
+                      }}
+                    >
+                      Edit
+                    </Button>
 
                     <Button onClick={() => setOpenDeleteCommentId(comment.id)} color="warning">
                       Delete
@@ -223,12 +231,10 @@ function PostComments({ post_slug }: PostCommentsProps) {
               </Typography>
             </Container>
             <CommentReplies
-              addReplies={addReplies}
-              removeReplies={removeReplies}
+              setComments={setComments}
               replies={comment.replies}
               post_slug={post_slug}
               commentId={comment.id}
-              reply_box_open={true}
             />
           </Container>
         );
@@ -242,6 +248,16 @@ function PostComments({ post_slug }: PostCommentsProps) {
           </Grid>
         </Typography>
       ) : null}
+      {updateCommentData && (
+        <CommentEditModal
+          title="Do you want to delete this comment?"
+          open={updateCommentData != null}
+          setOpen={() => setUpdateCommentData(null)}
+          commentId={updateCommentData.commentId}
+          description={updateCommentData.description}
+          onConfirm={handleCommentUpdate}
+        />
+      )}
     </React.Fragment>
   );
 }
