@@ -11,6 +11,7 @@ import Button from '@mui/material/Button';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
 import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
 
@@ -18,6 +19,7 @@ import { handleAxiosError } from '@/api/apiUtils/AxiosConfig';
 import { deletePost, fetchPostsDetails } from '@/api/postApi';
 import PostComments from '@/components/comments/PostComments';
 import ConfirmDialog from '@/components/posts/ConfirmDialog';
+import Topic from '@/components/posts/Topic';
 import Common404 from '@/components/utils/Common404';
 import CommonErrorPage from '@/components/utils/CommonErrorPage';
 import FullPageLoader from '@/components/utils/FullPageLoader';
@@ -176,6 +178,9 @@ function PostDetails({ postDetails, errorMessage }: Props) {
           />
           <Typography component={'br'} />
           <Typography component={'hr'} />
+          <Grid container justifyContent="center">
+            <Topic topics={postDetails.topics} />
+          </Grid>
           <Container maxWidth="md">
             <Typography component="p">{postDetails.description}</Typography>
           </Container>

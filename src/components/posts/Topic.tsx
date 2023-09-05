@@ -6,7 +6,7 @@ import Chip from '@mui/material/Chip';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 
-import { ITopicList } from '@/types/api.types';
+import { ITopic } from '@/types/api.types';
 
 const classNames = {
   root: {
@@ -25,7 +25,7 @@ const classNames = {
   }
 };
 
-function Topic({ topicData }: { topicData: ITopicList }) {
+function Topic({ topics }: { topics: ITopic[] }) {
   return (
     <Box sx={classNames.root}>
       <Tabs
@@ -35,13 +35,13 @@ function Topic({ topicData }: { topicData: ITopicList }) {
         scrollButtons="auto"
         aria-label="scrollable auto tabs example"
       >
-        {topicData.results.map((topic, idx) => {
+        {topics.map((topic, idx) => {
           return (
             <Tab
               key={idx}
               sx={classNames.tab}
               label={
-                <Link href={{ pathname: '/posts', query: { topic: topic.name } }}>
+                <Link href={{ pathname: '/posts', query: { topic: topic.slug } }}>
                   <Chip label={topic.name} sx={classNames.chip} />
                 </Link>
               }
