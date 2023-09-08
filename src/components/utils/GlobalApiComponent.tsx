@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import React from 'react';
 
 import { handleAxiosError } from '@/api/apiUtils/AxiosConfig';
@@ -8,12 +9,13 @@ import { IUserDetails } from '@/types/api.types';
 import { isServer } from '@/utils';
 
 function GlobalApiComponent() {
+  const router = useRouter();
   const { userState, userDispatch } = React.useContext(UserContext);
 
   React.useEffect(() => {
     (async () => {
       if (isServer() === false) {
-        if (isAuthenticated()) {
+        if (isAuthenticated() && router.isReady) {
           if (!userState.me) {
             try {
               const me: IUserDetails = await getMe();
@@ -22,8 +24,10 @@ function GlobalApiComponent() {
                 payload: me
               });
             } catch (e: any) {
-              const { message } = handleAxiosError(e);
-              alert(message);
+              const { status } = handleAxiosError(e);
+              if (status == 401) {
+                router.push(`/auth/sign-in?next=${router.asPath}`);
+              }
             }
           }
         } else {
@@ -31,7 +35,7 @@ function GlobalApiComponent() {
         }
       }
     })();
-  }, [userState.me, userDispatch]);
+  }, [router, userState.me, userDispatch]);
   return null;
 }
 
