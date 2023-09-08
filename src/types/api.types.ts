@@ -28,7 +28,7 @@ export interface ITokenApi {
 }
 
 export interface IBaseListApi {
-  count: number;
+  after: string | null;
   errorMessage?: string | null;
 }
 
@@ -36,6 +36,7 @@ export interface IAuther extends IMinimalUser {}
 
 export interface ITopic {
   name: string;
+  slug: string;
   description: string | null;
 }
 

@@ -12,7 +12,7 @@ const ACCESS_TOKEN: string = 'A_T';
 const ACCESS_TOKEN_EXP: string = 'A_E';
 const REFRESH_TOKEN: string = 'R_T';
 
-const tokeSafeMarginMinutes = 1 * 10;
+const tokeSafeMarginMinutes = 60 * 5;
 
 function parseJwt(token: string): ObjectType {
   var base64Url = token.split('.')[1];

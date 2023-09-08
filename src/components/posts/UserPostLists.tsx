@@ -1,14 +1,16 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import { Pagination } from '@mui/material';
+import LoadingButton from '@mui/lab/LoadingButton';
+import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
 
 import { handleAxiosError } from '@/api/apiUtils/AxiosConfig';
 import { fetchPosts } from '@/api/postApi';
-import { IPostList } from '@/types/api.types';
-import { getListApiDefaultValue } from '@/utils';
-import { getPageNumber } from '@/utils/urlParser';
+import { IPost } from '@/types/api.types';
+import { ObjectType } from '@/types/common.types';
+import { margeList } from '@/utils';
 
 import CommonErrorPage from '../utils/CommonErrorPage';
 import Loading from '../utils/Loading';
@@ -17,30 +19,44 @@ import PostCard from './PostCard';
 function PostLists({ username = '' }: { username: string }) {
   const postLimit = 20;
   const router = useRouter();
-  const [postData, setPostData] = React.useState<IPostList>(getListApiDefaultValue());
-  React.useEffect(() => {
-    const pageNumber = getPageNumber(router);
 
-    const fetchData = async () => {
-      try {
-        const params = { username, limit: postLimit, page: pageNumber };
-        const postData = await fetchPosts({ params });
-        setPostData((): IPostList => postData);
-      } catch (e: any) {
-        const { message: errorMessage } = handleAxiosError(e);
-        setPostData((prevState: IPostList): IPostList => ({ ...prevState, errorMessage }));
-      }
-    };
-    fetchData();
-  }, [router, username]);
-  function totalPage() {
-    if (postData) {
-      return Math.ceil(postData.count / postLimit);
+  const [errorMessage, setErrorMessage] = React.useState('');
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [postAfter, setPostAfter] = React.useState<string | null>(null);
+  const [posts, setPosts] = React.useState<IPost[]>([]);
+
+  const fetchPostData = (after: string | null = null) => {
+    setIsLoading(true);
+    const params: ObjectType = { username, limit: postLimit, after };
+    const topic = router.query?.topic;
+    if (topic) {
+      params.topics = topic;
     }
-    return 0;
-  }
-  if (postData.errorMessage) return <CommonErrorPage message={postData.errorMessage} />;
-  if (!postData.results) return <Loading />;
+    fetchPosts({ params })
+      .then((postData) => {
+        setIsLoading(false);
+        setPostAfter(postData.after);
+        if (after === null) {
+          setPosts((): IPost[] => [...postData.results]);
+        } else {
+          setPosts((prevPosts): IPost[] => [...margeList(prevPosts, postData.results, 'slug')]);
+        }
+      })
+      .catch((e) => {
+        setIsLoading(false);
+        const { message: errorMessage } = handleAxiosError(e);
+        setErrorMessage(errorMessage);
+      });
+  };
+
+  React.useEffect(() => {
+    fetchPostData(null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router, username]);
+
+  if (errorMessage) return <CommonErrorPage message={errorMessage} />;
+  if (!posts) return <Loading />;
+
   return (
     <>
       <Box
@@ -53,29 +69,26 @@ function PostLists({ username = '' }: { username: string }) {
           }
         }}
       >
-        {postData.results.map((post, idx) => {
+        {posts.map((post, idx) => {
           return <PostCard key={`post-${idx}`} post={post} />;
         })}
       </Box>
-      <Box
-        sx={{
-          marginTop: 4,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center'
-        }}
-      >
-        <Pagination
-          count={totalPage()}
-          defaultPage={getPageNumber(router)}
-          color="primary"
-          onChange={(e, value: number) => {
-            router.replace({
-              query: { ...router.query, page: value }
-            });
-          }}
-        />
-      </Box>
+      {postAfter ? (
+        <Typography component="div">
+          <Grid container justifyContent="center">
+            <LoadingButton
+              loading={isLoading}
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mb: 2 }}
+              onClick={() => fetchPostData(postAfter)}
+            >
+              Load More
+            </LoadingButton>
+          </Grid>
+        </Typography>
+      ) : null}
     </>
   );
 }

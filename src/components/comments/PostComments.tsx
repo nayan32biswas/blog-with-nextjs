@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
+import LoadingButton from '@mui/lab/LoadingButton';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -34,52 +35,54 @@ function PostComments({ post_slug }: PostCommentsProps) {
   const limit = 5;
   const { userState } = React.useContext(UserContext);
 
-  const [currentPage, setCurrentPage] = React.useState<number>(1);
+  const [isLoading, setIsLoading] = React.useState(false);
+
   const [comments, setComments] = React.useState<IComment[]>([]);
-  const [totalComment, setTotalComment] = React.useState<number>(0);
+  const [commentAfter, setCommentAfter] = React.useState<string | null>(null);
 
   const [loading, setLoading] = React.useState(false);
   const [openDeleteCommentId, setOpenDeleteCommentId] = React.useState<string | null>(null);
 
   const [updateCommentData, setUpdateCommentData] = React.useState<any>(null);
 
-  React.useEffect(() => {
-    function margeComments(newComments: IComment[]) {
-      const commentIds: Set<string> = new Set();
-      const commentList = [...comments];
-      commentList.forEach((comment: IComment) => {
-        commentIds.add(comment.id);
-      });
+  function margeComments(newComments: IComment[]) {
+    const commentIds: Set<string> = new Set();
+    const commentList = [...comments];
+    commentList.forEach((comment: IComment) => {
+      commentIds.add(comment.id);
+    });
 
-      newComments.forEach((comment: IComment) => {
-        if (commentIds.has(comment.id) === false) {
-          commentList.push(comment);
-        }
-      });
-      setComments(commentList);
-    }
+    newComments.forEach((comment: IComment) => {
+      if (commentIds.has(comment.id) === false) {
+        commentList.push(comment);
+      }
+    });
+    setComments(commentList);
+  }
 
-    const fetchData = async (post_slug: string, page: number) => {
-      let commentData: ICommentList = getListApiDefaultValue();
-      try {
-        commentData = await fetchComments({
-          post_slug,
-          params: { page, limit: limit }
-        });
-      } catch (e: any) {
+  const fetchCommentData = (after: string | null = null) => {
+    let commentData: ICommentList = getListApiDefaultValue();
+    setIsLoading(true);
+    fetchComments({
+      post_slug,
+      params: { after, limit }
+    })
+      .then((commentData) => {
+        setCommentAfter(commentData.after);
+        margeComments(commentData.results);
+        setIsLoading(false);
+      })
+      .catch((e) => {
+        setIsLoading(false);
         const { message: errorMessage } = handleAxiosError(e);
         commentData.errorMessage = errorMessage;
-      }
+      });
+  };
 
-      setTotalComment(commentData.count);
-      margeComments(commentData.results);
-    };
-    fetchData(post_slug, currentPage).catch((e) => {
-      // handle the error as needed
-      console.error('An error occurred while fetching the data: ', e);
-    });
+  React.useEffect(() => {
+    fetchCommentData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [post_slug, currentPage]);
+  }, []);
 
   const handleCommentSubmit = (data: IHandleCommentSubmit) => {
     const payload = { description: data.description };
@@ -129,8 +132,6 @@ function PostComments({ post_slug }: PostCommentsProps) {
   }
 
   const handleCommentDelete = async (commentId: string) => {
-    console.log({ commentId });
-
     setLoading(true);
     deleteComment({ post_slug, commentId })
       .then(() => {
@@ -239,15 +240,23 @@ function PostComments({ post_slug }: PostCommentsProps) {
           </Container>
         );
       })}
-      {totalComment > currentPage * limit ? (
+
+      {commentAfter && (
         <Typography component="div">
           <Grid container justifyContent="center">
-            <Typography component={'button'} onClick={() => setCurrentPage(currentPage + 1)}>
+            <LoadingButton
+              loading={isLoading}
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mb: 2, maxWidth: '200px' }}
+              onClick={() => fetchCommentData(commentAfter)}
+            >
               Load More
-            </Typography>
+            </LoadingButton>
           </Grid>
         </Typography>
-      ) : null}
+      )}
       {updateCommentData && (
         <CommentEditModal
           title="Do you want to delete this comment?"

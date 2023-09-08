@@ -22,7 +22,7 @@ export const isValidObj = (obj: any): boolean => {
 
 export function getListApiDefaultValue() {
   return {
-    count: 0,
+    after: null,
     results: [],
     errorMessage: null
   };
@@ -43,9 +43,15 @@ export function objectToQueryParams(obj: ObjectType): string {
       const value = obj[key];
 
       if (Array.isArray(value)) {
-        value.forEach((item) => queryParams.append(key, item.toString()));
+        value.forEach((item) => {
+          if (item) {
+            queryParams.append(key, encodeURIComponent(item));
+          }
+        });
       } else {
-        queryParams.append(key, value.toString());
+        if (value) {
+          queryParams.append(key, encodeURIComponent(value));
+        }
       }
     }
   }
@@ -67,7 +73,7 @@ export function getFileUrl(url: string | null): string {
   return CONTENT_URL + url;
 }
 
-export function margeList(baseList: any[], otherList: any[], key = 'id') {
+export function margeList(baseList: any[], otherList: any[], key: string = 'id') {
   const uniqueKeys: Set<string> = new Set();
   const newList = [...baseList];
   newList.forEach((obj) => {

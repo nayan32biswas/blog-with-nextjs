@@ -107,7 +107,7 @@ export default function Home({ postData, topicData }: HomeProps) {
               alignItems: 'center'
             }}
           >
-            <Topic topicData={topicData} />
+            {topicData.results && <Topic topics={topicData.results} />}
           </Box>
           <Typography component="br" />
           <Box
