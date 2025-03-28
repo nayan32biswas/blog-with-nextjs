@@ -1,3 +1,5 @@
+"use client";
+
 import { Menu, Search, User } from "lucide-react";
 import Link from "next/link";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
@@ -21,8 +23,38 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { useAuth } from "@/contexts/AuthContext";
 
 export function Navbar() {
+  const { isAuthenticated, logout } = useAuth();
+
+  const renderUserMenu = () => {
+    return (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild className="hidden md:flex">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8 cursor-pointer rounded-full bg-gray-200"
+          >
+            <User className="h-4 w-4" />
+            <span className="sr-only">User menu</span>
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuLabel>My Account</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem>Profile</DropdownMenuItem>
+          <DropdownMenuItem>Dashboard</DropdownMenuItem>
+          <DropdownMenuItem>Settings</DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={() => logout()} className="cursor-pointer">
+            Sign out
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    );
+  };
   return (
     <>
       <header className="sticky top-0 z-50 border-b border-gray-200 bg-white">
@@ -59,23 +91,13 @@ export function Navbar() {
             </Link>
 
             {/* User Dropdown */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild className="hidden md:flex">
-                <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full bg-gray-200">
-                  <User className="h-4 w-4" />
-                  <span className="sr-only">User menu</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Profile</DropdownMenuItem>
-                <DropdownMenuItem>Dashboard</DropdownMenuItem>
-                <DropdownMenuItem>Settings</DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Sign out</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            {isAuthenticated ? (
+              renderUserMenu()
+            ) : (
+              <Button variant={"outline"} className="cursor-pointer">
+                <Link href={"/auth/signin"}>Login</Link>
+              </Button>
+            )}
 
             {/* Mobile Menu Button */}
             <Sheet>
