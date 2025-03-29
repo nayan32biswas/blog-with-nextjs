@@ -1,12 +1,39 @@
-import React from "react";
+"use client";
 
-import { blogPosts, topics } from "@/lib/temp_data";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+import { DEFAULT_ITEMS_LIMIT, MIN_ITEMS_LIMIT } from "@/lib/config";
+import { PostAction } from "@/lib/features/posts/postsSlice";
+import { RootState } from "@/lib/store";
 
 import { PostCard } from "./PostCard";
 import { MobileTopicsDrawer } from "./topic/MobileTopicsDrawer";
 import { TopicsBlock } from "./topic/TopicsBlock";
 
 export default function PostListContainer() {
+  const dispatch = useDispatch();
+
+  const { postsApiData, topicsApiData } = useSelector((state: RootState) => state.posts);
+
+  const topics = topicsApiData.results || [];
+  const posts = postsApiData.results || [];
+
+  const loadTopics = async () => {
+    const queryParams = { limit: MIN_ITEMS_LIMIT };
+    dispatch(PostAction.getTopics({ queryParams }));
+  };
+
+  const loadPosts = async () => {
+    const queryParams = { limit: DEFAULT_ITEMS_LIMIT };
+    dispatch(PostAction.getPosts({ queryParams }));
+  };
+
+  React.useEffect(() => {
+    loadTopics();
+    loadPosts();
+  }, []);
+
   return (
     <section>
       {/* Latest Articles Header with Topics Button for Mobile */}
@@ -21,7 +48,7 @@ export default function PostListContainer() {
       <div className="grid grid-cols-1 gap-10 lg:grid-cols-3">
         <div className="lg:col-span-2">
           <div className="grid gap-8">
-            {blogPosts.map((post) => (
+            {posts.map((post) => (
               <PostCard key={`post-${post.slug}`} post={post} />
             ))}
           </div>

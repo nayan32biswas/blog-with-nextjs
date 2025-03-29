@@ -11,22 +11,37 @@ import {
   Share2,
 } from "lucide-react";
 import Link from "next/link";
+import React from "react";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
-import { blogPosts } from "@/lib/temp_data";
+import { PostAction } from "@/lib/features/posts/postsSlice";
+import { RootState } from "@/lib/store";
 
 export default function PostDetails({ slug }: { slug: string }) {
-  const post = blogPosts.find((p) => p.slug === slug);
+  const dispatch = useDispatch();
+
+  const { postsDetailsApiData } = useSelector((state: RootState) => state.posts);
+
+  const { data: post } = postsDetailsApiData;
 
   const [expandedComments, setExpandedComments] = useState<number[]>([]);
   const [newComment, setNewComment] = useState("");
   const [replyContent, setReplyContent] = useState<{ [key: number]: string }>({});
   const [showReplyInput, setShowReplyInput] = useState<{ [key: number]: boolean }>({});
+
+  const loadPostsDetails = async () => {
+    dispatch(PostAction.getPostsDetails({ slug }));
+  };
+
+  React.useEffect(() => {
+    loadPostsDetails();
+  }, []);
 
   if (!post) {
     return (
@@ -70,7 +85,7 @@ export default function PostDetails({ slug }: { slug: string }) {
     <div className="bg-background min-h-screen">
       {/* Hero Section */}
       <div className="relative h-[60vh] overflow-hidden">
-        <img src={post.image} alt={post.title} className="h-full w-full object-cover" />
+        <img src={post.cover_image} alt={post.title} className="h-full w-full object-cover" />
         <div className="absolute inset-0 bg-black/50" />
         <div className="absolute inset-0 flex items-center">
           <div className="container mx-auto px-4">
@@ -81,25 +96,25 @@ export default function PostDetails({ slug }: { slug: string }) {
               </Button>
             </Link>
             <Badge variant="secondary" className="mb-4">
-              {post.category}
+              {post.short_description}
             </Badge>
             <h1 className="mb-4 max-w-4xl text-4xl font-bold text-white md:text-5xl lg:text-6xl">
               {post.title}
             </h1>
             <div className="flex items-center gap-4">
               <Avatar className="h-10 w-10">
-                <AvatarImage src={post.author.avatar} />
-                <AvatarFallback>{post.author.initials}</AvatarFallback>
+                <AvatarImage src={post.author.image} />
+                <AvatarFallback>{post.author.full_name}</AvatarFallback>
               </Avatar>
               <div className="flex items-center gap-4 text-sm text-white">
-                <span>{post.author.name}</span>
+                <span>{post.author.full_name}</span>
                 <span>•</span>
                 <div className="flex items-center gap-1">
                   <Clock className="h-4 w-4" />
-                  {post.readTime}
+                  {"000"}
                 </div>
                 <span>•</span>
-                <span>{post.date}</span>
+                <span>{post.publish_at}</span>
               </div>
             </div>
           </div>

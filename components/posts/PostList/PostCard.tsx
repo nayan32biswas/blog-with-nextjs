@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { IPost } from "@/lib/features/posts/post.types";
+import { IPost } from "@/lib/features/posts/types";
 
 interface PostCardProps {
   post: IPost;

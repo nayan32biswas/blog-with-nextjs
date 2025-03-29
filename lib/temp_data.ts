@@ -1,4 +1,4 @@
-import { IPost } from "./features/posts/post.types";
+import { IPost } from "./features/posts/types";
 
 // Mock data for blog posts
 export const blogPosts: IPost[] = [

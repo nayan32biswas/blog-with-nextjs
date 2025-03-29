@@ -5,7 +5,7 @@ import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { ITopic } from "@/lib/features/posts/post.types";
+import { ITopic } from "@/lib/features/posts/types";
 
 import { TopicsBlock } from "./TopicsBlock";
 

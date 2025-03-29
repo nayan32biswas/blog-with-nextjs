@@ -6,8 +6,8 @@ import * as React from "react";
 
 import { serverClearTokens } from "@/app/actions/auth";
 import { hasValidToken } from "@/lib/axios";
-import { IAuthUser } from "@/lib/features/auth/auth.types";
 import { AuthApiService } from "@/lib/features/auth/authApi";
+import { IAuthUser } from "@/lib/features/auth/types";
 
 interface AuthContextType {
   authUser: IAuthUser | null;

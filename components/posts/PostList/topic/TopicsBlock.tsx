@@ -4,7 +4,7 @@ import { Search } from "lucide-react";
 import { useState } from "react";
 
 import { Input } from "@/components/ui/input";
-import { ITopic } from "@/lib/features/posts/post.types";
+import { ITopic } from "@/lib/features/posts/types";
 
 interface TopicsBlockProps {
   topics: ITopic[];

@@ -1,61 +1,157 @@
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-import { IPost } from "./post.types";
+import { API_STATE } from "../common/constants";
+import { PostApiService } from "./postApi";
+import { IPostDetails, IPostsApiResponse, ITopicsApiResponse } from "./types";
 
-interface PostsState {
-  posts: IPost[];
-  filteredPosts: IPost[];
-  searchTerm: string;
-  selectedTopic: string | null;
-  loading: boolean;
+interface PostsApiData extends IPostsApiResponse {
+  apiState: string | null;
   error: string | null;
 }
 
-const initialState: PostsState = {
-  posts: [],
-  filteredPosts: [],
-  searchTerm: "",
-  selectedTopic: null,
-  loading: false,
-  error: null,
+interface PostDetailsApiData {
+  data: IPostDetails | null;
+  apiState: string | null;
+  error: string | null;
+}
+
+interface TopicsApiData extends ITopicsApiResponse {
+  apiState: string | null;
+  error: string | null;
+}
+
+interface PostState {
+  postsApiData: PostsApiData;
+  postsDetailsApiData: PostDetailsApiData;
+  topicsApiData: TopicsApiData;
+}
+
+const initialState: PostState = {
+  postsApiData: {
+    after: null,
+    results: [],
+    apiState: null,
+    error: null,
+  },
+  postsDetailsApiData: {
+    data: null,
+    apiState: null,
+    error: null,
+  },
+  topicsApiData: {
+    after: null,
+    results: [],
+    apiState: null,
+    error: null,
+  },
 };
 
-const postsSlice = createSlice({
-  name: "posts",
+export class PostAction {
+  static getPosts: any = createAsyncThunk(
+    "post/getPosts",
+    async (params: any, { rejectWithValue }) => {
+      const [data, errorObj] = await PostApiService.getPosts(params);
+      return data ? data : rejectWithValue(errorObj);
+    },
+  );
+  static getPostsDetails: any = createAsyncThunk(
+    "post/getPostsDetails",
+    async (params: any, { rejectWithValue }) => {
+      const [data, errorObj] = await PostApiService.getPostsDetails(params);
+      return data ? data : rejectWithValue(errorObj);
+    },
+  );
+  static getTopics: any = createAsyncThunk(
+    "post/getTopics",
+    async (params: any, { rejectWithValue }) => {
+      const [data, errorObj] = await PostApiService.getTopics(params);
+      return data ? data : rejectWithValue(errorObj);
+    },
+  );
+}
+
+const postSlice = createSlice({
+  name: "post",
   initialState,
   reducers: {
-    setPosts: (state, action: PayloadAction<IPost[]>) => {
-      state.posts = action.payload;
-      state.filteredPosts = action.payload;
+    resetPostList: (state) => {
+      state.postsApiData = {
+        after: null,
+        results: [],
+        apiState: null,
+        error: null,
+      };
     },
-    setSearchTerm: (state, action: PayloadAction<string>) => {
-      state.searchTerm = action.payload;
-      state.filteredPosts = state.posts.filter(
-        (post) =>
-          post.title.toLowerCase().includes(action.payload.toLowerCase()) ||
-          post?.description?.toLowerCase().includes(action.payload.toLowerCase()),
-      );
-    },
-    setSelectedTopic: (state, action: PayloadAction<string | null>) => {
-      state.selectedTopic = action.payload;
-      if (action.payload) {
-        state.filteredPosts = state.posts.filter(
-          (post) => post.category.toLowerCase() === action.payload?.toLowerCase(),
-        );
-      } else {
-        state.filteredPosts = state.posts;
-      }
-    },
-    setLoading: (state, action: PayloadAction<boolean>) => {
-      state.loading = action.payload;
-    },
-    setError: (state, action: PayloadAction<string | null>) => {
-      state.error = action.payload;
-    },
+  },
+  extraReducers: (builder) => {
+    builder
+      // 🔹 Get Posts
+      .addCase(PostAction.getPosts.pending, (state) => {
+        state.postsApiData = {
+          ...state.postsApiData,
+          apiState: API_STATE.LOADING,
+        };
+      })
+      .addCase(PostAction.getPosts.fulfilled, (state, action) => {
+        state.postsApiData = {
+          ...action.payload,
+          apiState: API_STATE.SUCCEEDED,
+          error: null,
+        };
+      })
+      .addCase(PostAction.getPosts.rejected, (state, action) => {
+        state.postsApiData = {
+          ...state.postsApiData,
+          apiState: API_STATE.FAILED,
+          error: action.payload as string,
+        };
+      })
+      // 🔹 Get Post Details
+      .addCase(PostAction.getPostsDetails.pending, (state) => {
+        state.postsDetailsApiData = {
+          data: null,
+          apiState: API_STATE.LOADING,
+          error: null,
+        };
+      })
+      .addCase(PostAction.getPostsDetails.fulfilled, (state, action) => {
+        state.postsDetailsApiData = {
+          data: action.payload,
+          apiState: API_STATE.SUCCEEDED,
+          error: null,
+        };
+      })
+      .addCase(PostAction.getPostsDetails.rejected, (state, action) => {
+        state.postsDetailsApiData = {
+          data: null,
+          apiState: API_STATE.FAILED,
+          error: action.payload as string,
+        };
+      })
+      // 🔹 Get Topics
+      .addCase(PostAction.getTopics.pending, (state) => {
+        state.topicsApiData = {
+          ...state.topicsApiData,
+          apiState: API_STATE.LOADING,
+        };
+      })
+      .addCase(PostAction.getTopics.fulfilled, (state, action) => {
+        state.topicsApiData = {
+          ...action.payload,
+          apiState: API_STATE.SUCCEEDED,
+          error: null,
+        };
+      })
+      .addCase(PostAction.getTopics.rejected, (state, action) => {
+        state.topicsApiData = {
+          ...state.topicsApiData,
+          apiState: API_STATE.FAILED,
+          error: action.payload as string,
+        };
+      });
   },
 });
 
-export const { setPosts, setSearchTerm, setSelectedTopic, setLoading, setError } =
-  postsSlice.actions;
+export const { resetPostList } = postSlice.actions;
 
-export default postsSlice.reducer;
+export default postSlice.reducer;

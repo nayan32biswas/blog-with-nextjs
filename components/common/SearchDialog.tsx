@@ -12,7 +12,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { IPost } from "@/lib/features/posts/post.types";
+import { IPost } from "@/lib/features/posts/types";
 import { blogPosts } from "@/lib/temp_data";
 
 export function SearchDialog({ children }: any) {
