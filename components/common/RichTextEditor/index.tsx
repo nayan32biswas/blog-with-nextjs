@@ -50,12 +50,19 @@ type AlignType = (typeof TEXT_ALIGN_TYPES)[number];
 type ListType = (typeof LIST_TYPES)[number];
 type CustomElementFormat = CustomElementType | AlignType | ListType;
 
+const readOnlyStyles = {
+  borderRadius: "0",
+  padding: "0",
+  border: "none",
+};
+
 interface RichTextEditorProps {
+  readOnly?: boolean;
   initialValue?: Descendant[];
-  onChange: (value: Descendant[]) => void;
+  onChange?: (value: Descendant[]) => void;
 }
 
-export default function RichTextEditor({ onChange, initialValue }: RichTextEditorProps) {
+export default function RichTextEditor({ onChange, initialValue, readOnly }: RichTextEditorProps) {
   const renderElement = useCallback((props: RenderElementProps) => <Element {...props} />, []);
   const renderLeaf = useCallback((props: RenderLeafProps) => <Leaf {...props} />, []);
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
@@ -63,7 +70,9 @@ export default function RichTextEditor({ onChange, initialValue }: RichTextEdito
   const editorInitialValue = initialValue || DEFAULT_INITIAL_VALUE;
 
   const handleChange = (newValue: any) => {
-    onChange(newValue);
+    if (onChange) {
+      onChange(newValue);
+    }
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
@@ -77,26 +86,34 @@ export default function RichTextEditor({ onChange, initialValue }: RichTextEdito
     }
   };
 
-  return (
-    <div className={editorStyles}>
-      <Slate editor={editor} initialValue={editorInitialValue} onChange={handleChange}>
-        <Toolbar>
-          <MarkButton format="bold" icon={<Bold className="h-4 w-4" />} />
-          <MarkButton format="italic" icon={<Italic className="h-4 w-4" />} />
-          <MarkButton format="underline" icon={<Underline className="h-4 w-4" />} />
-          <MarkButton format="code" icon={<Code className="h-4 w-4" />} />
+  const renderToolbar = () => {
+    if (readOnly) return null;
+    return (
+      <Toolbar>
+        <MarkButton format="bold" icon={<Bold className="h-4 w-4" />} />
+        <MarkButton format="italic" icon={<Italic className="h-4 w-4" />} />
+        <MarkButton format="underline" icon={<Underline className="h-4 w-4" />} />
+        <MarkButton format="code" icon={<Code className="h-4 w-4" />} />
 
-          <BlockButtonCustom format="heading-one" icon={<Heading1 className="h-4 w-4" />} />
-          <BlockButtonCustom format="heading-two" icon={<Heading2 className="h-4 w-4" />} />
-          <BlockButtonCustom format="block-quote" icon={<Quote className="h-4 w-4" />} />
-          <BlockButtonCustom format="numbered-list" icon={<ListOrdered className="h-4 w-4" />} />
-          <BlockButtonCustom format="bulleted-list" icon={<List className="h-4 w-4" />} />
-          <BlockButtonCustom format="left" icon={<AlignLeft className="h-4 w-4" />} />
-          <BlockButtonCustom format="center" icon={<AlignCenter className="h-4 w-4" />} />
-          <BlockButtonCustom format="right" icon={<AlignRight className="h-4 w-4" />} />
-          <BlockButtonCustom format="justify" icon={<AlignJustify className="h-4 w-4" />} />
-        </Toolbar>
+        <BlockButtonCustom format="heading-one" icon={<Heading1 className="h-4 w-4" />} />
+        <BlockButtonCustom format="heading-two" icon={<Heading2 className="h-4 w-4" />} />
+        <BlockButtonCustom format="block-quote" icon={<Quote className="h-4 w-4" />} />
+        <BlockButtonCustom format="numbered-list" icon={<ListOrdered className="h-4 w-4" />} />
+        <BlockButtonCustom format="bulleted-list" icon={<List className="h-4 w-4" />} />
+        <BlockButtonCustom format="left" icon={<AlignLeft className="h-4 w-4" />} />
+        <BlockButtonCustom format="center" icon={<AlignCenter className="h-4 w-4" />} />
+        <BlockButtonCustom format="right" icon={<AlignRight className="h-4 w-4" />} />
+        <BlockButtonCustom format="justify" icon={<AlignJustify className="h-4 w-4" />} />
+      </Toolbar>
+    );
+  };
+
+  return (
+    <div className={editorStyles} style={readOnly ? readOnlyStyles : {}}>
+      <Slate editor={editor} initialValue={editorInitialValue} onChange={handleChange}>
+        {renderToolbar()}
         <Editable
+          readOnly={readOnly}
           renderElement={renderElement}
           renderLeaf={renderLeaf}
           placeholder="Enter some rich text…"

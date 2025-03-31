@@ -1,8 +1,9 @@
 "use client";
 
 import { ArrowLeft, Clock, Hash, Share2 } from "lucide-react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
-import React from "react";
+import React, { useMemo } from "react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -12,12 +13,24 @@ import { getNameInitials, humanizeDate } from "@/lib/utils";
 
 import CommentContainer from "./CommentContainer";
 
+const RichTextEditor = dynamic(() => import("@/components/common/RichTextEditor"), {
+  ssr: false,
+  loading: () => <div>Loading</div>,
+});
+
 interface PostDetailsProps {
   post: IPostDetails;
   slug: string;
 }
 
 export default function PostDetails({ post, slug }: PostDetailsProps) {
+  const postDescription = useMemo(() => {
+    if (post.description) {
+      return JSON.parse(post.description);
+    }
+    return [];
+  }, [post.description]);
+
   if (!post) {
     return (
       <div className="flex min-h-screen items-center justify-center">
@@ -74,7 +87,9 @@ export default function PostDetails({ post, slug }: PostDetailsProps) {
             ))}
           </div>
 
-          <div className="prose prose-lg max-w-none">{post.description}</div>
+          <div className="prose prose-lg max-w-none">
+            <RichTextEditor initialValue={postDescription} readOnly />
+          </div>
 
           {/* Author Info and Share Button */}
           <div className="bg-card mt-8 mb-4 rounded-lg p-6">

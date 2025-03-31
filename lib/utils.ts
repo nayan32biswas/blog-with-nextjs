@@ -91,3 +91,14 @@ export function removeDuplicatesByKey<T, K extends keyof T>(array: T[], key: K):
     return true;
   });
 }
+
+export function localTimeToUTC(localTimeString: string | null): string | null {
+  if (!localTimeString) {
+    return null;
+  }
+
+  const localDate = new Date(localTimeString);
+  const utcTimeString = localDate.toISOString().slice(0, 16).replace("T", " "); // Format to "YYYY-MM-DD HH:MM"
+
+  return utcTimeString;
+}

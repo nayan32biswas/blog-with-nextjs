@@ -10,7 +10,7 @@ import { IPostDetails } from "@/lib/features/posts/types";
 const getPostDetailsUrl = (slug: string) => `${publicEnv.BASE_API_URL}/posts/${slug}/`;
 
 const getBlogPostBySlug = cache(async (slug: string): Promise<[IPostDetails | null, any]> => {
-  const [post, errorObj] = await PostApiService.getPostsDetails({ slug });
+  const [post, errorObj] = await PostApiService.getPostsDetails({ slug, isServer: true });
   return [post, errorObj];
 });
 

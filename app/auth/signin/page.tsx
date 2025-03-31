@@ -18,6 +18,8 @@ type FormData = {
 
 // Sign In Component
 export default function SignInPage() {
+  const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
+
   const {
     register,
     handleSubmit,
@@ -27,9 +29,11 @@ export default function SignInPage() {
   // Handle form submission
   const onSubmit = async (data: FormData) => {
     try {
-      const { success } = await serverLogin(data);
+      const { success, errorMessage } = await serverLogin(data);
       if (success) {
         window.location.href = "/";
+      } else {
+        setErrorMessage(errorMessage);
       }
     } catch {}
   };
@@ -81,6 +85,8 @@ export default function SignInPage() {
               />
               {errors.password && <p className="text-sm text-red-500">{errors.password.message}</p>}
             </div>
+
+            {errorMessage && <p className="text-sm text-red-500">{errorMessage}</p>}
 
             <Button type="submit" className="w-full cursor-pointer">
               Sign In

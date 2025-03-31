@@ -40,8 +40,9 @@ export async function serverLogin(formData: ILoginPayload) {
     const response = await axios.post(API_URLS.login, payload);
     accessToken = response.data.access_token;
     refreshToken = response.data.refresh_token;
-  } catch {
-    return { success: false };
+  } catch (error: any) {
+    const errorMessage = error.response?.data?.detail || "Something went wrong";
+    return { success: false, errorMessage: errorMessage };
   }
 
   const cookieStore = await cookies();
@@ -73,6 +74,12 @@ export async function serverRefreshAccessToken() {
   } catch {
     return { success: false, error: "Invalid refresh token" };
   }
+}
+
+export async function getServerAccessToken() {
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get(TOKEN_FIELDS.ACCESS_TOKEN_KEY)?.value;
+  return accessToken;
 }
 
 export async function serverClearTokens() {

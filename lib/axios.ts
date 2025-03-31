@@ -1,6 +1,10 @@
-import axios from "axios";
+import axios, { AxiosInstance } from "axios";
 
-import { serverClearTokens, serverRefreshAccessToken } from "@/app/actions/auth";
+import {
+  getServerAccessToken,
+  serverClearTokens,
+  serverRefreshAccessToken,
+} from "@/app/actions/auth";
 
 import { DEFAULT_TIMEOUT, publicEnv, TOKEN_FIELDS } from "./config";
 import { getCookieValue } from "./utils";
@@ -47,6 +51,33 @@ const refreshAccessToken = async () => {
   }
 };
 
+async function handleApiAuthError(api: AxiosInstance, originalRequest: any) {
+  originalRequest._retry = true;
+
+  if (!isRefreshing) {
+    isRefreshing = true;
+
+    try {
+      const { accessToken } = await refreshAccessToken();
+      onRefreshed(accessToken);
+
+      refreshSubscribers = [];
+    } catch (err) {
+      return Promise.reject(err);
+    } finally {
+      isRefreshing = false;
+    }
+  }
+
+  return new Promise((resolve) => {
+    subscribeTokenRefresh((accessToken: string) => {
+      // replace the expired accessToken and retry the original request
+      originalRequest.headers["Authorization"] = getAuthorizationString(accessToken);
+      resolve(api(originalRequest));
+    });
+  });
+}
+
 // Create Axios instance
 const api = axios.create({
   baseURL: publicEnv.BASE_API_URL,
@@ -73,34 +104,44 @@ api.interceptors.response.use(
     const originalRequest = error.config;
 
     if (error.response.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-
-      if (!isRefreshing) {
-        isRefreshing = true;
-
-        try {
-          const { accessToken } = await refreshAccessToken();
-          onRefreshed(accessToken);
-
-          refreshSubscribers = [];
-        } catch (err) {
-          return Promise.reject(err);
-        } finally {
-          isRefreshing = false;
-        }
-      }
-
-      return new Promise((resolve) => {
-        subscribeTokenRefresh((accessToken: string) => {
-          // replace the expired accessToken and retry the original request
-          originalRequest.headers["Authorization"] = getAuthorizationString(accessToken);
-          resolve(api(originalRequest));
-        });
-      });
+      return handleApiAuthError(api, originalRequest);
     }
 
     return Promise.reject(error);
   },
 );
 
+const serverApi = axios.create({
+  baseURL: publicEnv.BASE_API_URL,
+  timeout: DEFAULT_TIMEOUT,
+});
+
+// Server Request Interceptor: Attach server access token for SSR
+serverApi.interceptors.request.use(
+  async (config) => {
+    const accessToken = await getServerAccessToken();
+    if (accessToken) {
+      config.headers.Authorization = getAuthorizationString(accessToken);
+    }
+    return config;
+  },
+  (error) => Promise.reject(error),
+);
+
+serverApi.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  async (error) => {
+    const originalRequest = error.config;
+
+    if (error.response.status === 401 && !originalRequest._retry) {
+      return handleApiAuthError(serverApi, originalRequest);
+    }
+
+    return Promise.reject(error);
+  },
+);
+
+export { serverApi };
 export default api;

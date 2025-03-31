@@ -94,7 +94,13 @@ export default function NavRightSection() {
   const renderLargeDeviceMenu = () => {
     return (
       <>
-        <Link href="/contact" className="hidden md:inline-flex">
+        <Link href="/posts/create/" className="hidden md:inline-flex">
+          <Button variant="ghost" className="cursor-pointer text-gray-700 hover:text-gray-900">
+            Write
+          </Button>
+        </Link>
+
+        <Link href="/contact/" className="hidden md:inline-flex">
           <Button variant="ghost" className="cursor-pointer text-gray-700 hover:text-gray-900">
             Contact
           </Button>
@@ -152,6 +158,14 @@ export default function NavRightSection() {
                       <Link href={"/settings/"}>
                         <Button variant="ghost" className="w-full cursor-pointer justify-start">
                           Settings
+                        </Button>
+                      </Link>
+                    </DrawerClose>
+
+                    <DrawerClose asChild>
+                      <Link href={"/posts/create/"}>
+                        <Button variant="ghost" className="w-full cursor-pointer justify-start">
+                          Write
                         </Button>
                       </Link>
                     </DrawerClose>
