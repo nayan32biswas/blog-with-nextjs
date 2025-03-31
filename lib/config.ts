@@ -2,6 +2,8 @@ export const privateEnv = {};
 
 export const publicEnv = {
   BASE_API_URL: process.env.NEXT_PUBLIC_BASE_API_URL || "http://localhost:8000",
+  APP_URL: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
+  MEDIA_URL: process.env.NEXT_PUBLIC_MEDIA_URL,
 };
 
 export const DEFAULT_TIMEOUT = 1000 * 60 * 3; // 3 minutes

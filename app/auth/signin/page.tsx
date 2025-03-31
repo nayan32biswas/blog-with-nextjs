@@ -17,7 +17,7 @@ type FormData = {
 };
 
 // Sign In Component
-export const SignIn = () => {
+export default function SignInPage() {
   const {
     register,
     handleSubmit,
@@ -94,6 +94,4 @@ export const SignIn = () => {
       </Card>
     </AuthPageContainer>
   );
-};
-
-export default SignIn;
+}

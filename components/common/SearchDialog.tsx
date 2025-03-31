@@ -13,7 +13,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { IPost } from "@/lib/features/posts/types";
-import { blogPosts } from "@/lib/temp_data";
+
+const blogPosts: any[] = [];
 
 export function SearchDialog({ children }: any) {
   const [searchTerm, setSearchTerm] = useState("");
@@ -28,7 +29,7 @@ export function SearchDialog({ children }: any) {
     const filtered = blogPosts.filter(
       (result) =>
         result.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        result.description?.toLowerCase()?.includes(searchTerm.toLowerCase()),
+        result.short_description?.toLowerCase()?.includes(searchTerm.toLowerCase()),
     );
     setResults(filtered);
   }, [searchTerm]);
@@ -70,10 +71,10 @@ export function SearchDialog({ children }: any) {
                     <span className="mr-3 text-gray-400">#</span>
                     <div className="flex-1">
                       <h4 className="font-medium text-gray-900">{result.title}</h4>
-                      <p className="text-sm text-gray-500">{result.description}</p>
+                      <p className="text-sm text-gray-500">{result.short_description}</p>
                     </div>
                     <Badge variant="outline" className="ml-2 bg-gray-100 text-gray-700">
-                      {result.category}
+                      {result.short_description}
                     </Badge>
                   </div>
                 </div>

@@ -38,7 +38,7 @@ export function TopicsBlock({ topics }: TopicsBlockProps) {
         {filteredTopics.map((topic) => (
           <div key={`topic-${topic.slug}`} className="flex items-center justify-between py-3">
             <span className="text-gray-700">{topic.name}</span>
-            <span className="text-gray-500">{topic.count}</span>
+            <span className="text-gray-500">{"000"}</span>
           </div>
         ))}
 

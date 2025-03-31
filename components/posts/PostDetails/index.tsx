@@ -3,32 +3,21 @@
 import { ArrowLeft, Clock, Hash, Share2 } from "lucide-react";
 import Link from "next/link";
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { PostAction } from "@/lib/features/posts/postsSlice";
-import { RootState } from "@/lib/store";
+import { IPostDetails } from "@/lib/features/posts/types";
 import { getNameInitials, humanizeDate } from "@/lib/utils";
 
 import CommentContainer from "./CommentContainer";
 
-export default function PostDetails({ slug }: { slug: string }) {
-  const dispatch = useDispatch();
+interface PostDetailsProps {
+  post: IPostDetails;
+  slug: string;
+}
 
-  const { postsDetailsApiData } = useSelector((state: RootState) => state.posts);
-
-  const { data: post } = postsDetailsApiData;
-
-  React.useEffect(() => {
-    const loadPostsDetails = async () => {
-      dispatch(PostAction.getPostsDetails({ slug }));
-    };
-
-    loadPostsDetails();
-  }, [dispatch, slug]);
-
+export default function PostDetails({ post, slug }: PostDetailsProps) {
   if (!post) {
     return (
       <div className="flex min-h-screen items-center justify-center">
@@ -103,7 +92,7 @@ export default function PostDetails({ slug }: { slug: string }) {
                   </p>
                 </div>
               </div>
-              <Button variant="outline" className="w-full md:w-auto">
+              <Button variant="outline" className="w-full cursor-pointer md:w-auto">
                 <Share2 className="mr-2 h-4 w-4" />
                 Share this post
               </Button>

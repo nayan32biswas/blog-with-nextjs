@@ -19,7 +19,7 @@ type FormData = {
   confirm_password: string;
 };
 
-export const SignUp = () => {
+export default function SignUpPage() {
   const {
     register,
     handleSubmit,
@@ -144,6 +144,4 @@ export const SignUp = () => {
       </Card>
     </AuthPageContainer>
   );
-};
-
-export default SignUp;
+}
