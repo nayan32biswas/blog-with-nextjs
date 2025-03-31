@@ -10,7 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { MIN_ITEMS_LIMIT } from "@/lib/config";
 import { CommentAction } from "@/lib/features/comments/commentsSlice";
 import { RootState } from "@/lib/store";
-import { getNameInitials } from "@/lib/utils";
+import { getNameInitials, humanizeDate } from "@/lib/utils";
 
 export default function CommentContainer({ slug }: { slug: string }) {
   const dispatch = useDispatch();
@@ -54,7 +54,7 @@ export default function CommentContainer({ slug }: { slug: string }) {
   };
 
   return (
-    <div className="mt-16">
+    <div className="mt-4">
       <h2 className="mb-8 text-2xl font-bold">Comments</h2>
 
       {/* Add Comment */}
@@ -74,7 +74,7 @@ export default function CommentContainer({ slug }: { slug: string }) {
       {/* Comments List */}
       <div className="space-y-8">
         {comments?.map((comment) => (
-          <div key={`comment--${comment.id}`} className="bg-card rounded-lg p-6">
+          <div key={`comment--${comment.id}`} className="bg-card rounded-lg pt-6">
             {/* Comment Header */}
             <div className="mb-4 flex items-start gap-4">
               <Avatar className="h-10 w-10">
@@ -84,7 +84,9 @@ export default function CommentContainer({ slug }: { slug: string }) {
               <div className="flex-1">
                 <div className="flex items-center gap-2">
                   <h4 className="font-medium">{comment.user.full_name}</h4>
-                  <span className="text-muted-foreground text-sm">{comment.created_at}</span>
+                  <span className="text-muted-foreground text-sm">
+                    {humanizeDate(comment.created_at)}
+                  </span>
                 </div>
                 <p className="mt-2">{comment.description}</p>
               </div>
@@ -154,7 +156,9 @@ export default function CommentContainer({ slug }: { slug: string }) {
                       <div>
                         <div className="flex items-center gap-2">
                           <h4 className="font-medium">{reply.user.full_name}</h4>
-                          <span className="text-muted-foreground text-sm">{reply.created_at}</span>
+                          <span className="text-muted-foreground text-sm">
+                            {humanizeDate(reply.created_at)}
+                          </span>
                         </div>
                         <p className="mt-2">{reply.description}</p>
                       </div>
