@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { IPost } from "@/lib/features/posts/types";
-import { humanizeDate } from "@/lib/utils";
+import { getMediaFullPath, humanizeDate } from "@/lib/utils";
 
 interface PostCardProps {
   post: IPost;
@@ -14,11 +14,7 @@ export function PostCard({ post }: PostCardProps) {
     <Card className="overflow-hidden border-gray-200 transition-all hover:shadow-md">
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <div className="relative h-48 md:h-full">
-          <img
-            src={post.cover_image || "/placeholder.svg"}
-            alt={post.title}
-            className="object-cover"
-          />
+          {post.cover_image && <img src={getMediaFullPath(post.cover_image)} alt={post.title} />}
         </div>
         <div className="flex flex-col p-4 md:col-span-2">
           <CardContent className="flex-grow p-0">

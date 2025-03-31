@@ -2,6 +2,8 @@ import { type ClassValue, clsx } from "clsx";
 import { get } from "lodash";
 import { twMerge } from "tailwind-merge";
 
+import { publicEnv } from "./config";
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -101,4 +103,30 @@ export function localTimeToUTC(localTimeString: string | null): string | null {
   const utcTimeString = localDate.toISOString().slice(0, 16).replace("T", " "); // Format to "YYYY-MM-DD HH:MM"
 
   return utcTimeString;
+}
+
+export function parseDomainFromUrl(url: string | null): string | null {
+  if (!url) {
+    return null;
+  }
+
+  try {
+    const urlObj = new URL(url);
+    return urlObj.hostname;
+  } catch (error) {
+    console.error("Invalid URL:", error);
+    return null;
+  }
+}
+
+export function getMediaFullPath(mediaPath: string | null): string {
+  if (!mediaPath) {
+    return "";
+  }
+
+  if (mediaPath.startsWith("http")) {
+    return mediaPath;
+  }
+
+  return `${publicEnv.MEDIA_URL}${mediaPath}`;
 }

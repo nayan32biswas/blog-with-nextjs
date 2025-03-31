@@ -9,7 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { IPostDetails } from "@/lib/features/posts/types";
-import { getNameInitials, humanizeDate } from "@/lib/utils";
+import { getMediaFullPath, getNameInitials, humanizeDate } from "@/lib/utils";
 
 import CommentContainer from "./CommentContainer";
 
@@ -54,7 +54,11 @@ export default function PostDetails({ post, slug }: PostDetailsProps) {
       {/* Cover Image */}
       {post.cover_image && (
         <div className="h-[50vh] w-full overflow-hidden">
-          <img src={post.cover_image} alt={post.title} className="h-full w-full object-cover" />
+          <img
+            src={getMediaFullPath(post.cover_image)}
+            alt={post.title}
+            className="h-full w-full object-cover"
+          />
         </div>
       )}
 

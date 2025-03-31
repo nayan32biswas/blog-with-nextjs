@@ -1,9 +1,10 @@
-import { Loader2, Upload } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Descendant } from "slate";
 
+import { ImageInput } from "@/components/common/ImageInput";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -40,18 +41,6 @@ const PostEditor = () => {
       short_description: "",
     },
   });
-
-  const handleCoverImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const url = reader.result as string;
-        setCoverImage(url);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
 
   const handleDescriptionChange = (value: Descendant[]) => {
     setDescription(value);
@@ -120,37 +109,7 @@ const PostEditor = () => {
           {/* Cover Image */}
           <div className="space-y-2">
             <Label htmlFor="cover-image">Cover Image</Label>
-            <div className="flex items-start gap-4">
-              <div className="flex-1">
-                <div className="hover:bg-secondary/50 rounded-lg border-2 border-dashed p-4 transition-colors">
-                  <input
-                    type="file"
-                    id="cover-image"
-                    accept="image/*"
-                    onChange={handleCoverImageUpload}
-                    className="hidden"
-                  />
-                  <label
-                    htmlFor="cover-image"
-                    className="flex cursor-pointer flex-col items-center gap-2"
-                  >
-                    <Upload className="text-muted-foreground h-8 w-8" />
-                    <span className="text-muted-foreground text-sm">
-                      Click to upload cover image
-                    </span>
-                  </label>
-                </div>
-              </div>
-              {coverImage && (
-                <div className="relative h-40 w-40 overflow-hidden rounded-lg">
-                  <img
-                    src={coverImage}
-                    alt="Cover preview"
-                    className="h-full w-full object-cover"
-                  />
-                </div>
-              )}
-            </div>
+            <ImageInput value={coverImage} onChange={setCoverImage} />
           </div>
 
           {/* Publish Date */}

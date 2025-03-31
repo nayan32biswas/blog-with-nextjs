@@ -10,6 +10,9 @@ export const API_URLS = {
   login: `${API_V1}/token`,
   refreshToken: `${API_V1}/update-access-token`,
 
+  // Common
+  uploadImage: `${API_V1}/upload-image`,
+
   // User URLs
   userInfo: `${API_V1}/me`,
   // Post URLs
