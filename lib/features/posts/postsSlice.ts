@@ -2,29 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import { API_STATE } from "../common/constants";
 import { PostApiService } from "./postApi";
-import { IPostDetails, IPostsApiResponse, ITopicsApiResponse } from "./types";
-
-interface PostsApiData extends IPostsApiResponse {
-  apiState: string | null;
-  error: string | null;
-}
-
-interface PostDetailsApiData {
-  data: IPostDetails | null;
-  apiState: string | null;
-  error: string | null;
-}
-
-interface TopicsApiData extends ITopicsApiResponse {
-  apiState: string | null;
-  error: string | null;
-}
-
-interface PostState {
-  postsApiData: PostsApiData;
-  postsDetailsApiData: PostDetailsApiData;
-  topicsApiData: TopicsApiData;
-}
+import { PostState } from "./types";
 
 const initialState: PostState = {
   postsApiData: {

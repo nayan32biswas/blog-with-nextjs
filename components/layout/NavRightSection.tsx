@@ -23,19 +23,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
 import { useAuth } from "@/contexts/AuthContext";
-import { cn } from "@/lib/utils";
+import { cn, getNameInitials } from "@/lib/utils";
 
 export default function NavRightSection() {
   const { isAuthenticated, logout, authUser } = useAuth();
 
   const fullName = authUser?.full_name;
-  const nameInitials =
-    fullName &&
-    fullName
-      .split(" ")
-      .map((n) => n[0])
-      .join("")
-      .toUpperCase();
+  const nameInitials = getNameInitials(authUser?.full_name);
 
   const renderUserInfo = (extraClass?: string) => {
     if (!isAuthenticated || !authUser) {

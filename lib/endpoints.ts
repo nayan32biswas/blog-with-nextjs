@@ -16,4 +16,6 @@ export const API_URLS = {
   posts: `${API_V1}/posts`,
   postsDetails: `${API_V1}/posts/:slug`,
   topics: `${API_V1}/topics`,
+  // Comment URLs
+  comments: `${API_V1}/posts/:slug/comments`,
 };

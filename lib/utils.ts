@@ -1,4 +1,5 @@
 import { type ClassValue, clsx } from "clsx";
+import { get } from "lodash";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -49,3 +50,44 @@ export const humanizeDate = (dateStr: string) => {
 
   return formattedDate;
 };
+
+export const humanizeDateTime = (dateStr: string) => {
+  const date = new Date(dateStr);
+  const formattedDate = date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+  const formattedTime = date.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+  return `${formattedDate} ${formattedTime}`;
+};
+
+export const getNameInitials = (name?: string | null) => {
+  const fullName = name ? name.trim() : "";
+  if (!fullName) return "";
+
+  const nameInitials = fullName
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .toUpperCase();
+
+  return nameInitials;
+};
+
+export function removeDuplicatesByKey<T, K extends keyof T>(array: T[], key: K): T[] {
+  const seen = new Set<T[K]>();
+
+  return array.filter((item) => {
+    const value = get(item, [key]);
+    if (seen.has(value)) {
+      return false;
+    }
+    seen.add(value);
+    return true;
+  });
+}

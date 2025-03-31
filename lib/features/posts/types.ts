@@ -18,6 +18,7 @@ export interface IPostsApiResponse {
 
 export interface IPostDetails extends IPost {
   description: string;
+  topics: string[];
 }
 
 export interface ITopic {
@@ -29,4 +30,28 @@ export interface ITopic {
 export interface ITopicsApiResponse {
   after: string | null;
   results: ITopic[];
+}
+
+// Redux state type
+
+interface PostsApiData extends IPostsApiResponse {
+  apiState: string | null;
+  error: string | null;
+}
+
+interface PostDetailsApiData {
+  data: IPostDetails | null;
+  apiState: string | null;
+  error: string | null;
+}
+
+interface TopicsApiData extends ITopicsApiResponse {
+  apiState: string | null;
+  error: string | null;
+}
+
+export interface PostState {
+  postsApiData: PostsApiData;
+  postsDetailsApiData: PostDetailsApiData;
+  topicsApiData: TopicsApiData;
 }

@@ -19,20 +19,20 @@ export default function PostListContainer() {
   const topics = topicsApiData.results || [];
   const posts = postsApiData.results || [];
 
-  const loadTopics = async () => {
-    const queryParams = { limit: MIN_ITEMS_LIMIT };
-    dispatch(PostAction.getTopics({ queryParams }));
-  };
-
-  const loadPosts = async () => {
-    const queryParams = { limit: DEFAULT_ITEMS_LIMIT };
-    dispatch(PostAction.getPosts({ queryParams }));
-  };
-
   React.useEffect(() => {
+    const loadTopics = async () => {
+      const queryParams = { limit: MIN_ITEMS_LIMIT };
+      dispatch(PostAction.getTopics({ queryParams }));
+    };
+
+    const loadPosts = async () => {
+      const queryParams = { limit: DEFAULT_ITEMS_LIMIT };
+      dispatch(PostAction.getPosts({ queryParams }));
+    };
+
     loadTopics();
     loadPosts();
-  }, []);
+  }, [dispatch]);
 
   return (
     <section>
