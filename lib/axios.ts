@@ -7,20 +7,16 @@ import {
 } from "@/app/actions/auth";
 
 import { DEFAULT_TIMEOUT, publicEnv, TOKEN_FIELDS } from "./config";
-import { getCookieValue } from "./utils";
+import { getCookieValue, isServer } from "./utils";
 
 export const getAccessToken = () => {
   return getCookieValue(TOKEN_FIELDS.ACCESS_TOKEN_KEY);
 };
 
-export const hasValidToken = () => {
-  const accessToken = getAccessToken();
-  return !!accessToken;
-};
-
 const getAuthorizationString = (token: string) => `Bearer ${token}`;
 
 let isRefreshing = false;
+let refreshTokenPromise: any = null;
 let refreshSubscribers: any = [];
 
 const subscribeTokenRefresh = (callback: any) => {
@@ -33,18 +29,39 @@ const onRefreshed = (accessToken: string) => {
 
 const logoutUser = async () => {
   await serverClearTokens();
-  window.location.href = "/logout";
+  if (isServer()) {
+    // Add logic to handle server-side logout
+  } else {
+    window.location.href = "/logout";
+  }
 };
 
 const refreshAccessToken = async () => {
   try {
-    const { accessToken } = await serverRefreshAccessToken();
-
-    if (!accessToken) {
-      await logoutUser();
+    // If a refresh operation is already in progress, return that promise
+    if (refreshTokenPromise) {
+      return refreshTokenPromise;
     }
 
-    return { accessToken };
+    // Create a new promise for the refresh operation
+    refreshTokenPromise = (async () => {
+      try {
+        const { accessToken } = await serverRefreshAccessToken();
+
+        if (!accessToken) {
+          await logoutUser();
+          throw new Error("No access token received");
+        }
+
+        return { accessToken };
+      } finally {
+        // Clear the promise so future calls can create a new one
+        refreshTokenPromise = null;
+      }
+    })();
+
+    // Return the promise
+    return refreshTokenPromise;
   } catch {
     await logoutUser();
     throw "Unable to refresh the token";

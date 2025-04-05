@@ -12,11 +12,28 @@ interface ILoginPayload {
   password: string;
 }
 
-const setTokenToCookie = (cookieStore: any, key: string, token: string, httpOnly = true) => {
+const getExpiredTime = (token: string) => {
   const decoded: any = decode(token);
   const expireTimestamp = decoded?.exp;
-
   const expiryDate = new Date(expireTimestamp * 1000);
+  return expiryDate;
+};
+
+const setIsAuthenticatedToCookie = (cookieStore: any, refreshToken: string) => {
+  const expiryDate = getExpiredTime(refreshToken);
+
+  const isAuthenticated = !!refreshToken;
+
+  cookieStore.set(TOKEN_FIELDS.IS_AUTHENTICATED_KEY, isAuthenticated, {
+    secure: true,
+    sameSite: "strict",
+    expires: expiryDate,
+    httpOnly: false,
+  });
+};
+
+const setTokenToCookie = (cookieStore: any, key: string, token: string, httpOnly = true) => {
+  const expiryDate = getExpiredTime(token);
 
   cookieStore.set(key, token, {
     secure: true,
@@ -49,6 +66,7 @@ export async function serverLogin(formData: ILoginPayload) {
 
   setTokenToCookie(cookieStore, TOKEN_FIELDS.REFRESH_TOKEN_KEY, refreshToken, true);
   setTokenToCookie(cookieStore, TOKEN_FIELDS.ACCESS_TOKEN_KEY, accessToken, false);
+  setIsAuthenticatedToCookie(cookieStore, refreshToken);
 
   return { success: true, errorMessage };
 }

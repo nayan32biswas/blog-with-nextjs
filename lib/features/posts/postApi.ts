@@ -10,7 +10,7 @@ export class PostApiService {
 
       return [response.data, null];
     } catch (error: any) {
-      return [null, error?.response.data];
+      return [null, error?.response?.data];
     }
   };
 
@@ -21,7 +21,7 @@ export class PostApiService {
 
       return [response.data, null];
     } catch (error: any) {
-      return [null, error?.response.data];
+      return [null, error?.response?.data];
     }
   };
 
@@ -34,7 +34,7 @@ export class PostApiService {
 
       return [response.data, null];
     } catch (error: any) {
-      return [null, error?.response.data];
+      return [null, error?.response?.data];
     }
   };
 
@@ -46,7 +46,7 @@ export class PostApiService {
 
       return [response.data, null];
     } catch (error: any) {
-      return [null, error?.response.data];
+      return [null, error?.response?.data];
     }
   };
 }

@@ -2,7 +2,7 @@ import { type ClassValue, clsx } from "clsx";
 import { get } from "lodash";
 import { twMerge } from "tailwind-merge";
 
-import { publicEnv } from "./config";
+import { publicEnv, TOKEN_FIELDS } from "./config";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -10,6 +10,11 @@ export function cn(...inputs: ClassValue[]) {
 
 export const isServer = () => {
   return typeof window === "undefined";
+};
+
+export const checkIsAuthenticated = () => {
+  const isAuthenticated = getCookieValue(TOKEN_FIELDS.IS_AUTHENTICATED_KEY);
+  return !!isAuthenticated;
 };
 
 export function queryBuilder(queryParams: any) {

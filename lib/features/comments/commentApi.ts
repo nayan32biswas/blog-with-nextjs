@@ -10,7 +10,7 @@ export class CommentApiService {
 
       return [response.data, null];
     } catch (error: any) {
-      return [null, error?.response.data];
+      return [null, error?.response?.data];
     }
   };
 }

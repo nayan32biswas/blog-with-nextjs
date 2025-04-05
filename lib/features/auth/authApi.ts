@@ -10,7 +10,7 @@ export class AuthApiService {
 
       return [response.data, null];
     } catch (error: any) {
-      return [null, error?.response.data];
+      return [null, error?.response?.data];
     }
   };
   static registration = async (formData: any) => {
@@ -20,7 +20,7 @@ export class AuthApiService {
 
       return [response.data, null];
     } catch (error: any) {
-      return [null, error?.response.data];
+      return [null, error?.response?.data];
     }
   };
 }

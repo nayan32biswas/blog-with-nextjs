@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation";
 import * as React from "react";
 
 import { serverClearTokens } from "@/app/actions/auth";
-import { hasValidToken } from "@/lib/axios";
 import { AuthApiService } from "@/lib/features/auth/authApi";
 import { IAuthUser } from "@/lib/features/auth/types";
+import { checkIsAuthenticated } from "@/lib/utils";
 
 interface AuthContextType {
   authUser: IAuthUser | null;
@@ -42,7 +42,7 @@ async function loadUser(setIsLoading: any, setAuthUser: any) {
 }
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const isAuthenticated = hasValidToken();
+  const isAuthenticated = checkIsAuthenticated();
 
   const router = useRouter();
 
