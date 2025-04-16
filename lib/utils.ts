@@ -38,6 +38,11 @@ export const buildUrl = (urlTemplate: string, params: any = null, queryParams: a
   return url;
 };
 
+export function generateId() {
+  const uuid = crypto.randomUUID().replace(/-/g, "");
+  return uuid;
+}
+
 export const getCookieValue = (name: string) => {
   if (isServer()) return null;
 

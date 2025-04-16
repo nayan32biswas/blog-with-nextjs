@@ -1,10 +1,6 @@
 import axios, { AxiosInstance } from "axios";
 
-import {
-  getServerAccessToken,
-  serverClearTokens,
-  serverRefreshAccessToken,
-} from "@/app/actions/auth";
+import { serverClearTokens, serverRefreshAccessToken } from "@/app/actions/auth";
 
 import { DEFAULT_TIMEOUT, publicEnv, TOKEN_FIELDS } from "./config";
 import { getCookieValue, isServer } from "./utils";
@@ -36,14 +32,12 @@ const logoutUser = async () => {
   }
 };
 
-const refreshAccessToken = async () => {
+const getNewAccessToken = async () => {
   try {
-    // If a refresh operation is already in progress, return that promise
     if (refreshTokenPromise) {
       return refreshTokenPromise;
     }
 
-    // Create a new promise for the refresh operation
     refreshTokenPromise = (async () => {
       try {
         const { accessToken } = await serverRefreshAccessToken();
@@ -55,12 +49,10 @@ const refreshAccessToken = async () => {
 
         return { accessToken };
       } finally {
-        // Clear the promise so future calls can create a new one
         refreshTokenPromise = null;
       }
     })();
 
-    // Return the promise
     return refreshTokenPromise;
   } catch {
     await logoutUser();
@@ -71,28 +63,37 @@ const refreshAccessToken = async () => {
 async function handleApiAuthError(api: AxiosInstance, originalRequest: any) {
   originalRequest._retry = true;
 
+  // Step 1: Add subscriber for the original request
+  const retryOriginalRequest = new Promise((resolve, reject) => {
+    subscribeTokenRefresh((accessToken: string) => {
+      try {
+        // replace the expired accessToken and retry the original request
+        originalRequest.headers["Authorization"] = getAuthorizationString(accessToken);
+        resolve(api(originalRequest));
+      } catch (error) {
+        reject(error);
+      }
+    });
+  });
+
+  // Step 2: Initiate refresh only if not already refreshing
   if (!isRefreshing) {
     isRefreshing = true;
-
     try {
-      const { accessToken } = await refreshAccessToken();
+      const { accessToken } = await getNewAccessToken();
       onRefreshed(accessToken);
-
-      refreshSubscribers = [];
     } catch (err) {
+      // Optionally notify subscribers of failure
+      refreshSubscribers.forEach((callback: any) => callback(null));
+
       return Promise.reject(err);
     } finally {
       isRefreshing = false;
+      refreshSubscribers = [];
     }
   }
 
-  return new Promise((resolve) => {
-    subscribeTokenRefresh((accessToken: string) => {
-      // replace the expired accessToken and retry the original request
-      originalRequest.headers["Authorization"] = getAuthorizationString(accessToken);
-      resolve(api(originalRequest));
-    });
-  });
+  return retryOriginalRequest;
 }
 
 // Create Axios instance
@@ -113,10 +114,9 @@ api.interceptors.request.use(
   (error) => Promise.reject(error),
 );
 
+// Response Interceptor: Handle 401 errors
 api.interceptors.response.use(
-  (response) => {
-    return response;
-  },
+  (response) => response,
   async (error) => {
     const originalRequest = error.config;
 
@@ -128,37 +128,4 @@ api.interceptors.response.use(
   },
 );
 
-const serverApi = axios.create({
-  baseURL: publicEnv.BASE_API_URL,
-  timeout: DEFAULT_TIMEOUT,
-});
-
-// Server Request Interceptor: Attach server access token for SSR
-serverApi.interceptors.request.use(
-  async (config) => {
-    const accessToken = await getServerAccessToken();
-    if (accessToken) {
-      config.headers.Authorization = getAuthorizationString(accessToken);
-    }
-    return config;
-  },
-  (error) => Promise.reject(error),
-);
-
-serverApi.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  async (error) => {
-    const originalRequest = error.config;
-
-    if (error.response.status === 401 && !originalRequest._retry) {
-      return handleApiAuthError(serverApi, originalRequest);
-    }
-
-    return Promise.reject(error);
-  },
-);
-
-export { serverApi };
 export default api;

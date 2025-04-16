@@ -1,4 +1,4 @@
-import axios, { serverApi } from "@/lib/axios";
+import axios from "@/lib/axios";
 import { API_URLS } from "@/lib/endpoints";
 import { buildUrl } from "@/lib/utils";
 
@@ -25,12 +25,10 @@ export class PostApiService {
     }
   };
 
-  static getPostsDetails = async ({ slug, isServer = false, queryParams }: any) => {
+  static getPostsDetails = async ({ slug, queryParams }: any) => {
     try {
-      const axiosInstance = isServer ? serverApi : axios;
-
       const url = buildUrl(API_URLS.postsDetails, { slug }, queryParams);
-      const response = await axiosInstance.get(url);
+      const response = await axios.get(url);
 
       return [response.data, null];
     } catch (error: any) {
@@ -39,7 +37,6 @@ export class PostApiService {
   };
 
   static createPosts = async ({ payload }: any) => {
-    console.log("payload", payload);
     try {
       const url = buildUrl(API_URLS.posts);
       const response = await axios.post(url, payload);
