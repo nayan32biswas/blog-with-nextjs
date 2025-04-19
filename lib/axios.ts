@@ -1,12 +1,20 @@
 import axios, { AxiosInstance } from "axios";
 
-import { serverClearTokens, serverRefreshAccessToken } from "@/app/actions/auth";
+import {
+  getServerAccessToken,
+  serverClearTokens,
+  serverRefreshAccessToken,
+} from "@/app/actions/auth";
 
 import { DEFAULT_TIMEOUT, publicEnv, TOKEN_FIELDS } from "./config";
 import { getCookieValue, isServer } from "./utils";
 
-export const getAccessToken = () => {
-  return getCookieValue(TOKEN_FIELDS.ACCESS_TOKEN_KEY);
+const getAccessToken = async () => {
+  if (isServer()) {
+    return await getServerAccessToken();
+  } else {
+    return getCookieValue(TOKEN_FIELDS.ACCESS_TOKEN_KEY);
+  }
 };
 
 const getAuthorizationString = (token: string) => `Bearer ${token}`;
@@ -104,8 +112,8 @@ const api = axios.create({
 
 // Request Interceptor: Attach access token
 api.interceptors.request.use(
-  (config) => {
-    const accessToken = getAccessToken();
+  async (config) => {
+    const accessToken = await getAccessToken();
     if (accessToken) {
       config.headers.Authorization = getAuthorizationString(accessToken);
     }

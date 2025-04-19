@@ -25,9 +25,9 @@ export class PostApiService {
     }
   };
 
-  static getPostsDetails = async ({ slug, queryParams }: any) => {
+  static getPostsDetails = async ({ slug }: any) => {
     try {
-      const url = buildUrl(API_URLS.postsDetails, { slug }, queryParams);
+      const url = buildUrl(API_URLS.postsDetails, { slug });
       const response = await axios.get(url);
 
       return [response.data, null];

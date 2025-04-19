@@ -43,7 +43,7 @@ const setTokenToCookie = (cookieStore: any, key: string, token: string, httpOnly
   });
 };
 
-export async function serverLogin(formData: ILoginPayload) {
+async function serverLogin(formData: ILoginPayload) {
   let accessToken: string;
   let refreshToken: string;
   const errorMessage = null;
@@ -71,7 +71,7 @@ export async function serverLogin(formData: ILoginPayload) {
   return { success: true, errorMessage };
 }
 
-export async function serverRefreshAccessToken() {
+async function serverRefreshAccessToken() {
   const cookieStore = await cookies();
   const existingRefreshToken = cookieStore.get(TOKEN_FIELDS.REFRESH_TOKEN_KEY)?.value;
 
@@ -94,13 +94,13 @@ export async function serverRefreshAccessToken() {
   }
 }
 
-export async function getServerAccessToken() {
+async function getServerAccessToken() {
   const cookieStore = await cookies();
   const accessToken = cookieStore.get(TOKEN_FIELDS.ACCESS_TOKEN_KEY)?.value;
   return accessToken;
 }
 
-export async function serverClearTokens() {
+async function serverClearTokens() {
   const cookieStore = await cookies();
 
   cookieStore.set(TOKEN_FIELDS.REFRESH_TOKEN_KEY, "", { maxAge: 0 });
@@ -108,3 +108,5 @@ export async function serverClearTokens() {
 
   return { success: true };
 }
+
+export { getServerAccessToken, serverClearTokens, serverLogin, serverRefreshAccessToken };
