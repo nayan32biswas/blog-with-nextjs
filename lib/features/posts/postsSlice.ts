@@ -1,5 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
+import { removeDuplicatesByKey } from "@/lib/utils";
+
 import { API_STATE } from "../common/constants";
 import { PostApiService } from "./postApi";
 import { PostState } from "./types";
@@ -10,6 +12,13 @@ const initialState: PostState = {
     results: [],
     apiState: null,
     error: null,
+  },
+  userPostsApiData: {
+    after: null,
+    results: [],
+    apiState: null,
+    error: null,
+    username: null,
   },
   postsDetailsApiData: {
     data: null,
@@ -27,6 +36,13 @@ const initialState: PostState = {
 export class PostAction {
   static getPosts: any = createAsyncThunk(
     "post/getPosts",
+    async (params: any, { rejectWithValue }) => {
+      const [data, errorObj] = await PostApiService.getPosts(params);
+      return data ? data : rejectWithValue(errorObj);
+    },
+  );
+  static getUserPosts: any = createAsyncThunk(
+    "post/getUserPosts",
     async (params: any, { rejectWithValue }) => {
       const [data, errorObj] = await PostApiService.getPosts(params);
       return data ? data : rejectWithValue(errorObj);
@@ -80,6 +96,45 @@ const postSlice = createSlice({
       .addCase(PostAction.getPosts.rejected, (state, action) => {
         state.postsApiData = {
           ...state.postsApiData,
+          apiState: API_STATE.FAILED,
+          error: action.payload as string,
+        };
+      })
+      // 🔹 Get User Posts
+      .addCase(PostAction.getUserPosts.pending, (state, action) => {
+        let existingPosts = state.userPostsApiData.results || [];
+        const username = action.meta.arg.queryParams.username;
+
+        // Reset the posts if the username is different
+        if (!username || state.userPostsApiData.username !== username) {
+          existingPosts = [];
+        }
+
+        state.userPostsApiData = {
+          ...state.userPostsApiData,
+          results: existingPosts,
+          apiState: API_STATE.LOADING,
+        };
+      })
+      .addCase(PostAction.getUserPosts.fulfilled, (state, action) => {
+        const prevPosts = state.userPostsApiData.results || [];
+
+        const username = action.meta.arg.queryParams.username;
+        const { results, after } = action.payload;
+
+        const updatedPosts = removeDuplicatesByKey([...prevPosts, ...results], "slug");
+
+        state.userPostsApiData = {
+          after,
+          username: username,
+          results: updatedPosts,
+          apiState: API_STATE.SUCCEEDED,
+          error: null,
+        };
+      })
+      .addCase(PostAction.getUserPosts.rejected, (state, action) => {
+        state.userPostsApiData = {
+          ...state.userPostsApiData,
           apiState: API_STATE.FAILED,
           error: action.payload as string,
         };

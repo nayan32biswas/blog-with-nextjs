@@ -39,6 +39,12 @@ interface PostsApiData extends IPostsApiResponse {
   error: string | null;
 }
 
+interface UserPostsApiData extends IPostsApiResponse {
+  apiState: string | null;
+  error: string | null;
+  username: string | null;
+}
+
 interface PostDetailsApiData {
   data: IPostDetails | null;
   apiState: string | null;
@@ -52,6 +58,7 @@ interface TopicsApiData extends ITopicsApiResponse {
 
 export interface PostState {
   postsApiData: PostsApiData;
+  userPostsApiData: UserPostsApiData;
   postsDetailsApiData: PostDetailsApiData;
   topicsApiData: TopicsApiData;
 }

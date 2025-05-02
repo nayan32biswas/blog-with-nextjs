@@ -15,10 +15,13 @@ export const API_URLS = {
 
   // User URLs
   userInfo: `${API_V1}/me`,
+  userPublicProfile: `${API_V1}/users/:username`,
+
   // Post URLs
   posts: `${API_V1}/posts`,
   postsDetails: `${API_V1}/posts/:slug`,
   topics: `${API_V1}/topics`,
+
   // Comment URLs
   comments: `${API_V1}/posts/:slug/comments`,
 };
