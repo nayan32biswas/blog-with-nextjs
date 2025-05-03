@@ -14,8 +14,10 @@ export const API_URLS = {
   uploadImage: `${API_V1}/upload-image`,
 
   // User URLs
-  userInfo: `${API_V1}/me`,
+  userInfo: `${API_V1}/users/me`,
   userPublicProfile: `${API_V1}/users/:username`,
+  userUserDetails: `${API_V1}/users/details`,
+  userUpdate: `${API_V1}/users/update`,
 
   // Post URLs
   posts: `${API_V1}/posts`,
