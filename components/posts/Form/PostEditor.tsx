@@ -1,3 +1,5 @@
+"use client";
+
 import { Loader2 } from "lucide-react";
 import dynamic from "next/dynamic";
 import { useState } from "react";
@@ -10,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { PostApiService } from "@/lib/features/posts/postApi";
+import { IPostDetails } from "@/lib/features/posts/types";
 import { localTimeToUTC } from "@/lib/utils";
 
 const RichTextEditor = dynamic(() => import("@/components/common/RichTextEditor"), {
@@ -23,7 +26,20 @@ interface PostFormData {
   short_description: string;
 }
 
-const PostEditor = () => {
+interface Props {
+  defaultValue?: IPostDetails;
+  slug?: string;
+}
+
+const DEFAULT_VALUES = {
+  title: "",
+  publish_at: "",
+  short_description: "",
+};
+
+const PostEditor = (props: Props) => {
+  const { defaultValue } = props;
+
   const [isLoading, setIsLoading] = useState(false);
   const [coverImage, setCoverImage] = useState("");
 
@@ -35,11 +51,7 @@ const PostEditor = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<PostFormData>({
-    defaultValues: {
-      title: "",
-      publish_at: "",
-      short_description: "",
-    },
+    defaultValues: defaultValue || DEFAULT_VALUES,
   });
 
   const handleDescriptionChange = (value: Descendant[]) => {
@@ -148,11 +160,12 @@ const PostEditor = () => {
               type="button"
               variant="outline"
               disabled={isLoading}
+              className="cursor-pointer"
               onClick={handleSubmit((data) => onSubmit(data, false))}
             >
               Save as Draft
             </Button>
-            <Button type="submit" disabled={isLoading}>
+            <Button type="submit" disabled={isLoading} className="cursor-pointer">
               {isLoading && <Loader2 className="animate-spin" />}
               Publish
             </Button>

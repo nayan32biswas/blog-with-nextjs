@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Script from "next/script";
 import { cache } from "react";
 
+import Post404 from "@/components/posts/common/Post404";
 import PostDetails from "@/components/posts/PostDetails";
 import { publicEnv } from "@/lib/config";
 import { PostApiService } from "@/lib/features/posts/postApi";
@@ -54,7 +55,7 @@ export default async function PostDetailsPage({ params }: { params: Promise<{ sl
   const [post, errorObj] = await getBlogPostBySlug(slug);
 
   if (!post || errorObj) {
-    return null;
+    return <Post404 />;
   }
 
   return (

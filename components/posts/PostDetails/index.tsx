@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, Clock, Hash, Share2 } from "lucide-react";
+import { Clock, Edit, Hash, Share2 } from "lucide-react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import React, { useMemo } from "react";
@@ -31,23 +31,57 @@ export default function PostDetails({ post, slug }: PostDetailsProps) {
     return [];
   }, [post.description]);
 
-  if (!post) {
+  const nameInitials = getNameInitials(post.author?.full_name);
+
+  const renderEditButton = () => {
+    const isAuthor = post.author?.username === post.author?.username;
+    if (!isAuthor) {
+      return null;
+    }
+
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <div className="text-center">
-          <h1 className="mb-4 text-2xl font-bold">Post not found</h1>
-          <Link href="/">
-            <Button>
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Blog
-            </Button>
-          </Link>
+      <Link href={`/posts/${post.slug}/edit`}>
+        <Button
+          variant="outline"
+          size="sm"
+          className="flex items-center gap-1 border-gray-200 text-gray-700 hover:bg-gray-50"
+        >
+          <Edit className="h-4 w-4" />
+          Edit
+        </Button>
+      </Link>
+    );
+  };
+
+  const renderAuthorInfo = () => {
+    return (
+      <div className="bg-card mt-8 mb-4 rounded-lg p-6">
+        <div className="flex flex-col justify-between gap-6 md:flex-row md:items-center">
+          <div className="flex items-start gap-4">
+            <Link href={`/${post.author.username}`}>
+              <Avatar className="h-12 w-12">
+                <AvatarImage src={post.author.image || ""} />
+                <AvatarFallback>{nameInitials}</AvatarFallback>
+              </Avatar>
+            </Link>
+            <div>
+              <h4 className="font-medium">
+                <Link href={`/${post.author.username}`}>{post.author.full_name}</Link>
+              </h4>
+              <p className="text-muted-foreground text-sm">
+                Technical writer and software developer with a passion for creating educational
+                content.
+              </p>
+            </div>
+          </div>
+          <Button variant="outline" className="w-full cursor-pointer md:w-auto">
+            <Share2 className="mr-2 h-4 w-4" />
+            Share this post
+          </Button>
         </div>
       </div>
     );
-  }
-
-  const nameInitials = getNameInitials(post.author?.full_name);
+  };
 
   return (
     <div className="bg-background min-h-screen">
@@ -65,7 +99,11 @@ export default function PostDetails({ post, slug }: PostDetailsProps) {
       {/* Post Metadata */}
       <div className="container mx-auto px-4 pt-4">
         <div className="mx-auto max-w-3xl border-b pb-2">
-          <h1 className="mb-4 text-4xl font-bold">{post.title}</h1>
+          <div className="mb-4 flex items-start justify-between">
+            <h1 className="text-4xl font-bold">{post.title}</h1>
+            {renderEditButton()}
+          </div>
+
           <p className="text-muted-foreground mb-4 text-xl">{post.short_description}</p>
           <div className="text-muted-foreground flex items-center gap-4 text-sm">
             <div className="flex items-center gap-1">
@@ -94,30 +132,7 @@ export default function PostDetails({ post, slug }: PostDetailsProps) {
           <div className="prose prose-lg max-w-none">
             <RichTextEditor initialValue={postDescription} readOnly />
           </div>
-
-          {/* Author Info and Share Button */}
-          <div className="bg-card mt-8 mb-4 rounded-lg p-6">
-            <div className="flex flex-col justify-between gap-6 md:flex-row md:items-center">
-              <div className="flex items-start gap-4">
-                <Avatar className="h-12 w-12">
-                  <AvatarImage src={post.author.image || ""} />
-                  <AvatarFallback>{nameInitials}</AvatarFallback>
-                </Avatar>
-                <div>
-                  <h4 className="font-medium">{post.author.full_name}</h4>
-                  <p className="text-muted-foreground text-sm">
-                    Technical writer and software developer with a passion for creating educational
-                    content.
-                  </p>
-                </div>
-              </div>
-              <Button variant="outline" className="w-full cursor-pointer md:w-auto">
-                <Share2 className="mr-2 h-4 w-4" />
-                Share this post
-              </Button>
-            </div>
-          </div>
-
+          {renderAuthorInfo()}
           <CommentContainer slug={slug} />
         </div>
       </main>

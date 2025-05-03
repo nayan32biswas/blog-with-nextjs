@@ -7,7 +7,7 @@ import { DEFAULT_ITEMS_LIMIT, MIN_ITEMS_LIMIT } from "@/lib/config";
 import { PostAction } from "@/lib/features/posts/postsSlice";
 import { RootState } from "@/lib/store";
 
-import { PostCard } from "./PostCard";
+import { PostCard } from "../common/PostCard";
 import { MobileTopicsDrawer } from "./topic/MobileTopicsDrawer";
 import { TopicsBlock } from "./topic/TopicsBlock";
 

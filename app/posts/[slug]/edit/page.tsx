@@ -1,9 +1,35 @@
+"use client";
+
+import { useParams } from "next/navigation";
 import React from "react";
 
+import PostEditor from "@/components/posts/Form/PostEditor";
+import { PostApiService } from "@/lib/features/posts/postApi";
+
 export default function EditPostPage() {
-  return (
-    <div className="flex h-[calc(100vh-10rem)] items-center justify-center">
-      <h1 className="text-5xl">Edit Post</h1>
-    </div>
-  );
+  const { slug } = useParams();
+
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [postDetails, setPostDetails] = React.useState(null);
+
+  React.useEffect(() => {
+    const fetchPostDetails = async () => {
+      setIsLoading(true);
+      const [data] = await PostApiService.getPostsDetails({ slug });
+      if (data) setPostDetails(data);
+      setIsLoading(false);
+    };
+
+    fetchPostDetails();
+  }, [slug]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!postDetails) {
+    return null;
+  }
+
+  return <PostEditor defaultValue={postDetails} />;
 }
