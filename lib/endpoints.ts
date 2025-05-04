@@ -9,6 +9,7 @@ export const API_URLS = {
   registration: `${API_V1}/registration`,
   login: `${API_V1}/token`,
   refreshToken: `${API_V1}/update-access-token`,
+  changePassword: `${API_V1}/change-password`,
 
   // Common
   uploadImage: `${API_V1}/upload-image`,

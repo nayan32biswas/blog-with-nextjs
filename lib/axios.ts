@@ -9,6 +9,23 @@ import {
 import { DEFAULT_TIMEOUT, publicEnv, TOKEN_FIELDS } from "./config";
 import { getCookieValue, isServer } from "./utils";
 
+function getAxiosErrorMessage(
+  error: any,
+  defaultErrorMessage: string = "An unexpected error occurred",
+) {
+  if (axios.isAxiosError(error)) {
+    if (error.response) {
+      return error.response.data?.detail || error.message;
+    } else if (error.request) {
+      return "No response received from the server";
+    } else {
+      return error.message;
+    }
+  } else {
+    return defaultErrorMessage;
+  }
+}
+
 const getAccessToken = async () => {
   if (isServer()) {
     return await getServerAccessToken();
@@ -137,3 +154,5 @@ api.interceptors.response.use(
 );
 
 export default api;
+
+export { getAxiosErrorMessage };

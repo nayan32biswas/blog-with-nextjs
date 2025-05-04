@@ -14,11 +14,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { getAxiosErrorMessage } from "@/lib/axios";
+import { AuthApiService } from "@/lib/features/auth/authApi";
 
 type PasswordFormValues = {
-  currentPassword: string;
-  newPassword: string;
-  confirmPassword: string;
+  current_password: string;
+  new_password: string;
+  confirm_password: string;
 };
 
 export function PasswordForm() {
@@ -27,6 +29,12 @@ export function PasswordForm() {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  const defaultValues = {
+    current_password: "",
+    new_password: "",
+    confirm_password: "",
+  };
+
   const {
     register,
     handleSubmit,
@@ -34,40 +42,40 @@ export function PasswordForm() {
     formState: { errors },
   } = useForm<PasswordFormValues>({
     mode: "onBlur",
-    defaultValues: {
-      currentPassword: "",
-      newPassword: "",
-      confirmPassword: "",
-    },
+    defaultValues,
   });
 
-  const newPassword = watch("newPassword");
+  const new_password = watch("new_password");
 
-  const onSubmit = async (data: PasswordFormValues) => {
+  const onSubmit = async (formData: PasswordFormValues) => {
     setIsLoading(true);
 
-    // Simulate API call
-    setTimeout(() => {
-      setIsLoading(false);
-      alert({
-        title: "Password updated",
-        description: "Your password has been updated successfully.",
-      });
-      alert(data);
-    }, 1000);
+    const payload = {
+      current_password: formData.current_password,
+      new_password: formData.new_password,
+    };
+
+    const [data, errorObj] = await AuthApiService.changePassword(payload);
+    if (data) {
+      alert("Successfully Change password");
+    } else if (errorObj) {
+      alert(getAxiosErrorMessage(errorObj));
+    }
+
+    setIsLoading(false);
   };
 
   const formValidation = {
-    currentPassword: register("currentPassword", {
+    current_password: register("current_password", {
       required: "Current password is required",
     }),
-    newPassword: register("newPassword", {
+    new_password: register("new_password", {
       required: "New password is required",
       minLength: { value: 8, message: "Password must be at least 8 characters" },
     }),
-    confirmPassword: register("confirmPassword", {
+    confirm_password: register("confirm_password", {
       required: "Please confirm your password",
-      validate: (value) => value === newPassword || "Passwords do not match",
+      validate: (value) => value === new_password || "Passwords do not match",
     }),
   };
 
@@ -83,17 +91,17 @@ export function PasswordForm() {
         <CardContent className="space-y-6">
           {/* Current Password */}
           <div className="space-y-2">
-            <label htmlFor="currentPassword" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="current_password" className="block text-sm font-medium text-gray-700">
               Current Password
             </label>
             <div className="relative">
               <Lock className="absolute top-2.5 left-2.5 h-4 w-4 text-gray-500" />
               <Input
-                id="currentPassword"
-                className={`pr-10 pl-8 ${errors.currentPassword ? "border-red-500" : ""}`}
+                id="current_password"
+                className={`pr-10 pl-8 ${errors.current_password ? "border-red-500" : ""}`}
                 type={showCurrentPassword ? "text" : "password"}
                 placeholder="Enter your current password"
-                {...formValidation.currentPassword}
+                {...formValidation.current_password}
               />
               <Button
                 type="button"
@@ -112,24 +120,24 @@ export function PasswordForm() {
                 </span>
               </Button>
             </div>
-            {errors.currentPassword && (
-              <p className="text-sm text-red-500">{errors.currentPassword.message}</p>
+            {errors.current_password && (
+              <p className="text-sm text-red-500">{errors.current_password.message}</p>
             )}
           </div>
 
           {/* New Password */}
           <div className="space-y-2">
-            <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="new_password" className="block text-sm font-medium text-gray-700">
               New Password
             </label>
             <div className="relative">
               <Lock className="absolute top-2.5 left-2.5 h-4 w-4 text-gray-500" />
               <Input
-                id="newPassword"
-                className={`pr-10 pl-8 ${errors.newPassword ? "border-red-500" : ""}`}
+                id="new_password"
+                className={`pr-10 pl-8 ${errors.new_password ? "border-red-500" : ""}`}
                 type={showNewPassword ? "text" : "password"}
                 placeholder="Enter your new password"
-                {...formValidation.newPassword}
+                {...formValidation.new_password}
               />
               <Button
                 type="button"
@@ -148,24 +156,24 @@ export function PasswordForm() {
                 </span>
               </Button>
             </div>
-            {errors.newPassword && (
-              <p className="text-sm text-red-500">{errors.newPassword.message}</p>
+            {errors.new_password && (
+              <p className="text-sm text-red-500">{errors.new_password.message}</p>
             )}
           </div>
 
           {/* Confirm Password */}
           <div className="space-y-2">
-            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="confirm_password" className="block text-sm font-medium text-gray-700">
               Confirm New Password
             </label>
             <div className="relative">
               <Lock className="absolute top-2.5 left-2.5 h-4 w-4 text-gray-500" />
               <Input
-                id="confirmPassword"
-                className={`pr-10 pl-8 ${errors.confirmPassword ? "border-red-500" : ""}`}
+                id="confirm_password"
+                className={`pr-10 pl-8 ${errors.confirm_password ? "border-red-500" : ""}`}
                 type={showConfirmPassword ? "text" : "password"}
                 placeholder="Confirm your new password"
-                {...formValidation.confirmPassword}
+                {...formValidation.confirm_password}
               />
               <Button
                 type="button"
@@ -184,12 +192,12 @@ export function PasswordForm() {
                 </span>
               </Button>
             </div>
-            {errors.confirmPassword && (
-              <p className="text-sm text-red-500">{errors.confirmPassword.message}</p>
+            {errors.confirm_password && (
+              <p className="text-sm text-red-500">{errors.confirm_password.message}</p>
             )}
           </div>
         </CardContent>
-        <CardFooter className="flex justify-end">
+        <CardFooter className="mt-2 flex justify-end">
           <Button type="submit" className="bg-gray-900 hover:bg-gray-800" disabled={isLoading}>
             {isLoading ? "Updating..." : "Update password"}
           </Button>

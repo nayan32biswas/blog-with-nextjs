@@ -1,11 +1,10 @@
 "use client";
 
 import { Mail, MapPin, User } from "lucide-react";
-import type React from "react";
+import React from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -19,6 +18,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { IUserDetails } from "@/lib/features/user/types";
 import { UserApiService } from "@/lib/features/user/userApi";
+
+import ProfileImageInput from "./ProfileImageInput";
 
 interface ProfileFormValues {
   username: string;
@@ -34,7 +35,7 @@ interface Props {
 
 export function ProfileForm(props: Props) {
   const [isLoading, setIsLoading] = useState(false);
-  const [avatar, setAvatar] = useState<string | null>("/placeholder.svg?height=200&width=200");
+  const [profileImage, setProfileImage] = useState<string | null>(null);
 
   const { userDetails } = props;
 
@@ -55,27 +56,21 @@ export function ProfileForm(props: Props) {
     defaultValues: defaultValues,
   });
 
+  React.useEffect(() => {
+    if (userDetails.image) {
+      setProfileImage(userDetails.image);
+    }
+  }, [userDetails.image]);
+
   const onSubmit = async (payload: ProfileFormValues) => {
     setIsLoading(true);
 
-    const [data] = await UserApiService.updateUser({ ...payload });
+    const [data] = await UserApiService.updateUser({ ...payload, image: profileImage });
     if (data) {
       alert("Profile updated successfully");
     }
 
     setIsLoading(false);
-  };
-
-  // Handle avatar upload
-  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        setAvatar(event.target?.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
   };
 
   const formValidation = {
@@ -102,29 +97,10 @@ export function ProfileForm(props: Props) {
       <form onSubmit={handleSubmit(onSubmit)}>
         <CardContent className="space-y-6">
           {/* Avatar Upload */}
-          <div className="flex flex-col items-center space-y-2">
-            <Avatar className="h-24 w-24 overflow-hidden rounded-full border-2 border-gray-100">
-              <AvatarImage src={avatar || ""} alt="Profile picture" />
-              <AvatarFallback>
-                <User className="h-12 w-12" />
-              </AvatarFallback>
-            </Avatar>
-            <div>
-              <label
-                htmlFor="avatar-upload"
-                className="cursor-pointer rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
-              >
-                Change avatar
-              </label>
-              <input
-                id="avatar-upload"
-                type="file"
-                accept="image/*"
-                className="sr-only"
-                onChange={handleAvatarChange}
-              />
-            </div>
-          </div>
+          <ProfileImageInput
+            value={profileImage}
+            onChange={(imageUrl) => setProfileImage(imageUrl)}
+          />
 
           <div className="space-y-2">
             <label htmlFor="username" className="block text-sm font-medium text-gray-700">
@@ -214,7 +190,7 @@ export function ProfileForm(props: Props) {
             {errors.location && <p className="text-sm text-red-500">{errors.location.message}</p>}
           </div>
         </CardContent>
-        <CardFooter className="flex justify-end">
+        <CardFooter className="mt-2 flex justify-end">
           <Button type="submit" className="bg-gray-900 hover:bg-gray-800" disabled={isLoading}>
             {isLoading ? "Saving..." : "Save changes"}
           </Button>

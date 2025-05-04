@@ -1,27 +1,29 @@
 import { Upload } from "lucide-react";
+import { ChangeEvent } from "react";
 
-import { CommonApiService } from "@/lib/features/common/commonApi";
+import { Progress } from "@/components/ui/progress";
+import { useImageUpload } from "@/lib/features/common/hooks/useImageUpload";
 import { getMediaFullPath } from "@/lib/utils";
 
 export function ImageInput({ value, onChange }) {
-  const handleCoverImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const formData = new FormData();
-      formData.append("image", file);
+  const { uploadProgress, isUploading, uploadImage } = useImageUpload();
 
-      const [data, errorObj] = await CommonApiService.uploadImage({ formData });
-
-      if (data) {
-        onChange(data.image_path);
-      } else {
-        console.error("Error uploading image:", errorObj);
-      }
+  const handleCoverImageUpload = async (e: ChangeEvent<HTMLInputElement>) => {
+    const [newUrl, errorMessage] = await uploadImage(e);
+    if (newUrl) {
+      onChange(newUrl);
+    } else if (errorMessage) {
+      alert(errorMessage);
     }
   };
 
   return (
     <div className="flex items-start gap-4">
+      {isUploading && (
+        <div className="space-y-2">
+          <Progress value={uploadProgress} className="h-2 w-full min-w-[100px]" />
+        </div>
+      )}
       <div className="flex-1">
         <div className="hover:bg-secondary/50 rounded-lg border-2 border-dashed p-4 transition-colors">
           <input
