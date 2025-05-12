@@ -8,7 +8,9 @@ import React, { useMemo } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/contexts/AuthContext";
 import { IPostDetails } from "@/lib/features/posts/types";
+import { isSelfPost } from "@/lib/features/posts/utility";
 import { getMediaFullPath, getNameInitials, humanizeDate } from "@/lib/utils";
 
 import CommentContainer from "./CommentContainer";
@@ -24,6 +26,8 @@ interface PostDetailsProps {
 }
 
 export default function PostDetails({ post, slug }: PostDetailsProps) {
+  const { authUser } = useAuth();
+
   const postDescription = useMemo(() => {
     if (post.description) {
       return JSON.parse(post.description);
@@ -34,8 +38,7 @@ export default function PostDetails({ post, slug }: PostDetailsProps) {
   const nameInitials = getNameInitials(post.author?.full_name);
 
   const renderEditButton = () => {
-    const isAuthor = post.author?.username === post.author?.username;
-    if (!isAuthor) {
+    if (!isSelfPost(authUser?.username, post.author?.username)) {
       return null;
     }
 
