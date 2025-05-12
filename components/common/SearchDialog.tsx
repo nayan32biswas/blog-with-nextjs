@@ -1,10 +1,10 @@
 "use client";
 
 import { Search } from "lucide-react";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
-import { Badge } from "@/components/ui/badge";
 import {
   Dialog,
   DialogContent,
@@ -12,27 +12,32 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useDebounce } from "@/lib/features/common/hooks/debounce";
+import { PostApiService } from "@/lib/features/posts/postApi";
 import { IPost } from "@/lib/features/posts/types";
 
-const blogPosts: any[] = [];
+const SEARCH_LIMIT = 10;
 
 export function SearchDialog({ children }: any) {
   const [searchTerm, setSearchTerm] = useState("");
   const [results, setResults] = useState<IPost[]>([]);
 
-  useEffect(() => {
-    if (searchTerm.trim() === "") {
-      setResults([]);
-      return;
-    }
+  const debouncedInput = useDebounce(searchTerm, 500);
 
-    const filtered = blogPosts.filter(
-      (result) =>
-        result.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        result.short_description?.toLowerCase()?.includes(searchTerm.toLowerCase()),
-    );
-    setResults(filtered);
-  }, [searchTerm]);
+  useEffect(() => {
+    if (debouncedInput) {
+      const getPosts = async () => {
+        const queryParams = { q: debouncedInput, page: 1, limit: SEARCH_LIMIT };
+
+        const [data] = await PostApiService.getPosts({ queryParams });
+        if (data) {
+          setResults(data.results);
+        }
+      };
+
+      getPosts();
+    }
+  }, [debouncedInput]);
 
   return (
     <Dialog>
@@ -70,12 +75,11 @@ export function SearchDialog({ children }: any) {
                   <div className="flex items-start">
                     <span className="mr-3 text-gray-400">#</span>
                     <div className="flex-1">
-                      <h4 className="font-medium text-gray-900">{result.title}</h4>
+                      <Link href={`/posts/${result.slug}`} className="font-medium text-gray-900">
+                        {result.title}
+                      </Link>
                       <p className="text-sm text-gray-500">{result.short_description}</p>
                     </div>
-                    <Badge variant="outline" className="ml-2 bg-gray-100 text-gray-700">
-                      {result.short_description}
-                    </Badge>
                   </div>
                 </div>
               ))}
