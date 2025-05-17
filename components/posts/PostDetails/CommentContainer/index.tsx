@@ -10,7 +10,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { MIN_ITEMS_LIMIT } from "@/lib/config";
 import { CommentAction } from "@/lib/features/comments/commentsSlice";
 import { RootState } from "@/lib/store";
-import { getNameInitials, humanizeDate } from "@/lib/utils";
+import { getNameInitials } from "@/lib/utils";
+import { humanizeDate, utcToLocal } from "@/lib/utils/datetime";
 
 export default function CommentContainer({ slug }: { slug: string }) {
   const dispatch = useDispatch();
@@ -85,7 +86,7 @@ export default function CommentContainer({ slug }: { slug: string }) {
                 <div className="flex items-center gap-2">
                   <h4 className="font-medium">{comment.user.full_name}</h4>
                   <span className="text-muted-foreground text-sm">
-                    {humanizeDate(comment.created_at)}
+                    {humanizeDate(utcToLocal(comment.created_at))}
                   </span>
                 </div>
                 <p className="mt-2">{comment.description}</p>
@@ -157,7 +158,7 @@ export default function CommentContainer({ slug }: { slug: string }) {
                         <div className="flex items-center gap-2">
                           <h4 className="font-medium">{reply.user.full_name}</h4>
                           <span className="text-muted-foreground text-sm">
-                            {humanizeDate(reply.created_at)}
+                            {humanizeDate(utcToLocal(reply.created_at))}
                           </span>
                         </div>
                         <p className="mt-2">{reply.description}</p>

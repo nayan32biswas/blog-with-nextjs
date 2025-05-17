@@ -1,5 +1,7 @@
 import { IMinimumUser } from "../common/types";
 
+export type PostDescriptionType = null | { content: any[] };
+
 export interface IPost {
   author: IMinimumUser;
   title: string;
@@ -17,7 +19,7 @@ export interface IPostsApiResponse {
 }
 
 export interface IPostDetails extends IPost {
-  description: string;
+  description: PostDescriptionType;
   topics: string[];
 }
 

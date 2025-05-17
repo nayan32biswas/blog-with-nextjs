@@ -1,4 +1,4 @@
-export type nullableString = string | null | undefined;
+export type nullableString = string | null;
 
 export interface IMinimumUser {
   username: string;

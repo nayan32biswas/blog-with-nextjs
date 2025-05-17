@@ -10,8 +10,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { IPostDetails } from "@/lib/features/posts/types";
-import { isSelfPost } from "@/lib/features/posts/utility";
-import { getMediaFullPath, getNameInitials, humanizeDate } from "@/lib/utils";
+import { getPostDescriptionContent, isSelfPost } from "@/lib/features/posts/utility";
+import { getMediaFullPath, getNameInitials } from "@/lib/utils";
+import { humanizeDate, utcToLocal } from "@/lib/utils/datetime";
 
 import CommentContainer from "./CommentContainer";
 
@@ -28,12 +29,10 @@ interface PostDetailsProps {
 export default function PostDetails({ post, slug }: PostDetailsProps) {
   const { authUser } = useAuth();
 
-  const postDescription = useMemo(() => {
-    if (post.description) {
-      return JSON.parse(post.description);
-    }
-    return [];
-  }, [post.description]);
+  const postDescriptionContent = useMemo(
+    () => getPostDescriptionContent(post.description),
+    [post.description],
+  );
 
   const nameInitials = getNameInitials(post.author?.full_name);
 
@@ -114,7 +113,7 @@ export default function PostDetails({ post, slug }: PostDetailsProps) {
               {"000"}
             </div>
             <span>•</span>
-            <span>{humanizeDate(post.publish_at)}</span>
+            <span>{humanizeDate(utcToLocal(post.publish_at))}</span>
           </div>
         </div>
       </div>
@@ -133,7 +132,7 @@ export default function PostDetails({ post, slug }: PostDetailsProps) {
           </div>
 
           <div className="prose prose-lg max-w-none">
-            <RichTextEditor initialValue={postDescription} readOnly />
+            <RichTextEditor initialValue={postDescriptionContent} readOnly />
           </div>
           {renderAuthorInfo()}
           <CommentContainer slug={slug} />

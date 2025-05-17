@@ -23,6 +23,15 @@ export default function EditPostPage() {
     fetchPostDetails();
   }, [slug]);
 
+  const handleSubmitData = async (payload: any) => {
+    const [data, errorObj] = await PostApiService.updatePosts({ slug, payload });
+    if (data) {
+      window.location.href = `/posts/${slug}`;
+    } else if (errorObj) {
+      console.error(errorObj);
+    }
+  };
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -31,5 +40,5 @@ export default function EditPostPage() {
     return null;
   }
 
-  return <PostEditor defaultValue={postDetails} />;
+  return <PostEditor value={postDetails} onSubmitData={handleSubmitData} />;
 }

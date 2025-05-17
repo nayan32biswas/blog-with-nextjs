@@ -46,4 +46,15 @@ export class PostApiService {
       return [null, error?.response?.data];
     }
   };
+
+  static updatePosts = async ({ slug, payload }: any) => {
+    try {
+      const url = buildUrl(API_URLS.postsDetails, { slug });
+      const response = await axios.patch(url, payload);
+
+      return [response.data, null];
+    } catch (error: any) {
+      return [null, error?.response?.data];
+    }
+  };
 }

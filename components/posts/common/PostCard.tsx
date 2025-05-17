@@ -7,7 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { useAuth } from "@/contexts/AuthContext";
 import type { IPost } from "@/lib/features/posts/types";
-import { getMediaFullPath, humanizeDate } from "@/lib/utils";
+import { getMediaFullPath } from "@/lib/utils";
+import { humanizeDate, utcToLocal } from "@/lib/utils/datetime";
 
 interface PostCardProps {
   post: IPost;
@@ -64,7 +65,7 @@ export function PostCard({ post }: PostCardProps) {
               <Clock className="mr-1 h-4 w-4" />
               {"000"}
             </div>
-            <div>{humanizeDate(post.publish_at)}</div>
+            <div>{humanizeDate(utcToLocal(post.publish_at))}</div>
           </CardFooter>
         </div>
       </div>

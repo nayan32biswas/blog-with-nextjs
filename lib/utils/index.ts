@@ -2,7 +2,7 @@ import { type ClassValue, clsx } from "clsx";
 import { get } from "lodash";
 import { twMerge } from "tailwind-merge";
 
-import { publicEnv, TOKEN_FIELDS } from "./config";
+import { publicEnv, TOKEN_FIELDS } from "../config";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -52,32 +52,6 @@ export const getCookieValue = (name: string) => {
   return cookie ? decodeURIComponent(cookie.split("=")[1]) : null;
 };
 
-export const humanizeDate = (dateStr: string) => {
-  const date = new Date(dateStr);
-  const formattedDate = date.toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
-
-  return formattedDate;
-};
-
-export const humanizeDateTime = (dateStr: string) => {
-  const date = new Date(dateStr);
-  const formattedDate = date.toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
-  const formattedTime = date.toLocaleTimeString("en-US", {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-
-  return `${formattedDate} ${formattedTime}`;
-};
-
 export const getNameInitials = (name?: string | null) => {
   const fullName = name ? name.trim() : "";
   if (!fullName) return "";
@@ -102,17 +76,6 @@ export function removeDuplicatesByKey<T, K extends keyof T>(array: T[], key: K):
     seen.add(value);
     return true;
   });
-}
-
-export function localTimeToUTC(localTimeString: string | null): string | null {
-  if (!localTimeString) {
-    return null;
-  }
-
-  const localDate = new Date(localTimeString);
-  const utcTimeString = localDate.toISOString().slice(0, 16).replace("T", " "); // Format to "YYYY-MM-DD HH:MM"
-
-  return utcTimeString;
 }
 
 export function parseDomainFromUrl(url: string | null): string | null {
