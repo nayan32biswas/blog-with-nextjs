@@ -105,6 +105,7 @@ async function serverClearTokens() {
 
   cookieStore.set(TOKEN_FIELDS.REFRESH_TOKEN_KEY, "", { maxAge: 0 });
   cookieStore.set(TOKEN_FIELDS.ACCESS_TOKEN_KEY, "", { maxAge: 0 });
+  cookieStore.set(TOKEN_FIELDS.IS_AUTHENTICATED_KEY, "", { maxAge: 0 });
 
   return { success: true };
 }
