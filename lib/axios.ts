@@ -1,23 +1,23 @@
-import axios, { AxiosInstance } from "axios";
+import axios, { AxiosInstance } from 'axios';
 
 import {
   getServerAccessToken,
   serverClearTokens,
   serverRefreshAccessToken,
-} from "@/app/actions/auth";
+} from '@/app/actions/auth';
 
-import { DEFAULT_TIMEOUT, publicEnv, TOKEN_FIELDS } from "./config";
-import { getCookieValue, isServer } from "./utils";
+import { DEFAULT_TIMEOUT, publicEnv, TOKEN_FIELDS } from './config';
+import { getCookieValue, isServer } from './utils';
 
 function getAxiosErrorMessage(
   error: any,
-  defaultErrorMessage: string = "An unexpected error occurred",
+  defaultErrorMessage: string = 'An unexpected error occurred',
 ) {
   if (axios.isAxiosError(error)) {
     if (error.response) {
       return error.response.data?.detail || error.message;
     } else if (error.request) {
-      return "No response received from the server";
+      return 'No response received from the server';
     } else {
       return error.message;
     }
@@ -53,7 +53,7 @@ const logoutUser = async () => {
   if (isServer()) {
     // Add logic to handle server-side logout
   } else {
-    window.location.href = "/logout";
+    window.location.href = '/logout';
   }
 };
 
@@ -69,7 +69,7 @@ const getNewAccessToken = async () => {
 
         if (!accessToken) {
           await logoutUser();
-          throw new Error("No access token received");
+          throw new Error('No access token received');
         }
 
         return { accessToken };
@@ -81,7 +81,7 @@ const getNewAccessToken = async () => {
     return refreshTokenPromise;
   } catch {
     await logoutUser();
-    throw "Unable to refresh the token";
+    throw 'Unable to refresh the token';
   }
 };
 
@@ -93,7 +93,7 @@ async function handleApiAuthError(api: AxiosInstance, originalRequest: any) {
     subscribeTokenRefresh((accessToken: string) => {
       try {
         // replace the expired accessToken and retry the original request
-        originalRequest.headers["Authorization"] = getAuthorizationString(accessToken);
+        originalRequest.headers['Authorization'] = getAuthorizationString(accessToken);
         resolve(api(originalRequest));
       } catch (error) {
         reject(error);

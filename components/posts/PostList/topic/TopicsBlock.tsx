@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import { Search } from "lucide-react";
-import { useState } from "react";
+import { Search } from 'lucide-react';
+import { useState } from 'react';
 
-import { Input } from "@/components/ui/input";
-import { ITopic } from "@/lib/features/posts/types";
+import { Input } from '@/components/ui/input';
+import { ITopic } from '@/lib/features/posts/types';
 
 interface TopicsBlockProps {
   topics: ITopic[];
 }
 
 export function TopicsBlock({ topics }: TopicsBlockProps) {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
 
   const filteredTopics = topics.filter((topic) =>
     topic.name.toLowerCase().includes(searchTerm.toLowerCase()),
@@ -38,7 +38,7 @@ export function TopicsBlock({ topics }: TopicsBlockProps) {
         {filteredTopics.map((topic) => (
           <div key={`topic-${topic.slug}`} className="flex items-center justify-between py-3">
             <span className="text-gray-700">{topic.name}</span>
-            <span className="text-gray-500">{"000"}</span>
+            <span className="text-gray-500">{'000'}</span>
           </div>
         ))}
 

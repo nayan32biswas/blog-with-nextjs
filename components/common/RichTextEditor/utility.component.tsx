@@ -1,6 +1,6 @@
-import React, { PropsWithChildren, ReactNode, Ref } from "react";
-import ReactDOM from "react-dom";
-import { css, cx } from "@emotion/css";
+import React, { PropsWithChildren, ReactNode, Ref } from 'react';
+import ReactDOM from 'react-dom';
+import { css, cx } from '@emotion/css';
 
 interface BaseProps {
   className: string;
@@ -21,7 +21,7 @@ export const Button = React.forwardRef<HTMLSpanElement, PropsWithChildren<Button
         className as string,
         css`
           cursor: pointer;
-          color: ${reversed ? (active ? "white" : "#fff") : active ? "black" : "#000"};
+          color: ${reversed ? (active ? 'white' : '#fff') : active ? 'black' : '#000'};
           padding: 5px;
           border: 2px solid #eee;
           border-radius: 5px;
@@ -30,7 +30,7 @@ export const Button = React.forwardRef<HTMLSpanElement, PropsWithChildren<Button
     />
   ),
 );
-Button.displayName = "Button";
+Button.displayName = 'Button';
 
 export const Instruction = React.forwardRef<HTMLDivElement, PropsWithChildren<ButtonProps>>(
   ({ className, ...props }, ref: Ref<HTMLDivElement>) => (
@@ -50,7 +50,7 @@ export const Instruction = React.forwardRef<HTMLDivElement, PropsWithChildren<Bu
     />
   ),
 );
-Instruction.displayName = "Instruction";
+Instruction.displayName = 'Instruction';
 
 export const Menu = React.forwardRef<HTMLDivElement, PropsWithChildren<ButtonProps>>(
   ({ className, ...props }, ref: Ref<HTMLDivElement>) => (
@@ -72,10 +72,10 @@ export const Menu = React.forwardRef<HTMLDivElement, PropsWithChildren<ButtonPro
     />
   ),
 );
-Menu.displayName = "Menu";
+Menu.displayName = 'Menu';
 
 export const Portal = ({ children }: { children?: ReactNode }) => {
-  return typeof document === "object" ? ReactDOM.createPortal(children, document.body) : null;
+  return typeof document === 'object' ? ReactDOM.createPortal(children, document.body) : null;
 };
 
 export const Toolbar = React.forwardRef<HTMLDivElement, PropsWithChildren<ButtonProps>>(
@@ -96,4 +96,4 @@ export const Toolbar = React.forwardRef<HTMLDivElement, PropsWithChildren<Button
     />
   ),
 );
-Toolbar.displayName = "Toolbar";
+Toolbar.displayName = 'Toolbar';

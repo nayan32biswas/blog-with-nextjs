@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useParams } from "next/navigation";
-import React from "react";
+import { useParams } from 'next/navigation';
+import React from 'react';
 
-import PostEditor from "@/components/posts/Form/PostEditor";
-import { PostApiService } from "@/lib/features/posts/postApi";
+import PostEditor from '@/components/posts/Form/PostEditor';
+import { PostApiService } from '@/lib/features/posts/postApi';
 
 export default function EditPostPage() {
   const { slug } = useParams();

@@ -1,7 +1,7 @@
-import Link from "next/link";
-import React from "react";
+import Link from 'next/link';
+import React from 'react';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 
 export default function HeroContainer() {
   return (
@@ -14,7 +14,7 @@ export default function HeroContainer() {
         distraction-free environment.
       </p>
       <Button className="cursor-pointer bg-gray-900 hover:bg-gray-800">
-        <Link href={"/posts"}>Start Reading</Link>
+        <Link href={'/posts'}>Start Reading</Link>
       </Button>
     </section>
   );

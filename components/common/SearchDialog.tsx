@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { Search } from "lucide-react";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import { Search } from 'lucide-react';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 
 import {
   Dialog,
@@ -11,15 +11,15 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { useDebounce } from "@/lib/features/common/hooks/debounce";
-import { PostApiService } from "@/lib/features/posts/postApi";
-import { IPost } from "@/lib/features/posts/types";
+} from '@/components/ui/dialog';
+import { useDebounce } from '@/lib/features/common/hooks/debounce';
+import { PostApiService } from '@/lib/features/posts/postApi';
+import { IPost } from '@/lib/features/posts/types';
 
 const SEARCH_LIMIT = 10;
 
 export function SearchDialog({ children }: any) {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [results, setResults] = useState<IPost[]>([]);
 
   const debouncedInput = useDebounce(searchTerm, 500);

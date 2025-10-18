@@ -1,113 +1,113 @@
-"use client";
+'use client';
 
-import { BaseEditor, BaseRange, Descendant, Element, Range } from "slate";
-import { HistoryEditor } from "slate-history";
-import { ReactEditor, RenderElementProps } from "slate-react";
+import { BaseEditor, BaseRange, Descendant, Element, Range } from 'slate';
+import { HistoryEditor } from 'slate-history';
+import { ReactEditor, RenderElementProps } from 'slate-react';
 
 export type BlockQuoteElement = {
-  type: "block-quote";
+  type: 'block-quote';
   align?: string;
   children: Descendant[];
 };
 
 export type BulletedListElement = {
-  type: "bulleted-list";
+  type: 'bulleted-list';
   align?: string;
   children: Descendant[];
 };
 
 export type CheckListItemElement = {
-  type: "check-list-item";
+  type: 'check-list-item';
   checked: boolean;
   children: Descendant[];
 };
 
 export type EditableVoidElement = {
-  type: "editable-void";
+  type: 'editable-void';
   children: EmptyText[];
 };
 
 export type HeadingElement = {
-  type: "heading-one";
+  type: 'heading-one';
   align?: string;
   children: Descendant[];
 };
 
 export type HeadingTwoElement = {
-  type: "heading-two";
+  type: 'heading-two';
   align?: string;
   children: Descendant[];
 };
 
 export type HeadingThreeElement = {
-  type: "heading-three";
+  type: 'heading-three';
   align?: string;
   children: Descendant[];
 };
 
 export type HeadingFourElement = {
-  type: "heading-four";
+  type: 'heading-four';
   align?: string;
   children: Descendant[];
 };
 
 export type HeadingFiveElement = {
-  type: "heading-five";
+  type: 'heading-five';
   align?: string;
   children: Descendant[];
 };
 
 export type HeadingSixElement = {
-  type: "heading-six";
+  type: 'heading-six';
   align?: string;
   children: Descendant[];
 };
 
 export type ImageElement = {
-  type: "image";
+  type: 'image';
   url: string;
   children: EmptyText[];
 };
 
-export type LinkElement = { type: "link"; url: string; children: Descendant[] };
+export type LinkElement = { type: 'link'; url: string; children: Descendant[] };
 
-export type ButtonElement = { type: "button"; children: Descendant[] };
+export type ButtonElement = { type: 'button'; children: Descendant[] };
 
-export type BadgeElement = { type: "badge"; children: Descendant[] };
+export type BadgeElement = { type: 'badge'; children: Descendant[] };
 
-export type ListItemElement = { type: "list-item"; children: Descendant[] };
+export type ListItemElement = { type: 'list-item'; children: Descendant[] };
 
 export type NumberedListItemElement = {
-  type: "numbered-list";
+  type: 'numbered-list';
   children: Descendant[];
 };
 
 export type MentionElement = {
-  type: "mention";
+  type: 'mention';
   character: string;
   children: CustomText[];
 };
 
 export type ParagraphElement = {
-  type: "paragraph";
+  type: 'paragraph';
   align?: string;
   children: Descendant[];
 };
 
-export type TableCellElement = { type: "table-cell"; children: CustomText[] };
+export type TableCellElement = { type: 'table-cell'; children: CustomText[] };
 
-export type TitleElement = { type: "title"; children: Descendant[] };
+export type TitleElement = { type: 'title'; children: Descendant[] };
 
-export type VideoElement = { type: "video"; url: string; children: EmptyText[] };
+export type VideoElement = { type: 'video'; url: string; children: EmptyText[] };
 
 export type CodeBlockElement = {
-  type: "code-block";
+  type: 'code-block';
   language: string;
   children: Descendant[];
 };
 
 export type CodeLineElement = {
-  type: "code-line";
+  type: 'code-line';
   children: Descendant[];
 };
 
@@ -147,7 +147,7 @@ export type CustomElement =
   | CodeBlockElement
   | CodeLineElement;
 
-export type CustomElementType = CustomElement["type"];
+export type CustomElementType = CustomElement['type'];
 
 export type CustomText = {
   bold?: boolean;
@@ -164,7 +164,7 @@ export type CustomText = {
   text: string;
 };
 
-export type CustomTextKey = keyof Omit<CustomText, "text">;
+export type CustomTextKey = keyof Omit<CustomText, 'text'>;
 
 export type EmptyText = {
   text: string;
@@ -180,7 +180,7 @@ export type CustomEditor = BaseEditor &
     nodeToDecorations?: Map<Element, Range[]>;
   };
 
-declare module "slate" {
+declare module 'slate' {
   interface CustomTypes {
     Editor: CustomEditor;
     Element: CustomElement;

@@ -1,10 +1,10 @@
-import { Metadata } from "next";
-import { cache } from "react";
+import { Metadata } from 'next';
+import { cache } from 'react';
 
-import UserPublicProfile from "@/components/user/UserPublicProfile";
-import { publicEnv } from "@/lib/config";
-import { IUserPublicProfile } from "@/lib/features/user/types";
-import { UserApiService } from "@/lib/features/user/userApi";
+import UserPublicProfile from '@/components/user/UserPublicProfile';
+import { publicEnv } from '@/lib/config';
+import { IUserPublicProfile } from '@/lib/features/user/types';
+import { UserApiService } from '@/lib/features/user/userApi';
 
 const getUserPublicProfileUrl = (username: string) => `${publicEnv.BASE_API_URL}/${username}`;
 
@@ -21,18 +21,18 @@ export async function generateMetadata({ params }): Promise<Metadata> {
 
   if (!user || errorObj) {
     return {
-      title: "User Not Found",
-      description: "The requested post could not be found.",
+      title: 'User Not Found',
+      description: 'The requested post could not be found.',
       openGraph: {
-        title: "User Not Found",
-        description: "The requested post could not be found.",
+        title: 'User Not Found',
+        description: 'The requested post could not be found.',
       },
     };
   }
 
-  const title = user.full_name || "";
-  const image = user.image || "";
-  const bio = user.bio || "";
+  const title = user.full_name || '';
+  const image = user.image || '';
+  const bio = user.bio || '';
 
   return {
     title: title,
@@ -42,14 +42,14 @@ export async function generateMetadata({ params }): Promise<Metadata> {
       title: title,
       description: bio,
       url: getUserPublicProfileUrl(username),
-      type: "article",
-      images: [{ url: image || "" }],
+      type: 'article',
+      images: [{ url: image || '' }],
     },
     twitter: {
-      card: "summary_large_image",
+      card: 'summary_large_image',
       title: title,
       description: bio,
-      images: [image || ""],
+      images: [image || ''],
     },
   };
 }

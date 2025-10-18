@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import { useRouter, useSearchParams } from "next/navigation";
-import React, { useState } from "react";
+import { useRouter, useSearchParams } from 'next/navigation';
+import React, { useState } from 'react';
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { IUserDetails } from "@/lib/features/user/types";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { IUserDetails } from '@/lib/features/user/types';
 
-import { PasswordForm } from "./PasswordForm";
-import { ProfileForm } from "./ProfileForm";
+import { PasswordForm } from './PasswordForm';
+import { ProfileForm } from './ProfileForm';
 
 const TAB_KEY = {
-  profile: "profile",
-  password: "password",
+  profile: 'profile',
+  password: 'password',
 };
 
 interface Props {
@@ -27,12 +27,12 @@ export default function SettingsContainer(props: Props) {
   const [activeTab, setActiveTab] = useState(TAB_KEY.profile);
 
   React.useEffect(() => {
-    const tabFromUrl = searchParams.get("tab");
+    const tabFromUrl = searchParams.get('tab');
     if (tabFromUrl && Object.keys(TAB_KEY).includes(tabFromUrl)) {
       setActiveTab(tabFromUrl);
     } else if (!tabFromUrl) {
       // If no tab in URL, update URL to include default tab
-      router.push("/settings?tab=profile", { scroll: false });
+      router.push('/settings?tab=profile', { scroll: false });
     }
   }, [searchParams, router]);
 

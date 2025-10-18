@@ -1,9 +1,9 @@
-import { Upload } from "lucide-react";
-import { ChangeEvent } from "react";
+import { Upload } from 'lucide-react';
+import { ChangeEvent } from 'react';
 
-import { Progress } from "@/components/ui/progress";
-import { useImageUpload } from "@/lib/features/common/hooks/useImageUpload";
-import { getMediaFullPath } from "@/lib/utils";
+import { Progress } from '@/components/ui/progress';
+import { useImageUpload } from '@/lib/features/common/hooks/useImageUpload';
+import { getMediaFullPath } from '@/lib/utils';
 
 export function ImageInput({ value, onChange }) {
   const { uploadProgress, isUploading, uploadImage } = useImageUpload();

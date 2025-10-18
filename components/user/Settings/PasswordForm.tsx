@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { Lock } from "lucide-react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { Lock } from 'lucide-react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 
-import ShowPasswordButton from "@/components/common/Buttons/ShowPasswordButtion";
-import { Button } from "@/components/ui/button";
+import ShowPasswordButton from '@/components/common/Buttons/ShowPasswordButtion';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -13,10 +13,10 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { getAxiosErrorMessage } from "@/lib/axios";
-import { AuthApiService } from "@/lib/features/auth/authApi";
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { getAxiosErrorMessage } from '@/lib/axios';
+import { AuthApiService } from '@/lib/features/auth/authApi';
 
 type PasswordFormValues = {
   current_password: string;
@@ -31,9 +31,9 @@ export function PasswordForm() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const defaultValues = {
-    current_password: "",
-    new_password: "",
-    confirm_password: "",
+    current_password: '',
+    new_password: '',
+    confirm_password: '',
   };
 
   const {
@@ -42,11 +42,11 @@ export function PasswordForm() {
     watch,
     formState: { errors },
   } = useForm<PasswordFormValues>({
-    mode: "onBlur",
+    mode: 'onBlur',
     defaultValues,
   });
 
-  const new_password = watch("new_password");
+  const new_password = watch('new_password');
 
   const onSubmit = async (formData: PasswordFormValues) => {
     setIsLoading(true);
@@ -58,7 +58,7 @@ export function PasswordForm() {
 
     const [data, errorObj] = await AuthApiService.changePassword(payload);
     if (data) {
-      alert("Successfully Change password");
+      alert('Successfully Change password');
     } else if (errorObj) {
       alert(getAxiosErrorMessage(errorObj));
     }
@@ -67,16 +67,16 @@ export function PasswordForm() {
   };
 
   const formValidation = {
-    current_password: register("current_password", {
-      required: "Current password is required",
+    current_password: register('current_password', {
+      required: 'Current password is required',
     }),
-    new_password: register("new_password", {
-      required: "New password is required",
-      minLength: { value: 8, message: "Password must be at least 8 characters" },
+    new_password: register('new_password', {
+      required: 'New password is required',
+      minLength: { value: 8, message: 'Password must be at least 8 characters' },
     }),
-    confirm_password: register("confirm_password", {
-      required: "Please confirm your password",
-      validate: (value) => value === new_password || "Passwords do not match",
+    confirm_password: register('confirm_password', {
+      required: 'Please confirm your password',
+      validate: (value) => value === new_password || 'Passwords do not match',
     }),
   };
 
@@ -99,8 +99,8 @@ export function PasswordForm() {
               <Lock className="absolute top-2.5 left-2.5 h-4 w-4 text-gray-500" />
               <Input
                 id="current_password"
-                className={`pr-10 pl-8 ${errors.current_password ? "border-red-500" : ""}`}
-                type={showCurrentPassword ? "text" : "password"}
+                className={`pr-10 pl-8 ${errors.current_password ? 'border-red-500' : ''}`}
+                type={showCurrentPassword ? 'text' : 'password'}
                 placeholder="Enter your current password"
                 {...formValidation.current_password}
               />
@@ -123,8 +123,8 @@ export function PasswordForm() {
               <Lock className="absolute top-2.5 left-2.5 h-4 w-4 text-gray-500" />
               <Input
                 id="new_password"
-                className={`pr-10 pl-8 ${errors.new_password ? "border-red-500" : ""}`}
-                type={showNewPassword ? "text" : "password"}
+                className={`pr-10 pl-8 ${errors.new_password ? 'border-red-500' : ''}`}
+                type={showNewPassword ? 'text' : 'password'}
                 placeholder="Enter your new password"
                 {...formValidation.new_password}
               />
@@ -147,8 +147,8 @@ export function PasswordForm() {
               <Lock className="absolute top-2.5 left-2.5 h-4 w-4 text-gray-500" />
               <Input
                 id="confirm_password"
-                className={`pr-10 pl-8 ${errors.confirm_password ? "border-red-500" : ""}`}
-                type={showConfirmPassword ? "text" : "password"}
+                className={`pr-10 pl-8 ${errors.confirm_password ? 'border-red-500' : ''}`}
+                type={showConfirmPassword ? 'text' : 'password'}
                 placeholder="Confirm your new password"
                 {...formValidation.confirm_password}
               />
@@ -164,7 +164,7 @@ export function PasswordForm() {
         </CardContent>
         <CardFooter className="mt-2 flex justify-end">
           <Button type="submit" className="bg-gray-900 hover:bg-gray-800" disabled={isLoading}>
-            {isLoading ? "Updating..." : "Update password"}
+            {isLoading ? 'Updating...' : 'Update password'}
           </Button>
         </CardFooter>
       </form>

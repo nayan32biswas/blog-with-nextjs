@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import React from "react";
+import React from 'react';
 
-import SettingsContainer from "@/components/user/Settings";
-import { useAuth } from "@/contexts/AuthContext";
-import { IUserDetails } from "@/lib/features/user/types";
-import { UserApiService } from "@/lib/features/user/userApi";
+import SettingsContainer from '@/components/user/Settings';
+import { useAuth } from '@/contexts/AuthContext';
+import { IUserDetails } from '@/lib/features/user/types';
+import { UserApiService } from '@/lib/features/user/userApi';
 
 export default function SettingsPage() {
   const { authUser } = useAuth();

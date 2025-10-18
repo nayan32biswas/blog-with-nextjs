@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import PostEditor from "@/components/posts/Form/PostEditor";
-import { PostApiService } from "@/lib/features/posts/postApi";
+import PostEditor from '@/components/posts/Form/PostEditor';
+import { PostApiService } from '@/lib/features/posts/postApi';
 
 const PostEditorPage = () => {
   const handleSubmitData = async (payload: any) => {

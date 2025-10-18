@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { PostCard } from "@/components/posts/common/PostCard";
-import { DEFAULT_ITEMS_LIMIT } from "@/lib/config";
-import { API_STATE } from "@/lib/features/common/constants";
-import { PostAction } from "@/lib/features/posts/postsSlice";
-import { IUserPublicProfile } from "@/lib/features/user/types";
-import { RootState } from "@/lib/store";
+import { PostCard } from '@/components/posts/common/PostCard';
+import { DEFAULT_ITEMS_LIMIT } from '@/lib/config';
+import { API_STATE } from '@/lib/features/common/constants';
+import { PostAction } from '@/lib/features/posts/postsSlice';
+import { IUserPublicProfile } from '@/lib/features/user/types';
+import { RootState } from '@/lib/store';
 
-import UserProfileCard from "./UserProfileCard";
+import UserProfileCard from './UserProfileCard';
 
 interface Props {
   username: string;

@@ -1,4 +1,4 @@
-import { css } from "@emotion/css";
+import { css } from '@emotion/css';
 
 export const editorStyles = css`
   /* Reset the container context */
@@ -8,7 +8,7 @@ export const editorStyles = css`
 
   /* Establish a new styling context */
   font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   color: #333;
   line-height: 1.5;
 
@@ -136,7 +136,7 @@ export const editorStyles = css`
   html,
   input,
   textarea {
-    font-family: "Roboto", sans-serif;
+    font-family: 'Roboto', sans-serif;
     line-height: 1.4;
     background: #eee;
   }
@@ -175,7 +175,7 @@ export const editorStyles = css`
     font-style: italic;
   }
 
-  blockquote[dir="rtl"] {
+  blockquote[dir='rtl'] {
     border-left: none;
     padding-left: 0;
     padding-right: 10px;

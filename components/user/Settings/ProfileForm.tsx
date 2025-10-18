@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { Mail, MapPin, User } from "lucide-react";
-import React from "react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { Mail, MapPin, User } from 'lucide-react';
+import React from 'react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -13,13 +13,13 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { IUserDetails } from "@/lib/features/user/types";
-import { UserApiService } from "@/lib/features/user/userApi";
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { IUserDetails } from '@/lib/features/user/types';
+import { UserApiService } from '@/lib/features/user/userApi';
 
-import ProfileImageInput from "./ProfileImageInput";
+import ProfileImageInput from './ProfileImageInput';
 
 interface ProfileFormValues {
   username: string;
@@ -40,11 +40,11 @@ export function ProfileForm(props: Props) {
   const { userDetails } = props;
 
   const defaultValues = {
-    username: userDetails.username || "",
-    email: userDetails.email || "",
-    full_name: userDetails.full_name || "",
-    bio: userDetails.bio || "",
-    location: userDetails.location || "",
+    username: userDetails.username || '',
+    email: userDetails.email || '',
+    full_name: userDetails.full_name || '',
+    bio: userDetails.bio || '',
+    location: userDetails.location || '',
   };
 
   const {
@@ -52,7 +52,7 @@ export function ProfileForm(props: Props) {
     handleSubmit,
     formState: { errors },
   } = useForm<ProfileFormValues>({
-    mode: "onBlur",
+    mode: 'onBlur',
     defaultValues: defaultValues,
   });
 
@@ -67,23 +67,23 @@ export function ProfileForm(props: Props) {
 
     const [data] = await UserApiService.updateUser({ ...payload, image: profileImage });
     if (data) {
-      alert("Profile updated successfully");
+      alert('Profile updated successfully');
     }
 
     setIsLoading(false);
   };
 
   const formValidation = {
-    username: register("username", { required: "Username is required" }),
-    email: register("email", {}),
-    full_name: register("full_name", {
-      required: "Full name is required",
-      minLength: { value: 2, message: "Full name must be at least 2 characters" },
+    username: register('username', { required: 'Username is required' }),
+    email: register('email', {}),
+    full_name: register('full_name', {
+      required: 'Full name is required',
+      minLength: { value: 2, message: 'Full name must be at least 2 characters' },
     }),
-    bio: register("bio", {
-      maxLength: { value: 500, message: "Bio must not be longer than 500 characters" },
+    bio: register('bio', {
+      maxLength: { value: 500, message: 'Bio must not be longer than 500 characters' },
     }),
-    location: register("location"),
+    location: register('location'),
   };
 
   return (
@@ -110,7 +110,7 @@ export function ProfileForm(props: Props) {
               <User className="absolute top-2.5 left-2.5 h-4 w-4 text-gray-500" />
               <Input
                 id="username"
-                className={`pl-8 ${errors.username ? "border-red-500" : ""}`}
+                className={`pl-8 ${errors.username ? 'border-red-500' : ''}`}
                 placeholder="username"
                 disabled
                 {...formValidation.username}
@@ -131,7 +131,7 @@ export function ProfileForm(props: Props) {
               <Mail className="absolute top-2.5 left-2.5 h-4 w-4 text-gray-500" />
               <Input
                 id="email"
-                className={`pl-8 ${errors.email ? "border-red-500" : ""}`}
+                className={`pl-8 ${errors.email ? 'border-red-500' : ''}`}
                 placeholder="email@example.com"
                 {...formValidation.email}
               />
@@ -151,7 +151,7 @@ export function ProfileForm(props: Props) {
               id="full_name"
               placeholder="Enter your full name"
               {...formValidation.full_name}
-              className={`${errors.full_name ? "border-red-500" : ""}`}
+              className={`${errors.full_name ? 'border-red-500' : ''}`}
             />
             {errors.full_name && <p className="text-sm text-red-500">{errors.full_name.message}</p>}
           </div>
@@ -164,7 +164,7 @@ export function ProfileForm(props: Props) {
             <Textarea
               id="bio"
               placeholder="Tell us a little bit about yourself"
-              className={`resize-none ${errors.bio ? "border-red-500" : ""}`}
+              className={`resize-none ${errors.bio ? 'border-red-500' : ''}`}
               {...formValidation.bio}
             />
             <p className="text-sm text-gray-500">
@@ -182,7 +182,7 @@ export function ProfileForm(props: Props) {
               <MapPin className="absolute top-2.5 left-2.5 h-4 w-4 text-gray-500" />
               <Input
                 id="location"
-                className={`pl-8 ${errors.location ? "border-red-500" : ""}`}
+                className={`pl-8 ${errors.location ? 'border-red-500' : ''}`}
                 placeholder="City, Country"
                 {...formValidation.location}
               />
@@ -192,7 +192,7 @@ export function ProfileForm(props: Props) {
         </CardContent>
         <CardFooter className="mt-2 flex justify-end">
           <Button type="submit" className="bg-gray-900 hover:bg-gray-800" disabled={isLoading}>
-            {isLoading ? "Saving..." : "Save changes"}
+            {isLoading ? 'Saving...' : 'Save changes'}
           </Button>
         </CardFooter>
       </form>

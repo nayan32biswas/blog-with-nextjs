@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { ListFilter } from "lucide-react";
-import { useState } from "react";
+import { ListFilter } from 'lucide-react';
+import { useState } from 'react';
 
-import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { ITopic } from "@/lib/features/posts/types";
+import { Button } from '@/components/ui/button';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { ITopic } from '@/lib/features/posts/types';
 
-import { TopicsBlock } from "./TopicsBlock";
+import { TopicsBlock } from './TopicsBlock';
 
 interface MobileTopicsDrawerProps {
   topics: ITopic[];

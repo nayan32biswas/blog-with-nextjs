@@ -1,10 +1,10 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import { removeDuplicatesByKey } from "@/lib/utils";
+import { removeDuplicatesByKey } from '@/lib/utils';
 
-import { API_STATE } from "../common/constants";
-import { PostApiService } from "./postApi";
-import { PostState } from "./types";
+import { API_STATE } from '../common/constants';
+import { PostApiService } from './postApi';
+import { PostState } from './types';
 
 const initialState: PostState = {
   postsApiData: {
@@ -35,28 +35,28 @@ const initialState: PostState = {
 
 export class PostAction {
   static getPosts: any = createAsyncThunk(
-    "post/getPosts",
+    'post/getPosts',
     async (params: any, { rejectWithValue }) => {
       const [data, errorObj] = await PostApiService.getPosts(params);
       return data ? data : rejectWithValue(errorObj);
     },
   );
   static getUserPosts: any = createAsyncThunk(
-    "post/getUserPosts",
+    'post/getUserPosts',
     async (params: any, { rejectWithValue }) => {
       const [data, errorObj] = await PostApiService.getPosts(params);
       return data ? data : rejectWithValue(errorObj);
     },
   );
   static getPostsDetails: any = createAsyncThunk(
-    "post/getPostsDetails",
+    'post/getPostsDetails',
     async (params: any, { rejectWithValue }) => {
       const [data, errorObj] = await PostApiService.getPostsDetails(params);
       return data ? data : rejectWithValue(errorObj);
     },
   );
   static getTopics: any = createAsyncThunk(
-    "post/getTopics",
+    'post/getTopics',
     async (params: any, { rejectWithValue }) => {
       const [data, errorObj] = await PostApiService.getTopics(params);
       return data ? data : rejectWithValue(errorObj);
@@ -65,7 +65,7 @@ export class PostAction {
 }
 
 const postSlice = createSlice({
-  name: "post",
+  name: 'post',
   initialState,
   reducers: {
     resetPostList: (state) => {
@@ -122,7 +122,7 @@ const postSlice = createSlice({
         const username = action.meta.arg.queryParams.username;
         const { results, after } = action.payload;
 
-        const updatedPosts = removeDuplicatesByKey([...prevPosts, ...results], "slug");
+        const updatedPosts = removeDuplicatesByKey([...prevPosts, ...results], 'slug');
 
         state.userPostsApiData = {
           after,

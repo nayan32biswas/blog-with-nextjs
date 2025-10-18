@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { DEFAULT_ITEMS_LIMIT, MIN_ITEMS_LIMIT } from "@/lib/config";
-import { PostAction } from "@/lib/features/posts/postsSlice";
-import { RootState } from "@/lib/store";
+import { DEFAULT_ITEMS_LIMIT, MIN_ITEMS_LIMIT } from '@/lib/config';
+import { PostAction } from '@/lib/features/posts/postsSlice';
+import { RootState } from '@/lib/store';
 
-import { PostCard } from "../common/PostCard";
-import { MobileTopicsDrawer } from "./topic/MobileTopicsDrawer";
-import { TopicsBlock } from "./topic/TopicsBlock";
+import { PostCard } from '../common/PostCard';
+import { MobileTopicsDrawer } from './topic/MobileTopicsDrawer';
+import { TopicsBlock } from './topic/TopicsBlock';
 
 export default function PostListContainer() {
   const dispatch = useDispatch();

@@ -1,7 +1,7 @@
-import { nullableString } from "../features/common/types";
+import { nullableString } from '../features/common/types';
 
 function getISOFormat(date = new Date()): string {
-  const pad = (n: number) => `${n}`.padStart(2, "0");
+  const pad = (n: number) => `${n}`.padStart(2, '0');
 
   const [Y, M, D, h, m, s] = [
     date.getFullYear(),
@@ -35,7 +35,7 @@ export function utcToLocal(utcString: nullableString): nullableString {
     return null;
   }
 
-  const utcDate = new Date(utcString + "Z"); // Ensure it's parsed as UTC
+  const utcDate = new Date(utcString + 'Z'); // Ensure it's parsed as UTC
   const localDate = new Date(utcDate.getTime() - utcDate.getTimezoneOffset() * 60000);
   return getISOFormat(localDate);
 }
@@ -54,10 +54,10 @@ export function humanizeDate(dateStr: nullableString): nullableString {
   }
 
   const date = new Date(dateStr);
-  const formattedDate = date.toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
+  const formattedDate = date.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
   });
 
   return formattedDate;
@@ -69,14 +69,14 @@ export function humanizeDateTime(dateStr: nullableString): nullableString {
   }
 
   const date = new Date(dateStr);
-  const formattedDate = date.toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
+  const formattedDate = date.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
   });
-  const formattedTime = date.toLocaleTimeString("en-US", {
-    hour: "2-digit",
-    minute: "2-digit",
+  const formattedTime = date.toLocaleTimeString('en-US', {
+    hour: '2-digit',
+    minute: '2-digit',
   });
 
   return `${formattedDate} ${formattedTime}`;

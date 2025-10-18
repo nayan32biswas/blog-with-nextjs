@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react';
 
-import HeroContainer from "@/components/home/HeroContainer";
-import PostListContainer from "@/components/posts/PostList/PostListContainer";
+import HeroContainer from '@/components/home/HeroContainer';
+import PostListContainer from '@/components/posts/PostList/PostListContainer';
 
 export default function Home() {
   return (

@@ -1,11 +1,11 @@
-"use server";
+'use server';
 
-import axios from "axios";
-import { decode } from "jsonwebtoken";
-import { cookies } from "next/headers";
+import axios from 'axios';
+import { decode } from 'jsonwebtoken';
+import { cookies } from 'next/headers';
 
-import { TOKEN_FIELDS } from "@/lib/config";
-import { API_URLS } from "@/lib/endpoints";
+import { TOKEN_FIELDS } from '@/lib/config';
+import { API_URLS } from '@/lib/endpoints';
 
 interface ILoginPayload {
   username: string;
@@ -26,7 +26,7 @@ const setIsAuthenticatedToCookie = (cookieStore: any, refreshToken: string) => {
 
   cookieStore.set(TOKEN_FIELDS.IS_AUTHENTICATED_KEY, isAuthenticated, {
     secure: true,
-    sameSite: "strict",
+    sameSite: 'strict',
     expires: expiryDate,
     httpOnly: false,
   });
@@ -37,7 +37,7 @@ const setTokenToCookie = (cookieStore: any, key: string, token: string, httpOnly
 
   cookieStore.set(key, token, {
     secure: true,
-    sameSite: "strict",
+    sameSite: 'strict',
     expires: expiryDate,
     httpOnly,
   });
@@ -58,7 +58,7 @@ async function serverLogin(formData: ILoginPayload) {
     accessToken = response.data.access_token;
     refreshToken = response.data.refresh_token;
   } catch (error: any) {
-    const errorMessage = error.response?.data?.detail || "Something went wrong";
+    const errorMessage = error.response?.data?.detail || 'Something went wrong';
     return { success: false, errorMessage: errorMessage };
   }
 
@@ -90,7 +90,7 @@ async function serverRefreshAccessToken() {
     setTokenToCookie(cookieStore, TOKEN_FIELDS.ACCESS_TOKEN_KEY, newAccessToken, false);
     return { success: true, accessToken: newAccessToken };
   } catch {
-    return { success: false, error: "Invalid refresh token" };
+    return { success: false, error: 'Invalid refresh token' };
   }
 }
 
@@ -103,9 +103,9 @@ async function getServerAccessToken() {
 async function serverClearTokens() {
   const cookieStore = await cookies();
 
-  cookieStore.set(TOKEN_FIELDS.REFRESH_TOKEN_KEY, "", { maxAge: 0 });
-  cookieStore.set(TOKEN_FIELDS.ACCESS_TOKEN_KEY, "", { maxAge: 0 });
-  cookieStore.set(TOKEN_FIELDS.IS_AUTHENTICATED_KEY, "", { maxAge: 0 });
+  cookieStore.set(TOKEN_FIELDS.REFRESH_TOKEN_KEY, '', { maxAge: 0 });
+  cookieStore.set(TOKEN_FIELDS.ACCESS_TOKEN_KEY, '', { maxAge: 0 });
+  cookieStore.set(TOKEN_FIELDS.IS_AUTHENTICATED_KEY, '', { maxAge: 0 });
 
   return { success: true };
 }

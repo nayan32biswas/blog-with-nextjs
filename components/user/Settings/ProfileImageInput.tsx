@@ -1,10 +1,10 @@
-import { User } from "lucide-react";
-import React, { ChangeEvent } from "react";
+import { User } from 'lucide-react';
+import React, { ChangeEvent } from 'react';
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Progress } from "@/components/ui/progress";
-import { useImageUpload } from "@/lib/features/common/hooks/useImageUpload";
-import { getMediaFullPath } from "@/lib/utils";
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Progress } from '@/components/ui/progress';
+import { useImageUpload } from '@/lib/features/common/hooks/useImageUpload';
+import { getMediaFullPath } from '@/lib/utils';
 
 interface Props {
   value: string | null;

@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import React from "react";
-import { useForm } from "react-hook-form";
+import Link from 'next/link';
+import React from 'react';
+import { useForm } from 'react-hook-form';
 
-import AuthPageContainer from "@/components/auth/AuthPageContainer";
-import BackHome from "@/components/auth/BackHome";
-import ShowPasswordButton from "@/components/common/Buttons/ShowPasswordButtion";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { AuthApiService } from "@/lib/features/auth/authApi";
-import { EXCEPTION_TYPE } from "@/lib/features/common/constants";
+import AuthPageContainer from '@/components/auth/AuthPageContainer';
+import BackHome from '@/components/auth/BackHome';
+import ShowPasswordButton from '@/components/common/Buttons/ShowPasswordButtion';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { AuthApiService } from '@/lib/features/auth/authApi';
+import { EXCEPTION_TYPE } from '@/lib/features/common/constants';
 
 type FormData = {
   full_name: string;
@@ -30,36 +30,36 @@ export default function SignUpPage() {
     watch,
     formState: { errors },
     setError,
-  } = useForm<FormData>({ mode: "onBlur" });
+  } = useForm<FormData>({ mode: 'onBlur' });
 
-  const password = watch("password");
+  const password = watch('password');
 
   const onSubmit = async (payload: FormData) => {
     const [userData, errorObj] = await AuthApiService.registration(payload);
     if (userData) {
-      window.location.href = "/auth/signin";
+      window.location.href = '/auth/signin';
     } else {
       if (errorObj?.code == EXCEPTION_TYPE.USERNAME_EXISTS) {
-        setError("username", { type: "manual", message: errorObj?.detail });
+        setError('username', { type: 'manual', message: errorObj?.detail });
       }
     }
   };
 
   const formValidation = {
-    full_name: register("full_name", {
-      required: "Full name is required",
-      minLength: { value: 2, message: "Full name must be at least 2 characters" },
+    full_name: register('full_name', {
+      required: 'Full name is required',
+      minLength: { value: 2, message: 'Full name must be at least 2 characters' },
     }),
-    username: register("username", {
-      required: "Username is required",
+    username: register('username', {
+      required: 'Username is required',
     }),
-    password: register("password", {
-      required: "Password is required",
-      minLength: { value: 6, message: "Password must be at least 6 characters" },
+    password: register('password', {
+      required: 'Password is required',
+      minLength: { value: 6, message: 'Password must be at least 6 characters' },
     }),
-    confirm_password: register("confirm_password", {
-      required: "Please confirm your password",
-      validate: (value) => value === password || "Passwords do not match",
+    confirm_password: register('confirm_password', {
+      required: 'Please confirm your password',
+      validate: (value) => value === password || 'Passwords do not match',
     }),
   };
 
@@ -83,7 +83,7 @@ export default function SignUpPage() {
                     autoComplete="name"
                     {...formValidation.full_name}
                     placeholder="Enter your full name"
-                    className={`bg-blue-50 ${errors.full_name ? "border-red-500" : ""}`}
+                    className={`bg-blue-50 ${errors.full_name ? 'border-red-500' : ''}`}
                   />
                   {errors.full_name && (
                     <p className="text-sm text-red-500">{errors.full_name.message}</p>
@@ -102,7 +102,7 @@ export default function SignUpPage() {
                     autoComplete="username"
                     {...formValidation.username}
                     placeholder="Enter your username"
-                    className={`bg-blue-50 ${errors.username ? "border-red-500" : ""}`}
+                    className={`bg-blue-50 ${errors.username ? 'border-red-500' : ''}`}
                   />
                   {errors.username && (
                     <p className="text-sm text-red-500">{errors.username.message}</p>
@@ -117,11 +117,11 @@ export default function SignUpPage() {
                 <div className="relative">
                   <Input
                     id="password"
-                    type={showPassword ? "text" : "password"}
+                    type={showPassword ? 'text' : 'password'}
                     autoComplete="new-password"
                     {...formValidation.password}
                     placeholder="Create a password"
-                    className={`bg-blue-50 ${errors.password ? "border-red-500" : ""}`}
+                    className={`bg-blue-50 ${errors.password ? 'border-red-500' : ''}`}
                   />
                   <ShowPasswordButton
                     showPassword={showPassword}
@@ -143,11 +143,11 @@ export default function SignUpPage() {
                 <div className="relative">
                   <Input
                     id="confirm_password"
-                    type={showConfirmPassword ? "text" : "password"}
+                    type={showConfirmPassword ? 'text' : 'password'}
                     autoComplete="new-password"
                     {...formValidation.confirm_password}
                     placeholder="Confirm your password"
-                    className={`bg-blue-50 ${errors.confirm_password ? "border-red-500" : ""}`}
+                    className={`bg-blue-50 ${errors.confirm_password ? 'border-red-500' : ''}`}
                   />
                   <ShowPasswordButton
                     showPassword={showConfirmPassword}

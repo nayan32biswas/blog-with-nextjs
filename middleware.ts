@@ -1,9 +1,9 @@
-import type { NextRequest } from "next/server";
-import { NextResponse } from "next/server";
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 
-import { TOKEN_FIELDS } from "./lib/config";
+import { TOKEN_FIELDS } from './lib/config';
 
-const privatePathsPrefix = ["/user/"];
+const privatePathsPrefix = ['/user/'];
 
 export function middleware(request: NextRequest) {
   const token = request.cookies.get(TOKEN_FIELDS.REFRESH_TOKEN_KEY);
@@ -13,12 +13,12 @@ export function middleware(request: NextRequest) {
   const isPrivatePath = privatePathsPrefix.some((path) => nextPath.startsWith(path));
 
   if (!token && isPrivatePath) {
-    return NextResponse.redirect(new URL("/login", request.url));
+    return NextResponse.redirect(new URL('/login', request.url));
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
 };

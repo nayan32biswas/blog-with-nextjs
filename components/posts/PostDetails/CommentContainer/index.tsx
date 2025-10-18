@@ -1,24 +1,24 @@
-"use client";
+'use client';
 
-import { ChevronDown, ChevronUp, MessageCircle, Send } from "lucide-react";
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { ChevronDown, ChevronUp, MessageCircle, Send } from 'lucide-react';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { MIN_ITEMS_LIMIT } from "@/lib/config";
-import { CommentAction } from "@/lib/features/comments/commentsSlice";
-import { RootState } from "@/lib/store";
-import { getNameInitials } from "@/lib/utils";
-import { humanizeDate, utcToLocal } from "@/lib/utils/datetime";
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import { MIN_ITEMS_LIMIT } from '@/lib/config';
+import { CommentAction } from '@/lib/features/comments/commentsSlice';
+import { RootState } from '@/lib/store';
+import { getNameInitials } from '@/lib/utils';
+import { humanizeDate, utcToLocal } from '@/lib/utils/datetime';
 
 export default function CommentContainer({ slug }: { slug: string }) {
   const dispatch = useDispatch();
 
   const [expandedComments, setExpandedComments] = useState<string[]>([]);
   const [showReplyInput, setShowReplyInput] = useState<{ [key: string]: boolean }>({});
-  const [newComment, setNewComment] = useState("");
+  const [newComment, setNewComment] = useState('');
   const [replyContent, setReplyContent] = useState<{ [key: string]: string }>({});
 
   const commentsApiData = useSelector((state: RootState) => state.comments.postsCommentData[slug]);
@@ -43,14 +43,14 @@ export default function CommentContainer({ slug }: { slug: string }) {
   const handleAddComment = () => {
     if (!newComment.trim()) return;
     // In a real app, you would make an API call here
-    setNewComment("");
+    setNewComment('');
   };
 
   const handleAddReply = (commentId: string) => {
     const reply = replyContent[commentId];
     if (!reply?.trim()) return;
     // In a real app, you would make an API call here
-    setReplyContent((prev) => ({ ...prev, [commentId]: "" }));
+    setReplyContent((prev) => ({ ...prev, [commentId]: '' }));
     setShowReplyInput((prev) => ({ ...prev, [commentId]: false }));
   };
 
@@ -79,7 +79,7 @@ export default function CommentContainer({ slug }: { slug: string }) {
             {/* Comment Header */}
             <div className="mb-4 flex items-start gap-4">
               <Avatar className="h-10 w-10">
-                <AvatarImage src={comment.user.image || ""} />
+                <AvatarImage src={comment.user.image || ''} />
                 <AvatarFallback>{getNameInitials(comment.user.full_name)}</AvatarFallback>
               </Avatar>
               <div className="flex-1">
@@ -115,7 +115,7 @@ export default function CommentContainer({ slug }: { slug: string }) {
                   ) : (
                     <ChevronDown className="mr-2 h-4 w-4" />
                   )}
-                  {comment.replies.length} {comment.replies.length === 1 ? "reply" : "replies"}
+                  {comment.replies.length} {comment.replies.length === 1 ? 'reply' : 'replies'}
                 </Button>
               )}
             </div>
@@ -125,7 +125,7 @@ export default function CommentContainer({ slug }: { slug: string }) {
               <div className="mt-4 ml-14">
                 <Textarea
                   placeholder="Write a reply..."
-                  value={replyContent[comment.id] || ""}
+                  value={replyContent[comment.id] || ''}
                   onChange={(e) =>
                     setReplyContent((prev) => ({
                       ...prev,
@@ -151,7 +151,7 @@ export default function CommentContainer({ slug }: { slug: string }) {
                   <div key={`reply--${reply.id}`} className="bg-muted rounded-lg p-4">
                     <div className="flex items-start gap-4">
                       <Avatar className="h-8 w-8">
-                        <AvatarImage src={reply.user.image || ""} />
+                        <AvatarImage src={reply.user.image || ''} />
                         <AvatarFallback>{getNameInitials(reply.user.full_name)}</AvatarFallback>
                       </Avatar>
                       <div>

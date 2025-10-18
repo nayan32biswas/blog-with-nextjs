@@ -1,22 +1,22 @@
-"use client";
+'use client';
 
-import { Clock, Edit, Hash, Share2 } from "lucide-react";
-import dynamic from "next/dynamic";
-import Link from "next/link";
-import React, { useMemo } from "react";
+import { Clock, Edit, Hash, Share2 } from 'lucide-react';
+import dynamic from 'next/dynamic';
+import Link from 'next/link';
+import React, { useMemo } from 'react';
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { useAuth } from "@/contexts/AuthContext";
-import { IPostDetails } from "@/lib/features/posts/types";
-import { getPostDescriptionContent, isSelfPost } from "@/lib/features/posts/utility";
-import { getMediaFullPath, getNameInitials } from "@/lib/utils";
-import { humanizeDate, utcToLocal } from "@/lib/utils/datetime";
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { useAuth } from '@/contexts/AuthContext';
+import { IPostDetails } from '@/lib/features/posts/types';
+import { getPostDescriptionContent, isSelfPost } from '@/lib/features/posts/utility';
+import { getMediaFullPath, getNameInitials } from '@/lib/utils';
+import { humanizeDate, utcToLocal } from '@/lib/utils/datetime';
 
-import CommentContainer from "./CommentContainer";
+import CommentContainer from './CommentContainer';
 
-const RichTextEditor = dynamic(() => import("@/components/common/RichTextEditor"), {
+const RichTextEditor = dynamic(() => import('@/components/common/RichTextEditor'), {
   ssr: false,
   loading: () => <div>Loading</div>,
 });
@@ -62,7 +62,7 @@ export default function PostDetails({ post, slug }: PostDetailsProps) {
           <div className="flex items-start gap-4">
             <Link href={`/${post.author.username}`}>
               <Avatar className="h-12 w-12">
-                <AvatarImage src={post.author.image || ""} />
+                <AvatarImage src={post.author.image || ''} />
                 <AvatarFallback>{nameInitials}</AvatarFallback>
               </Avatar>
             </Link>
@@ -110,7 +110,7 @@ export default function PostDetails({ post, slug }: PostDetailsProps) {
           <div className="text-muted-foreground flex items-center gap-4 text-sm">
             <div className="flex items-center gap-1">
               <Clock className="h-4 w-4" />
-              {"000"}
+              {'000'}
             </div>
             <span>•</span>
             <span>{humanizeDate(utcToLocal(post.publish_at))}</span>

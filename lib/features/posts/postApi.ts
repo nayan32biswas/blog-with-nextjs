@@ -1,6 +1,6 @@
-import axios from "@/lib/axios";
-import { API_URLS } from "@/lib/endpoints";
-import { buildUrl } from "@/lib/utils";
+import axios from '@/lib/axios';
+import { API_URLS } from '@/lib/endpoints';
+import { buildUrl } from '@/lib/utils';
 
 export class PostApiService {
   static getTopics = async ({ queryParams }: any) => {

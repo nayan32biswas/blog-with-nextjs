@@ -1,4 +1,4 @@
-import isHotkey from "is-hotkey";
+import isHotkey from 'is-hotkey';
 import {
   AlignCenter,
   AlignJustify,
@@ -13,10 +13,10 @@ import {
   ListOrdered,
   Quote,
   Underline,
-} from "lucide-react";
-import React, { KeyboardEvent, MouseEvent, useCallback, useMemo } from "react";
-import { createEditor, Descendant, Editor, Element as SlateElement, Transforms } from "slate";
-import { withHistory } from "slate-history";
+} from 'lucide-react';
+import React, { KeyboardEvent, MouseEvent, useCallback, useMemo } from 'react';
+import { createEditor, Descendant, Editor, Element as SlateElement, Transforms } from 'slate';
+import { withHistory } from 'slate-history';
 import {
   Editable,
   RenderElementProps,
@@ -24,7 +24,7 @@ import {
   Slate,
   useSlate,
   withReact,
-} from "slate-react";
+} from 'slate-react';
 
 import {
   CustomEditor,
@@ -32,28 +32,28 @@ import {
   CustomElementType,
   CustomElementWithAlign,
   CustomTextKey,
-} from "./custom.types";
-import { editorStyles } from "./editor.style";
-import { Button, Toolbar } from "./utility.component";
+} from './custom.types';
+import { editorStyles } from './editor.style';
+import { Button, Toolbar } from './utility.component';
 
 const HOTKEYS: Record<string, CustomTextKey> = {
-  "mod+b": "bold",
-  "mod+i": "italic",
-  "mod+u": "underline",
-  "mod+`": "code",
+  'mod+b': 'bold',
+  'mod+i': 'italic',
+  'mod+u': 'underline',
+  'mod+`': 'code',
 };
 
-const LIST_TYPES = ["numbered-list", "bulleted-list"] as const;
-const TEXT_ALIGN_TYPES = ["left", "center", "right", "justify"] as const;
+const LIST_TYPES = ['numbered-list', 'bulleted-list'] as const;
+const TEXT_ALIGN_TYPES = ['left', 'center', 'right', 'justify'] as const;
 
 type AlignType = (typeof TEXT_ALIGN_TYPES)[number];
 type ListType = (typeof LIST_TYPES)[number];
 type CustomElementFormat = CustomElementType | AlignType | ListType;
 
 const readOnlyStyles = {
-  borderRadius: "0",
-  padding: "0",
-  border: "none",
+  borderRadius: '0',
+  padding: '0',
+  border: 'none',
 };
 
 interface RichTextEditorProps {
@@ -127,7 +127,7 @@ export default function RichTextEditor({ onChange, initialValue, readOnly }: Ric
 }
 
 const toggleBlock = (editor: CustomEditor, format: CustomElementFormat) => {
-  const isActive = isBlockActive(editor, format, isAlignType(format) ? "align" : "type");
+  const isActive = isBlockActive(editor, format, isAlignType(format) ? 'align' : 'type');
   const isList = isListType(format);
 
   Transforms.unwrapNodes(editor, {
@@ -145,7 +145,7 @@ const toggleBlock = (editor: CustomEditor, format: CustomElementFormat) => {
     };
   } else {
     newProperties = {
-      type: isActive ? "paragraph" : isList ? "list-item" : format,
+      type: isActive ? 'paragraph' : isList ? 'list-item' : format,
     };
   }
   Transforms.setNodes<SlateElement>(editor, newProperties);
@@ -169,7 +169,7 @@ const toggleMark = (editor: CustomEditor, format: CustomTextKey) => {
 const isBlockActive = (
   editor: CustomEditor,
   format: CustomElementFormat,
-  blockType: "type" | "align" = "type",
+  blockType: 'type' | 'align' = 'type',
 ) => {
   const { selection } = editor;
   if (!selection) return false;
@@ -179,7 +179,7 @@ const isBlockActive = (
       at: Editor.unhangRange(editor, selection),
       match: (n) => {
         if (!Editor.isEditor(n) && SlateElement.isElement(n)) {
-          if (blockType === "align" && isAlignElement(n)) {
+          if (blockType === 'align' && isAlignElement(n)) {
             return n.align === format;
           }
           return n.type === format;
@@ -203,37 +203,37 @@ const Element = ({ attributes, children, element }: RenderElementProps) => {
     style.textAlign = element.align as AlignType;
   }
   switch (element.type) {
-    case "block-quote":
+    case 'block-quote':
       return (
         <blockquote style={style} {...attributes}>
           {children}
         </blockquote>
       );
-    case "bulleted-list":
+    case 'bulleted-list':
       return (
         <ul style={style} {...attributes}>
           {children}
         </ul>
       );
-    case "heading-one":
+    case 'heading-one':
       return (
         <h1 style={style} {...attributes}>
           {children}
         </h1>
       );
-    case "heading-two":
+    case 'heading-two':
       return (
         <h2 style={style} {...attributes}>
           {children}
         </h2>
       );
-    case "list-item":
+    case 'list-item':
       return (
         <li style={style} {...attributes}>
           {children}
         </li>
       );
-    case "numbered-list":
+    case 'numbered-list':
       return (
         <ol style={style} {...attributes}>
           {children}
@@ -321,12 +321,12 @@ const isListType = (format: CustomElementFormat): format is ListType => {
 };
 
 const isAlignElement = (element: CustomElement): element is CustomElementWithAlign => {
-  return "align" in element;
+  return 'align' in element;
 };
 
 const DEFAULT_INITIAL_VALUE: Descendant[] = [
   {
-    type: "paragraph",
-    children: [{ text: "" }],
+    type: 'paragraph',
+    children: [{ text: '' }],
   },
 ];

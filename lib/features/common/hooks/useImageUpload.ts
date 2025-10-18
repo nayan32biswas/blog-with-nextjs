@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useState } from 'react';
 
-import api, { getAxiosErrorMessage } from "@/lib/axios";
-import { API_URLS } from "@/lib/endpoints";
-import { buildUrl } from "@/lib/utils";
+import api, { getAxiosErrorMessage } from '@/lib/axios';
+import { API_URLS } from '@/lib/endpoints';
+import { buildUrl } from '@/lib/utils';
 
 interface UseImageUploadResult {
   uploadProgress: number;
@@ -20,7 +20,7 @@ export function useImageUpload(): UseImageUploadResult {
     e: ChangeEvent<HTMLInputElement>,
   ): Promise<[string | null, string | null]> => {
     if (!e.target.files || !e.target.files.length) {
-      return [null, "No file selected"];
+      return [null, 'No file selected'];
     }
 
     setIsUploading(true);
@@ -28,12 +28,12 @@ export function useImageUpload(): UseImageUploadResult {
 
     const selectedFile = e.target.files[0];
     const formData = new FormData();
-    formData.append("image", selectedFile);
+    formData.append('image', selectedFile);
 
     try {
       const url = buildUrl(API_URLS.uploadImage);
       const response = await api.post(url, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: { 'Content-Type': 'multipart/form-data' },
         onUploadProgress: (progressEvent) => {
           let progress = 0;
           if (progressEvent.total) {

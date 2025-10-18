@@ -1,15 +1,15 @@
-import { type ClassValue, clsx } from "clsx";
-import { get } from "lodash";
-import { twMerge } from "tailwind-merge";
+import { type ClassValue, clsx } from 'clsx';
+import { get } from 'lodash';
+import { twMerge } from 'tailwind-merge';
 
-import { publicEnv, TOKEN_FIELDS } from "../config";
+import { publicEnv, TOKEN_FIELDS } from '../config';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
 export const isServer = () => {
-  return typeof window === "undefined";
+  return typeof window === 'undefined';
 };
 
 export const checkIsAuthenticated = () => {
@@ -19,7 +19,7 @@ export const checkIsAuthenticated = () => {
 
 export function queryBuilder(queryParams: any) {
   if (!queryParams) {
-    return "";
+    return '';
   }
   const params = new URLSearchParams(queryParams);
   return params.toString();
@@ -39,27 +39,27 @@ export const buildUrl = (urlTemplate: string, params: any = null, queryParams: a
 };
 
 export function generateId() {
-  const uuid = crypto.randomUUID().replace(/-/g, "");
+  const uuid = crypto.randomUUID().replace(/-/g, '');
   return uuid;
 }
 
 export const getCookieValue = (name: string) => {
   if (isServer()) return null;
 
-  const cookies = document.cookie.split("; ");
+  const cookies = document.cookie.split('; ');
   const cookie = cookies.find((c) => c.startsWith(`${name}=`));
 
-  return cookie ? decodeURIComponent(cookie.split("=")[1]) : null;
+  return cookie ? decodeURIComponent(cookie.split('=')[1]) : null;
 };
 
 export const getNameInitials = (name?: string | null) => {
-  const fullName = name ? name.trim() : "";
-  if (!fullName) return "";
+  const fullName = name ? name.trim() : '';
+  if (!fullName) return '';
 
   const nameInitials = fullName
-    .split(" ")
+    .split(' ')
     .map((n) => n[0])
-    .join("")
+    .join('')
     .toUpperCase();
 
   return nameInitials;
@@ -87,17 +87,17 @@ export function parseDomainFromUrl(url: string | null): string | null {
     const urlObj = new URL(url);
     return urlObj.hostname;
   } catch (error) {
-    console.error("Invalid URL:", error);
+    console.error('Invalid URL:', error);
     return null;
   }
 }
 
 export function getMediaFullPath(mediaPath: string | null): string {
   if (!mediaPath) {
-    return "";
+    return '';
   }
 
-  if (mediaPath.startsWith("http")) {
+  if (mediaPath.startsWith('http')) {
     return mediaPath;
   }
 

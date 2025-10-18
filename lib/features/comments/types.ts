@@ -1,4 +1,4 @@
-import { IMinimumUser } from "../common/types";
+import { IMinimumUser } from '../common/types';
 
 export interface IBaseComment {
   id: string;

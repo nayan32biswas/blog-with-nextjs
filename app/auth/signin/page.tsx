@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import React from "react";
-import { useForm } from "react-hook-form";
+import Link from 'next/link';
+import React from 'react';
+import { useForm } from 'react-hook-form';
 
-import { serverLogin } from "@/app/actions/auth";
-import AuthPageContainer from "@/components/auth/AuthPageContainer";
-import BackHome from "@/components/auth/BackHome";
-import ShowPasswordButton from "@/components/common/Buttons/ShowPasswordButtion";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import { serverLogin } from '@/app/actions/auth';
+import AuthPageContainer from '@/components/auth/AuthPageContainer';
+import BackHome from '@/components/auth/BackHome';
+import ShowPasswordButton from '@/components/common/Buttons/ShowPasswordButtion';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 
 type FormData = {
   username: string;
@@ -26,14 +26,14 @@ export default function SignInPage() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>({ mode: "onBlur" });
+  } = useForm<FormData>({ mode: 'onBlur' });
 
   // Handle form submission
   const onSubmit = async (data: FormData) => {
     try {
       const { success, errorMessage } = await serverLogin(data);
       if (success) {
-        window.location.href = "/";
+        window.location.href = '/';
       } else {
         setErrorMessage(errorMessage);
       }
@@ -41,12 +41,12 @@ export default function SignInPage() {
   };
 
   const formValidation = {
-    username: register("username", {
-      required: "Username is required",
+    username: register('username', {
+      required: 'Username is required',
     }),
-    password: register("password", {
-      required: "Password is required",
-      minLength: { value: 6, message: "Password must be at least 6 characters" },
+    password: register('password', {
+      required: 'Password is required',
+      minLength: { value: 6, message: 'Password must be at least 6 characters' },
     }),
   };
 
@@ -70,7 +70,7 @@ export default function SignInPage() {
                     autoComplete="username"
                     {...formValidation.username}
                     placeholder="Enter your username"
-                    className={`bg-blue-50 ${errors.username ? "border-red-500" : ""}`}
+                    className={`bg-blue-50 ${errors.username ? 'border-red-500' : ''}`}
                   />
                   {errors.username && (
                     <p className="text-sm text-red-500">{errors.username.message}</p>
@@ -85,11 +85,11 @@ export default function SignInPage() {
                 <div className="relative">
                   <Input
                     id="password"
-                    type={showPassword ? "text" : "password"}
+                    type={showPassword ? 'text' : 'password'}
                     autoComplete="current-password"
                     {...formValidation.password}
                     placeholder="Create a password"
-                    className={`bg-blue-50 ${errors.password ? "border-red-500" : ""}`}
+                    className={`bg-blue-50 ${errors.password ? 'border-red-500' : ''}`}
                   />
                   <ShowPasswordButton
                     showPassword={showPassword}

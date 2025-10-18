@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { Search } from "lucide-react";
-import Link from "next/link";
+import { Search } from 'lucide-react';
+import Link from 'next/link';
 
-import { SearchDialog } from "@/components/common/SearchDialog";
-import { Input } from "@/components/ui/input";
+import { SearchDialog } from '@/components/common/SearchDialog';
+import { Input } from '@/components/ui/input';
 
-import NavRightSection from "./NavRightSection";
+import NavRightSection from './NavRightSection';
 
 export function Navbar() {
   return (

@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-import PostListContainer from "@/components/posts/PostList/PostListContainer";
+import PostListContainer from '@/components/posts/PostList/PostListContainer';
 
 export default function Home() {
   return (

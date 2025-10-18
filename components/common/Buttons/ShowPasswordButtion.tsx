@@ -1,6 +1,6 @@
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff } from 'lucide-react';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 
 interface ShowPasswordButtonProps {
   showPassword: boolean;
@@ -24,7 +24,7 @@ export default function ShowPasswordButton({
       ) : (
         <Eye className="h-4 w-4 text-gray-500" />
       )}
-      <span className="sr-only">{showPassword ? "Hide password" : "Show password"}</span>
+      <span className="sr-only">{showPassword ? 'Hide password' : 'Show password'}</span>
     </Button>
   );
 }

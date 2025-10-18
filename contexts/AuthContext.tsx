@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { noop } from "lodash";
-import { useRouter } from "next/navigation";
-import * as React from "react";
+import { noop } from 'lodash';
+import { useRouter } from 'next/navigation';
+import * as React from 'react';
 
-import { serverClearTokens } from "@/app/actions/auth";
-import { AuthApiService } from "@/lib/features/auth/authApi";
-import { IAuthUser } from "@/lib/features/auth/types";
-import { checkIsAuthenticated } from "@/lib/utils";
+import { serverClearTokens } from '@/app/actions/auth';
+import { AuthApiService } from '@/lib/features/auth/authApi';
+import { IAuthUser } from '@/lib/features/auth/types';
+import { checkIsAuthenticated } from '@/lib/utils';
 
 interface AuthContextType {
   authUser: IAuthUser | null;
@@ -55,7 +55,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, [authUser, isAuthenticated]);
 
-  const logout = async (nextUrl = "/auth/signin") => {
+  const logout = async (nextUrl = '/auth/signin') => {
     await serverClearTokens();
     router.push(nextUrl);
   };
@@ -70,7 +70,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 export function useAuth() {
   const context = React.useContext(AuthContext);
   if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
+    throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
 }

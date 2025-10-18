@@ -1,5 +1,5 @@
-import { nullableString } from "../common/types";
-import { PostDescriptionType } from "./types";
+import { nullableString } from '../common/types';
+import { PostDescriptionType } from './types';
 
 export function isSelfPost(currentUsername?: nullableString, postUsername?: nullableString) {
   if (!currentUsername || !postUsername) {

@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { Clock, Edit, User } from "lucide-react";
-import Link from "next/link";
+import { Clock, Edit, User } from 'lucide-react';
+import Link from 'next/link';
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { useAuth } from "@/contexts/AuthContext";
-import type { IPost } from "@/lib/features/posts/types";
-import { getMediaFullPath } from "@/lib/utils";
-import { humanizeDate, utcToLocal } from "@/lib/utils/datetime";
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import { useAuth } from '@/contexts/AuthContext';
+import type { IPost } from '@/lib/features/posts/types';
+import { getMediaFullPath } from '@/lib/utils';
+import { humanizeDate, utcToLocal } from '@/lib/utils/datetime';
 
 interface PostCardProps {
   post: IPost;
@@ -63,7 +63,7 @@ export function PostCard({ post }: PostCardProps) {
             </div>
             <div className="flex items-center">
               <Clock className="mr-1 h-4 w-4" />
-              {"000"}
+              {'000'}
             </div>
             <div>{humanizeDate(utcToLocal(post.publish_at))}</div>
           </CardFooter>

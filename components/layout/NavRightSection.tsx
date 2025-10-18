@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { Menu } from "lucide-react";
-import Link from "next/link";
-import React from "react";
-import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import { Menu } from 'lucide-react';
+import Link from 'next/link';
+import React from 'react';
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
 import {
   Drawer,
   DrawerClose,
@@ -15,17 +15,17 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "@/components/ui/drawer";
+} from '@/components/ui/drawer';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Separator } from "@/components/ui/separator";
-import { useAuth } from "@/contexts/AuthContext";
-import { cn, getNameInitials } from "@/lib/utils";
+} from '@/components/ui/dropdown-menu';
+import { Separator } from '@/components/ui/separator';
+import { useAuth } from '@/contexts/AuthContext';
+import { cn, getNameInitials } from '@/lib/utils';
 
 export default function NavRightSection() {
   const { isAuthenticated, logout, authUser } = useAuth();
@@ -39,7 +39,7 @@ export default function NavRightSection() {
     }
 
     return (
-      <div className={cn("flex items-center space-x-4", extraClass)}>
+      <div className={cn('flex items-center space-x-4', extraClass)}>
         <Avatar>
           <AvatarImage src={authUser.avatar} />
           <AvatarFallback>{nameInitials}</AvatarFallback>
@@ -68,7 +68,7 @@ export default function NavRightSection() {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-56">
-          {renderUserInfo("ml-2")}
+          {renderUserInfo('ml-2')}
 
           <DropdownMenuSeparator />
 
@@ -76,7 +76,7 @@ export default function NavRightSection() {
             <DropdownMenuItem className="cursor-pointer">Profile</DropdownMenuItem>
           </Link>
 
-          <Link href={"/settings"}>
+          <Link href={'/settings'}>
             <DropdownMenuItem className="cursor-pointer">Settings</DropdownMenuItem>
           </Link>
 
@@ -112,10 +112,10 @@ export default function NavRightSection() {
           renderUserMenu()
         ) : (
           <Button
-            variant={"outline"}
+            variant={'outline'}
             className="hidden cursor-pointer bg-black text-gray-50 md:inline-flex"
           >
-            <Link href={"/auth/signin"}>Sign In</Link>
+            <Link href={'/auth/signin'}>Sign In</Link>
           </Button>
         )}
       </>
@@ -141,7 +141,7 @@ export default function NavRightSection() {
             <div className="p-4">
               {isAuthenticated && (
                 <>
-                  {renderUserInfo("mb-4")}
+                  {renderUserInfo('mb-4')}
                   <Separator className="mb-4" />
                 </>
               )}
@@ -157,7 +157,7 @@ export default function NavRightSection() {
                     </DrawerClose>
 
                     <DrawerClose asChild>
-                      <Link href={"/settings/"}>
+                      <Link href={'/settings/'}>
                         <Button variant="ghost" className="w-full cursor-pointer justify-start">
                           Settings
                         </Button>
@@ -165,7 +165,7 @@ export default function NavRightSection() {
                     </DrawerClose>
 
                     <DrawerClose asChild>
-                      <Link href={"/posts/create/"}>
+                      <Link href={'/posts/create/'}>
                         <Button variant="ghost" className="w-full cursor-pointer justify-start">
                           Write
                         </Button>
@@ -173,7 +173,7 @@ export default function NavRightSection() {
                     </DrawerClose>
 
                     <DrawerClose asChild>
-                      <Link href={"/contact/"}>
+                      <Link href={'/contact/'}>
                         <Button variant="ghost" className="w-full cursor-pointer justify-start">
                           Contact
                         </Button>
@@ -195,7 +195,7 @@ export default function NavRightSection() {
                 ) : (
                   <>
                     <DrawerClose asChild>
-                      <Link href={"/contact"}>
+                      <Link href={'/contact'}>
                         <Button variant="ghost" className="w-full cursor-pointer justify-start">
                           Contact
                         </Button>
@@ -205,7 +205,7 @@ export default function NavRightSection() {
                     <Separator className="my-2" />
 
                     <DrawerClose asChild>
-                      <Link href={"/auth/signin"}>
+                      <Link href={'/auth/signin'}>
                         <Button variant="default" className="w-full cursor-pointer">
                           Sign In
                         </Button>
@@ -213,7 +213,7 @@ export default function NavRightSection() {
                     </DrawerClose>
 
                     <DrawerClose asChild>
-                      <Link href={"/auth/signup"}>
+                      <Link href={'/auth/signup'}>
                         <Button variant="outline" className="w-full cursor-pointer">
                           Sign Up
                         </Button>

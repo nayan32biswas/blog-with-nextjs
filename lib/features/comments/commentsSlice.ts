@@ -1,10 +1,10 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import { removeDuplicatesByKey } from "@/lib/utils";
+import { removeDuplicatesByKey } from '@/lib/utils';
 
-import { API_STATE } from "../common/constants";
-import { CommentApiService } from "./commentApi";
-import { CommentsState } from "./types";
+import { API_STATE } from '../common/constants';
+import { CommentApiService } from './commentApi';
+import { CommentsState } from './types';
 
 const initialState: CommentsState = {
   postsCommentData: {},
@@ -12,7 +12,7 @@ const initialState: CommentsState = {
 
 export class CommentAction {
   static getComments: any = createAsyncThunk(
-    "comments/getComments",
+    'comments/getComments',
     async (params: any, { rejectWithValue }) => {
       const slug = params.slug;
       const [data, errorObj] = await CommentApiService.getComments(params);
@@ -31,7 +31,7 @@ const commentInitialObj = {
 };
 
 const commentsSlice = createSlice({
-  name: "comments",
+  name: 'comments',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -54,7 +54,7 @@ const commentsSlice = createSlice({
         const prevData = state.postsCommentData[slug] || { ...commentInitialObj };
         const prevComments = prevData.results;
 
-        const updatedComments = removeDuplicatesByKey([...prevComments, ...results], "id");
+        const updatedComments = removeDuplicatesByKey([...prevComments, ...results], 'id');
 
         state.postsCommentData[slug] = {
           after,
