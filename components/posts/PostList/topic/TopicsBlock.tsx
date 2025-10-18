@@ -18,11 +18,11 @@ export function TopicsBlock({ topics }: TopicsBlockProps) {
   );
 
   return (
-    <div className="rounded-lg bg-gray-50 p-4">
-      <h3 className="mb-4 text-xl font-semibold text-gray-900">Topics</h3>
+    <div className="rounded-lg bg-gray-50 p-3 md:p-6">
+      <h3 className="mb-2 text-xl font-semibold text-gray-900">Topics</h3>
 
       {/* Search Box */}
-      <div className="relative mb-4">
+      <div className="relative mb-2">
         <Search className="absolute top-2.5 left-2.5 h-4 w-4 text-gray-500" />
         <Input
           type="search"
@@ -36,7 +36,7 @@ export function TopicsBlock({ topics }: TopicsBlockProps) {
       {/* Topics List */}
       <div className="divide-y divide-gray-200">
         {filteredTopics.map((topic) => (
-          <div key={`topic-${topic.slug}`} className="flex items-center justify-between py-3">
+          <div key={`topic-${topic.slug}`} className="flex items-center justify-between py-2">
             <span className="text-gray-700">{topic.name}</span>
             <span className="text-gray-500">{'000'}</span>
           </div>

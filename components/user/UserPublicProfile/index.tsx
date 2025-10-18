@@ -45,7 +45,7 @@ export default function UserPublicProfileContainer(params: Props) {
     }
 
     return (
-      <div className="grid gap-8">
+      <div className="grid gap-2">
         {userPosts.map((post) => (
           <PostCard key={post.slug} post={post} />
         ))}

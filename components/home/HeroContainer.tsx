@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 
 export default function HeroContainer() {
   return (
-    <section className="mb-16 text-center">
+    <section className="mb-8 text-center">
       <h1 className="mb-4 text-5xl font-bold tracking-tight text-gray-900 md:text-6xl">
         Welcome to <span className="text-gray-700">Blog</span>
       </h1>

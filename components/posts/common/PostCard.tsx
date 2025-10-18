@@ -17,6 +17,8 @@ interface PostCardProps {
 export function PostCard({ post }: PostCardProps) {
   const { authUser } = useAuth();
 
+  const postUrl = `/posts/${post.slug}`;
+
   const renderEditButton = () => {
     const selfPost = authUser?.username === post.author.username;
     if (!selfPost) {
@@ -40,23 +42,31 @@ export function PostCard({ post }: PostCardProps) {
   };
 
   return (
-    <Card className="group relative overflow-hidden border-gray-200 transition-all hover:shadow-md">
+    <Card className="group relative overflow-hidden border-gray-200 py-2 transition-all hover:shadow-md">
       {renderEditButton()}
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <div className="relative h-48 md:h-full">
+      <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
+        <div className="relative h-32 sm:h-full">
           {post.cover_image && <img src={getMediaFullPath(post.cover_image)} alt={post.title} />}
         </div>
-        <div className="flex flex-col p-4 md:col-span-2">
-          <CardContent className="flex-grow p-0">
-            <h3 className="mb-2 text-xl leading-tight font-bold text-gray-900">
-              <Link href={`/posts/${post.slug}`} className="hover:underline">
+        <div className="flex flex-col p-2 md:col-span-2 md:p-1">
+          <CardContent className="h-28 p-0">
+            <h4 className="mb-2 text-xl leading-tight font-bold text-gray-700" title={post.title}>
+              <Link
+                href={postUrl}
+                className="line-clamp-1 overflow-hidden text-ellipsis hover:underline"
+              >
                 {post.title}
               </Link>
-            </h3>
-            <p className="mb-4 text-gray-600">{post.short_description}</p>
+            </h4>
+            <p
+              className="mb-2 line-clamp-3 overflow-hidden text-sm text-ellipsis"
+              title={post.short_description}
+            >
+              {post.short_description}
+            </p>
           </CardContent>
-          <CardFooter className="flex items-center space-x-4 p-0 text-sm text-gray-500">
+          <CardFooter className="space-x-4 p-0 text-xs text-gray-400">
             <div className="flex items-center">
               <User className="mr-1 h-4 w-4" />
               {post.author.full_name}

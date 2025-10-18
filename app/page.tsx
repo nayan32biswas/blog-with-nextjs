@@ -5,7 +5,7 @@ import PostListContainer from '@/components/posts/PostList/PostListContainer';
 
 export default function Home() {
   return (
-    <main className="container mx-auto px-4 py-8">
+    <main className="container mx-auto px-4 py-4">
       <HeroContainer />
 
       <PostListContainer />
