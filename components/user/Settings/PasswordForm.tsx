@@ -1,9 +1,10 @@
 "use client";
 
-import { Eye, EyeOff, Lock } from "lucide-react";
+import { Lock } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
+import ShowPasswordButton from "@/components/common/Buttons/ShowPasswordButtion";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -103,22 +104,10 @@ export function PasswordForm() {
                 placeholder="Enter your current password"
                 {...formValidation.current_password}
               />
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                className="absolute top-0 right-0 h-full px-3 py-2 hover:bg-transparent"
-                onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-              >
-                {showCurrentPassword ? (
-                  <EyeOff className="h-4 w-4 text-gray-500" />
-                ) : (
-                  <Eye className="h-4 w-4 text-gray-500" />
-                )}
-                <span className="sr-only">
-                  {showCurrentPassword ? "Hide password" : "Show password"}
-                </span>
-              </Button>
+              <ShowPasswordButton
+                showPassword={showCurrentPassword}
+                setShowPassword={setShowCurrentPassword}
+              />
             </div>
             {errors.current_password && (
               <p className="text-sm text-red-500">{errors.current_password.message}</p>
@@ -139,22 +128,10 @@ export function PasswordForm() {
                 placeholder="Enter your new password"
                 {...formValidation.new_password}
               />
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                className="absolute top-0 right-0 h-full px-3 py-2 hover:bg-transparent"
-                onClick={() => setShowNewPassword(!showNewPassword)}
-              >
-                {showNewPassword ? (
-                  <EyeOff className="h-4 w-4 text-gray-500" />
-                ) : (
-                  <Eye className="h-4 w-4 text-gray-500" />
-                )}
-                <span className="sr-only">
-                  {showNewPassword ? "Hide password" : "Show password"}
-                </span>
-              </Button>
+              <ShowPasswordButton
+                showPassword={showNewPassword}
+                setShowPassword={setShowNewPassword}
+              />
             </div>
             {errors.new_password && (
               <p className="text-sm text-red-500">{errors.new_password.message}</p>
@@ -175,22 +152,10 @@ export function PasswordForm() {
                 placeholder="Confirm your new password"
                 {...formValidation.confirm_password}
               />
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                className="absolute top-0 right-0 h-full px-3 py-2 hover:bg-transparent"
-                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              >
-                {showConfirmPassword ? (
-                  <EyeOff className="h-4 w-4 text-gray-500" />
-                ) : (
-                  <Eye className="h-4 w-4 text-gray-500" />
-                )}
-                <span className="sr-only">
-                  {showConfirmPassword ? "Hide password" : "Show password"}
-                </span>
-              </Button>
+              <ShowPasswordButton
+                showPassword={showConfirmPassword}
+                setShowPassword={setShowConfirmPassword}
+              />
             </div>
             {errors.confirm_password && (
               <p className="text-sm text-red-500">{errors.confirm_password.message}</p>
