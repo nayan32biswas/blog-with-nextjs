@@ -1,53 +1,49 @@
-// eslint.config.js
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
-import { FlatCompat } from '@eslint/eslintrc';
-import pluginPrettier from 'eslint-plugin-prettier';
+import { defineConfig } from 'eslint/config';
 import pluginReact from 'eslint-plugin-react';
 import pluginReactHooks from 'eslint-plugin-react-hooks';
 import pluginSimpleImportSort from 'eslint-plugin-simple-import-sort';
 import pluginTypescript from '@typescript-eslint/eslint-plugin';
 import parserTypescript from '@typescript-eslint/parser';
-import eslintConfigPrettier from 'eslint-config-prettier';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
-
-const ignorePatterns = [
-  'node_modules/**',
-  '.next/**',
-  'dist/**',
-  'build/**',
-  '*.min.js',
-  '.vscode/**',
-  'pnpm-lock.yaml',
-];
-
-const eslintConfig = [
+export default defineConfig([
   {
-    // Global ignores
-    ignores: ignorePatterns,
+    ignores: [
+      'node_modules/**',
+      '.next/**',
+      'dist/**',
+      'build/**',
+      '*.min.js',
+      '.vscode/**',
+      'pnpm-lock.yaml',
+    ],
   },
-  ...compat.extends(
-    'next/core-web-vitals',
-    'next/typescript',
-    'plugin:react/recommended',
-    'plugin:react-hooks/recommended',
-    'plugin:prettier/recommended', // This requires eslint-config-prettier
-    'prettier', // Explicitly extend prettier config
-  ),
   {
-    files: ['**/*.ts', '**/*.tsx'],
+    files: ['**/*.{ts,tsx}'],
     languageOptions: {
       parser: parserTypescript,
       parserOptions: {
         ecmaVersion: 'latest',
         sourceType: 'module',
-        project: './tsconfig.json',
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+      globals: {
+        console: 'readonly',
+        process: 'readonly',
+        Buffer: 'readonly',
+        __dirname: 'readonly',
+        __filename: 'readonly',
+        global: 'readonly',
+        module: 'readonly',
+        require: 'readonly',
+        exports: 'readonly',
+        window: 'readonly',
+        document: 'readonly',
+        navigator: 'readonly',
+        localStorage: 'readonly',
+        sessionStorage: 'readonly',
+        fetch: 'readonly',
       },
     },
     plugins: {
@@ -55,9 +51,9 @@ const eslintConfig = [
       '@typescript-eslint': pluginTypescript,
       react: pluginReact,
       'react-hooks': pluginReactHooks,
-      prettier: pluginPrettier,
     },
     rules: {
+      // Import sorting
       'simple-import-sort/imports': [
         'error',
         {
@@ -70,13 +66,25 @@ const eslintConfig = [
         },
       ],
       'simple-import-sort/exports': 'error',
-      'prettier/prettier': 'error',
+
+      // React rules
       'react/react-in-jsx-scope': 'off',
+      'react/prop-types': 'off',
+      'react/jsx-uses-react': 'error',
+      'react/jsx-uses-vars': 'error',
+
+      // React Hooks rules
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
+
+      // TypeScript rules (only those that make sense for JS files)
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
       '@typescript-eslint/explicit-module-boundary-types': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
-      'react/prop-types': 'off',
+
+      // General rules
       'no-console': ['warn', { allow: ['warn', 'error'] }],
+      'no-unused-vars': 'off', // Disabled in favor of @typescript-eslint/no-unused-vars
     },
     settings: {
       react: {
@@ -84,7 +92,4 @@ const eslintConfig = [
       },
     },
   },
-  eslintConfigPrettier,
-];
-
-export default eslintConfig;
+]);
