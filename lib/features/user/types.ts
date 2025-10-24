@@ -21,4 +21,10 @@ export interface IUserPublicProfile {
   bio: string | null;
   is_active: boolean;
   user_links: UserLink[];
+  role?: string | null;
+  location?: string | null;
+  email?: string | null;
+  website?: string | null;
+  twitter?: string | null;
+  github?: string | null;
 }
