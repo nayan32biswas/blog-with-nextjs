@@ -5,7 +5,7 @@ import { PostApiService } from '@/lib/features/posts/postApi';
 
 const PostEditorPage = () => {
   const handleSubmitData = async (payload: any) => {
-    const [data, errorObj] = await PostApiService.createPosts(payload);
+    const [data, errorObj] = await PostApiService.createPosts({ payload });
     if (data) {
       window.location.href = `/posts/${data.slug}`;
     } else if (errorObj) {

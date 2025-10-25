@@ -67,7 +67,8 @@ export default function RichTextEditor({ onChange, initialValue, readOnly }: Ric
   const renderLeaf = useCallback((props: RenderLeafProps) => <Leaf {...props} />, []);
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
 
-  const editorInitialValue = initialValue || DEFAULT_INITIAL_VALUE;
+  const editorInitialValue =
+    initialValue && initialValue.length > 0 ? initialValue : DEFAULT_INITIAL_VALUE;
 
   const handleChange = (newValue: any) => {
     if (onChange) {
