@@ -12,6 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { AuthApiService } from '@/lib/features/auth/authApi';
 import { EXCEPTION_TYPE } from '@/lib/features/common/constants';
+import { getUrlSearchParams } from '@/lib/utils';
 
 type FormData = {
   full_name: string;
@@ -162,7 +163,10 @@ export default function SignUpPage() {
                 Sign Up
               </Button>
 
-              <Link className="block text-center text-sm text-gray-600" href="/auth/signin">
+              <Link
+                className="block text-center text-sm text-gray-600"
+                href={`/auth/signin${getUrlSearchParams()}`}
+              >
                 <span className="px-4 py-2 hover:bg-gray-100">
                   Already have an account? Sign In
                 </span>

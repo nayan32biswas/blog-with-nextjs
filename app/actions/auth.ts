@@ -94,6 +94,17 @@ async function serverRefreshAccessToken() {
   }
 }
 
+export async function serverCheckIsAuthenticated() {
+  const cookieStore = await cookies();
+  const existingRefreshToken = cookieStore.get(TOKEN_FIELDS.REFRESH_TOKEN_KEY)?.value;
+
+  if (!existingRefreshToken) {
+    return false;
+  }
+
+  return true;
+}
+
 async function getServerAccessToken() {
   const cookieStore = await cookies();
   const accessToken = cookieStore.get(TOKEN_FIELDS.ACCESS_TOKEN_KEY)?.value;

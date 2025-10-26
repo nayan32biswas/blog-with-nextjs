@@ -2,23 +2,24 @@ import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
 import { TOKEN_FIELDS } from './lib/config';
-
-const privatePathsPrefix = ['/user/'];
+import { getRedirectUrlToAuth } from './lib/features/auth/utility';
 
 export function middleware(request: NextRequest) {
   const token = request.cookies.get(TOKEN_FIELDS.REFRESH_TOKEN_KEY);
+  const fullUrl = request.nextUrl.href;
 
-  const nextPath = request.nextUrl.pathname;
-
-  const isPrivatePath = privatePathsPrefix.some((path) => nextPath.startsWith(path));
-
-  if (!token && isPrivatePath) {
-    return NextResponse.redirect(new URL('/login', request.url));
+  if (!token) {
+    // We will have two level of validation.
+    // One in the middleware and another in the AuthGuard component.
+    return NextResponse.redirect(new URL(getRedirectUrlToAuth(fullUrl), request.url));
   }
 
-  return NextResponse.next();
+  const response = NextResponse.next();
+  response.headers.set('x-full-url', fullUrl);
+
+  return response;
 }
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
+  matcher: ['/settings/:path*', '/posts/create/:path*', '/posts/:path*/edit'],
 };
