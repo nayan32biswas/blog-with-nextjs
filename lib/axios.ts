@@ -7,7 +7,8 @@ import {
 } from '@/app/actions/auth';
 
 import { DEFAULT_TIMEOUT, publicEnv, TOKEN_FIELDS } from './config';
-import { getCookieValue, isServer } from './utils';
+import { getCookieValue } from './features/auth/utility';
+import { isServer } from './utils';
 
 function getAxiosErrorMessage(
   error: any,

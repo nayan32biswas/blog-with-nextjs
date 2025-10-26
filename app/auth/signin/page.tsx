@@ -11,6 +11,8 @@ import ShowPasswordButton from '@/components/common/Buttons/ShowPasswordButtion'
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { performAfterAuthActions } from '@/lib/features/auth/utility';
+import { getUrlSearchParams } from '@/lib/utils';
 
 type FormData = {
   username: string;
@@ -33,7 +35,7 @@ export default function SignInPage() {
     try {
       const { success, errorMessage } = await serverLogin(data);
       if (success) {
-        window.location.href = '/';
+        performAfterAuthActions();
       } else {
         setErrorMessage(errorMessage);
       }
@@ -106,7 +108,10 @@ export default function SignInPage() {
               <Button type="submit" className="w-full cursor-pointer">
                 Sign In
               </Button>
-              <Link className="block text-center text-sm text-gray-600" href="/auth/signup">
+              <Link
+                className="block text-center text-sm text-gray-600"
+                href={`/auth/signup${getUrlSearchParams()}`}
+              >
                 <span className="px-4 py-2 hover:bg-gray-100">Do not have an account? Sign Up</span>
               </Link>
               <BackHome />

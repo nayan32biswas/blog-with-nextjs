@@ -7,7 +7,7 @@ import * as React from 'react';
 import { serverClearTokens } from '@/app/actions/auth';
 import { AuthApiService } from '@/lib/features/auth/authApi';
 import { IAuthUser } from '@/lib/features/auth/types';
-import { checkIsAuthenticated } from '@/lib/utils';
+import { checkIsAuthenticated } from '@/lib/features/auth/utility';
 
 interface AuthContextType {
   authUser: IAuthUser | null;
