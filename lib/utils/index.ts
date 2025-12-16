@@ -1,5 +1,4 @@
 import { type ClassValue, clsx } from 'clsx';
-import { get } from 'lodash';
 import { twMerge } from 'tailwind-merge';
 
 import { publicEnv } from '../config';
@@ -11,6 +10,8 @@ export function cn(...inputs: ClassValue[]) {
 export const isServer = () => {
   return typeof window === 'undefined';
 };
+
+export const noop = (..._args: any[]) => {};
 
 export function queryBuilder(queryParams: any) {
   if (!queryParams) {
@@ -55,7 +56,7 @@ export function removeDuplicatesByKey<T, K extends keyof T>(array: T[], key: K):
   const seen = new Set<T[K]>();
 
   return array.filter((item) => {
-    const value = get(item, [key]);
+    const value = item && item[key];
     if (seen.has(value)) {
       return false;
     }
