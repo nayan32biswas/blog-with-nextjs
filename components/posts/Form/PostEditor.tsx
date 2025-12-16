@@ -52,6 +52,7 @@ const PostEditor = (props: Props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [coverImage, setCoverImage] = useState('');
 
+  const [postSlug, setPostSlug] = useState<string | null>(null);
   const [descriptionContent, setDescriptionContent] = useState<Descendant[]>([]);
   const [descriptionError, setDescriptionError] = useState<string | null>(null);
 
@@ -64,7 +65,8 @@ const PostEditor = (props: Props) => {
   });
 
   useEffect(() => {
-    if (value?.description) {
+    if (value?.description && value?.slug) {
+      setPostSlug(value.slug);
       setDescriptionContent(getPostDescriptionContent(value.description));
     }
     if (value?.cover_image) {
@@ -151,7 +153,11 @@ const PostEditor = (props: Props) => {
           {/* Description */}
           <div className="space-y-2">
             <Label htmlFor="description">Description</Label>
-            <RichTextEditor onChange={handleDescriptionChange} initialValue={descriptionContent} />
+            <RichTextEditor
+              onChange={handleDescriptionChange}
+              initialValue={descriptionContent}
+              key={postSlug || 'new-post'}
+            />
             {descriptionError && <p className="text-destructive text-sm">{descriptionError}</p>}
           </div>
 

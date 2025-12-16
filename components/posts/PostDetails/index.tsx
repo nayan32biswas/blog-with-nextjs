@@ -127,7 +127,7 @@ export default function PostDetails({ post, slug }: PostDetailsProps) {
           </div>
 
           <div className="prose prose-lg max-w-none">
-            <RichTextEditor initialValue={postDescriptionContent} readOnly />
+            <RichTextEditor initialValue={postDescriptionContent} readOnly key={post.slug} />
           </div>
           {renderAuthorInfo()}
           <CommentContainer slug={slug} />
