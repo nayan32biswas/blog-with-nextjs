@@ -33,7 +33,9 @@ import {
   CustomElementWithAlign,
   CustomTextKey,
 } from './custom.types';
+import ImageElement from './CustomElements/ImageElement';
 import { editorStyles } from './editor.style';
+import ImageButton from './ToolbarButtons/ImageButton';
 import { Button, Toolbar } from './utility.component';
 
 const HOTKEYS: Record<string, CustomTextKey> = {
@@ -62,10 +64,22 @@ interface RichTextEditorProps {
   onChange?: (value: Descendant[]) => void;
 }
 
+const withImages = (editor: CustomEditor) => {
+  const { isVoid } = editor;
+
+  editor.isVoid = (element) => {
+    return element.type === 'image' ? true : isVoid(element);
+  };
+
+  return editor;
+};
+
 export default function RichTextEditor({ onChange, initialValue, readOnly }: RichTextEditorProps) {
   const renderElement = useCallback((props: RenderElementProps) => <Element {...props} />, []);
   const renderLeaf = useCallback((props: RenderLeafProps) => <Leaf {...props} />, []);
-  const editor = useMemo(() => withHistory(withReact(createEditor())), []);
+  const editor = useMemo(() => {
+    return withImages(withHistory(withReact(createEditor())));
+  }, []);
 
   const editorInitialValue =
     initialValue && initialValue.length > 0 ? initialValue : DEFAULT_INITIAL_VALUE;
@@ -105,6 +119,7 @@ export default function RichTextEditor({ onChange, initialValue, readOnly }: Ric
         <BlockButtonCustom format="center" icon={<AlignCenter className="h-4 w-4" />} />
         <BlockButtonCustom format="right" icon={<AlignRight className="h-4 w-4" />} />
         <BlockButtonCustom format="justify" icon={<AlignJustify className="h-4 w-4" />} />
+        <ImageButton />
       </Toolbar>
     );
   };
@@ -240,6 +255,8 @@ const Element = ({ attributes, children, element }: RenderElementProps) => {
           {children}
         </ol>
       );
+    case 'image':
+      return <ImageElement attributes={attributes} children={children} element={element} />;
     default:
       return (
         <p style={style} {...attributes}>

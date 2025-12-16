@@ -66,6 +66,8 @@ export type HeadingSixElement = {
 export type ImageElement = {
   type: 'image';
   url: string;
+  width?: number; // width in pixels or percentage
+  align?: 'left' | 'center' | 'right';
   children: EmptyText[];
 };
 
@@ -120,7 +122,8 @@ export type CustomElementWithAlign =
   | HeadingFiveElement
   | HeadingSixElement
   | BlockQuoteElement
-  | BulletedListElement;
+  | BulletedListElement
+  | ImageElement;
 
 export type CustomElement =
   | BlockQuoteElement
