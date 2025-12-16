@@ -32,26 +32,6 @@ export const Button = React.forwardRef<HTMLSpanElement, PropsWithChildren<Button
 );
 Button.displayName = 'Button';
 
-export const Instruction = React.forwardRef<HTMLDivElement, PropsWithChildren<ButtonProps>>(
-  ({ className, ...props }, ref: Ref<HTMLDivElement>) => (
-    <div
-      {...props}
-      ref={ref}
-      className={cx(
-        className as string,
-        css`
-          white-space: pre-wrap;
-          margin: 0 -20px 10px;
-          padding: 10px 20px;
-          font-size: 14px;
-          background: #f8f8e8;
-        `,
-      )}
-    />
-  ),
-);
-Instruction.displayName = 'Instruction';
-
 export const Menu = React.forwardRef<HTMLDivElement, PropsWithChildren<ButtonProps>>(
   ({ className, ...props }, ref: Ref<HTMLDivElement>) => (
     <div
