@@ -1,10 +1,10 @@
 'use client';
 
 import { Clock, Edit, Hash, Share2 } from 'lucide-react';
-import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import React, { useMemo } from 'react';
 
+import RichTextEditor from '@/components/common/RichTextEditor';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -15,11 +15,6 @@ import { getMediaFullPath, getNameInitials } from '@/lib/utils';
 import { humanizeDate, utcToLocal } from '@/lib/utils/datetime';
 
 import CommentContainer from './CommentContainer';
-
-const RichTextEditor = dynamic(() => import('@/components/common/RichTextEditor'), {
-  ssr: false,
-  loading: () => <div>Loading</div>,
-});
 
 interface PostDetailsProps {
   post: IPostDetails;
