@@ -6,7 +6,7 @@ import { useSlate } from 'slate-react';
 
 import { useImageUpload } from '@/lib/features/common/hooks/useImageUpload';
 
-import { ImageElement as ImageElementType } from '../custom.types';
+import { ImageElement as ImageElementType } from '../../custom.types';
 import { Button } from '../utility.component';
 
 export default function ImageButton() {

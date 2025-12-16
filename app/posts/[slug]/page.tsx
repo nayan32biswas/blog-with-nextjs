@@ -1,21 +1,25 @@
 import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 import Script from 'next/script';
 import { cache } from 'react';
 
-import Post404 from '@/components/posts/common/Post404';
 import PostDetails from '@/components/posts/PostDetails';
 import { publicEnv } from '@/lib/config';
 import { PostApiService } from '@/lib/features/posts/postApi';
 import { IPostDetails } from '@/lib/features/posts/types';
 
-const getPostDetailsUrl = (slug: string) => `${publicEnv.BASE_API_URL}/posts/${slug}/`;
+const getPostDetailsUrl = (slug: string) => `${publicEnv.APP_URL}/posts/${slug}/`;
 
 const getBlogPostBySlug = cache(async (slug: string): Promise<[IPostDetails | null, any]> => {
   const [post, errorObj] = await PostApiService.getPostsDetails({ slug });
   return [post, errorObj];
 });
 
-export async function generateMetadata({ params }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
   const { slug } = await params;
   const [post, errorObj] = await getBlogPostBySlug(slug);
 
@@ -55,7 +59,7 @@ export default async function PostDetailsPage({ params }: { params: Promise<{ sl
   const [post, errorObj] = await getBlogPostBySlug(slug);
 
   if (!post || errorObj) {
-    return <Post404 />;
+    notFound();
   }
 
   return (

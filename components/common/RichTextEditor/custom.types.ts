@@ -150,7 +150,12 @@ export type CustomElement =
   | CodeBlockElement
   | CodeLineElement;
 
+export type AlignType = 'left' | 'center' | 'right' | 'justify';
+export type ListType = 'numbered-list' | 'bulleted-list';
+
 export type CustomElementType = CustomElement['type'];
+
+export type CustomElementFormat = CustomElementType | AlignType | ListType;
 
 export type CustomText = {
   bold?: boolean;
